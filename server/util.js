@@ -8,10 +8,8 @@ fbPassport.use(new FacebookStrategy(
   {clientID, clientSecret, callbackURL},
   (accessToken, refreshToken, profile, cb) => {
     console.log('\x1b[33m%s\x1b[0m', 'OAUTH profile: ', profile);
-    db.User.findOrCreate({where: {username: profile.displayName},
-        defaults: {password: profile.id}
-      }
-    ).spread((user, created) => cb(null, user));
+    db.FBUser.findOrCreate({where: {username: profile.displayName}})
+             .spread((user, created) => cb(null, user));
   }
 ));
 

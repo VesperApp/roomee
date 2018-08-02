@@ -29,6 +29,23 @@ const User = db.define('user', {
   last_login: Sequelize.DATE
 });
 
+const FBUser = db.define('fbuser', {
+  id: {
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
+  firstname: Sequelize.STRING,
+  lastname: Sequelize.STRING,
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  about: Sequelize.TEXT,
+  email: Sequelize.STRING,
+  last_login: Sequelize.DATE
+});
+
 const Listing = db.define('listing', {
   id: {
     allowNull: false,
@@ -125,3 +142,4 @@ User.validateLogin = (username, password, callback) => {
 module.exports.sequelize = db;
 module.exports.Listing = Listing;
 module.exports.User = User;
+module.exports.FBUser = FBUser;

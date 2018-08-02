@@ -150,7 +150,7 @@ app.post('/login', (req, res) => {
   });
 });
 
-// Facebook Oauth2.0 //
+//** Facebook Oauth2.0 **//
 app.get('/login/facebook', passport.authenticate('facebook'));
 
 app.get('/login/facebook/return',
@@ -159,7 +159,7 @@ app.get('/login/facebook/return',
     res.redirect('/');
   }
 );
-//
+//** **/
 
 passport.serializeUser(function(userid, done) {
   done(null, userid);
