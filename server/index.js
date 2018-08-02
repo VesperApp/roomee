@@ -134,7 +134,7 @@ app.post('/signup', (req, res) => {
       if (err) {
         res.status(409).send(err);
       } else {
-        util.createSession(req, res.status(201), newUser);
+        util.createSession(req, res.status(201), newUser.username);
       }
     });
   });
@@ -144,17 +144,12 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
   db.User.validateLogin(username, password, (err, userid) => {
     if (userid) {
-      req.login(userid, err => {
-        console.log(`========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-        res.status(200).redirect('/');
-      })
+      util.createSession(req, res.status(200), username);
     } else {
       res.status(401).redirect('/loginView');
     }
   });
 });
-
-
 
 passport.serializeUser(function(userid, done) {
   done(null, userid);

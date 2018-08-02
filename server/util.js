@@ -1,7 +1,7 @@
 // Session stores the whole User object.
-exports.createSession = (req, res, newUser) => {
+exports.createSession = (req, res, username) => {
   return req.session.regenerate(() => {
-    req.session.user = newUser;
+    req.session.user = username;
     res.redirect('/');
   });
 };
