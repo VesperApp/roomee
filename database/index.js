@@ -1,25 +1,14 @@
 const Sequelize = require('sequelize');
 const bCrypt = require('bcrypt-nodejs');
-
+const db = require('./db.js');
 const Op = Sequelize.Op;
 const operatorsAliases = { $like: Op.like };
-const sequelize = new Sequelize('roomee', 'root', 'password', {
-  host: 'localhost',
-  dialect: 'mysql',
-  pool: {
-    max: 5,
-    min: 1,
-    acquire: 30000,
-    idle: 1
-  }
-});
 
-sequelize
-  .authenticate()
+db.authenticate()
   .then(() => console.log('Database connection has been established successfully.') )
   .catch(err => console.log('Unable to connect to the database:', err));
 
-const User = sequelize.define('user', {
+const User = db.define('user', {
   id: {
     autoIncrement: true,
     primaryKey: true,
@@ -40,7 +29,7 @@ const User = sequelize.define('user', {
   last_login: Sequelize.DATE
 });
 
-const Listing = sequelize.define('listing', {
+const Listing = db.define('listing', {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -59,7 +48,7 @@ const Listing = sequelize.define('listing', {
   price: { type: Sequelize.INTEGER }
 });
 
-const Photo = sequelize.define('photo', {
+const Photo = db.define('photo', {
   title: Sequelize.STRING,
   url: Sequelize.STRING
 });
@@ -68,7 +57,7 @@ const Photo = sequelize.define('photo', {
 Listing.hasMany(Photo);
 
 // sequelize.sync({ force: true });
-sequelize.sync();
+db.sync();
 
 Listing.findListingsByZip = (queryStr, callback) => {
   queryStr.include = [{ model: Photo }];
@@ -133,6 +122,6 @@ User.validateLogin = (username, password, callback) => {
 };
 
 
-module.exports.sequelize = sequelize;
+module.exports.sequelize = db;
 module.exports.Listing = Listing;
 module.exports.User = User;

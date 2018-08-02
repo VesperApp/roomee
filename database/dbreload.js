@@ -1,16 +1,11 @@
 const Sequelize = require('sequelize');
+const db = require('./db.js');
 
-const sequelize = new Sequelize('roomee', 'root', 'password', {
-  host: 'localhost',
-  dialect: 'mysql'
-});
-
-sequelize
-  .authenticate()
+db.authenticate()
   .then(() => console.log('Database connection has been established successfully.') )
   .catch(err => console.log('Unable to connect to the database:', err));
 
-const User = sequelize.define('user', {
+const User = db.define('user', {
   id: {
     autoIncrement: true,
     primaryKey: true,
@@ -31,7 +26,7 @@ const User = sequelize.define('user', {
   last_login: Sequelize.DATE
 });
 
-const Listing = sequelize.define('listing', {
+const Listing = db.define('listing', {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -50,14 +45,14 @@ const Listing = sequelize.define('listing', {
   price: { type: Sequelize.INTEGER }
 });
 
-const Photo = sequelize.define('photo', {
+const Photo = db.define('photo', {
   title: Sequelize.STRING,
   url: Sequelize.STRING
 });
 
 User.hasMany(Listing);
 Listing.hasMany(Photo);
-sequelize.sync({ force: true });
+db.sync({ force: true });
 
 setTimeout(function() {
   return process.exit(0);
