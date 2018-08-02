@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
+const { host, dialect, dbName, user, password} = require('./db.config.js');
 
-const db = new Sequelize('roomee', 'root', 'password', {
-  host: 'localhost',
-  dialect: 'mysql',
+const db = new Sequelize(dbName, user, password, {
+  host: host,
+  dialect: dialect,
   pool: {
     max: 5,
     min: 1,
