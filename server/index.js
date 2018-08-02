@@ -2,10 +2,10 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const passport = require('passport');
+const fbPassport = require()
 const db = require('../database/index.js');
 const env = require('dotenv').config();
-const util = require('./util.js');
+const { createSession, fbPassport} = require('./util.js');
 
 // const passportLocal = require('passport-local');
 // const exphbs = require('express-handlebars');
@@ -134,7 +134,7 @@ app.post('/signup', (req, res) => {
       if (err) {
         res.status(409).send(err);
       } else {
-        util.createSession(req, res.status(201), newUser.username);
+        createSession(req, res.status(201), newUser.username);
       }
     });
   });
@@ -144,12 +144,21 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
   db.User.validateLogin(username, password, (err, userid) => {
     if (userid) {
-      util.createSession(req, res.status(200), username);
+      createSession(req, res.status(200), username);
     } else {
       res.status(401).redirect('/loginView');
     }
   });
 });
+
+app.get('/login/facebook', passport.authenticate('facebook'));
+
+app.get('/login/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/');
+  }
+);
 
 passport.serializeUser(function(userid, done) {
   done(null, userid);
