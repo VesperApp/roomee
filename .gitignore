@@ -1,6 +1,5 @@
 node_modules
 client/dist/bundle.js
-database/db.config.js
 .env
 config/config.json
 .vscode
