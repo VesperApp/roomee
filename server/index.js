@@ -2,10 +2,10 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const fbPassport = require()
 const db = require('../database/index.js');
 const env = require('dotenv').config();
-const { createSession, fbPassport} = require('./util.js');
+const passport = require('passport');
+const { createSession } = require('./util.js');
 
 // const passportLocal = require('passport-local');
 // const exphbs = require('express-handlebars');
@@ -38,7 +38,7 @@ app.use(session({
 
 app.get('/', (req, res, next) => {
   console.log(`HOME SCREEN ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
-  console.log(`SESSION: ${JSON.stringify(req.session)}`);
+  console.log('\x1b[33m%s\x1b[0m', `SESSION: ${JSON.stringify(req.session)}`);
   next();
 });
 
@@ -84,7 +84,6 @@ app.get('/loginView', (req, res) => {
   // res.render('loginView');
   res.redirect('localhost:3000/loginView');
 });
-
 
 app.get('/house', (req, res) => {
   // res.render('loginView');
@@ -151,6 +150,7 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Facebook Oauth2.0 //
 app.get('/login/facebook', passport.authenticate('facebook'));
 
 app.get('/login/facebook/return',
@@ -159,6 +159,7 @@ app.get('/login/facebook/return',
     res.redirect('/');
   }
 );
+//
 
 passport.serializeUser(function(userid, done) {
   done(null, userid);

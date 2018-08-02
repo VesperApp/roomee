@@ -1,14 +1,17 @@
-const fbPassport = require('passport-facebook');
-
+const db = require('../database/index.js');
+const fbPassport = require('passport');
+const FacebookStrategy = require('passport-facebook');
+const {clientID, clientSecret, callbackURL} = require('./server.config.js').fbConfig;
 // For the convinience of development, I'm just gonna leave clientID and clientSecret here.
 // So our team members don't have to create new ones.
-fbPassport.use(new FacebookStrategy({
-  clientID: 2211856122434963,
-  clientSecret: 'ef25c8bf4c78c71e7e6fd5061dc41960',
-  callbackURL: "http://localhost:4000/login/facebook/return"
-},
-  function (accessToken, refreshToken, profile, cb) {
+fbPassport.use(new FacebookStrategy(
+  {clientID, clientSecret, callbackURL},
+  (accessToken, refreshToken, profile, cb) => {
     console.log('\x1b[33m%s\x1b[0m', 'OAUTH profile: ', profile);
+    db.User.findOrCreate({where: {username: profile.displayName},
+        defaults: {password: profile.id}
+      }
+    ).spread((user, created) => cb(null, user));
   }
 ));
 
