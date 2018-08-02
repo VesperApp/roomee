@@ -1,4 +1,4 @@
-// Session stores the whole User object.
+// Session stores the username.
 exports.createSession = (req, res, username) => {
   return req.session.regenerate(() => {
     req.session.user = username;
