@@ -192,7 +192,6 @@ User.validateLogin = (username, password, callback) => {
     .catch(err => callback(err, null));
 };
 
-
 module.exports.sequelize = db;
 module.exports.Listing = Listing;
 module.exports.User = User;

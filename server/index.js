@@ -25,21 +25,21 @@ const cookieparser = require('cookie-parser')
 // app.set('view engine', 'jade');
 
 // initialize passport and the express sessions and passport sessions
+app.use(session({
+  secret: 'luihfihuiluihiluh34hhglihlse893423rlhfsdiheiiqlqkbcsaajblaeww43232er3',
+  //resave: false, //             resave - false means do not save back to the store unless there is a change
+  //saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
+  cookie: { expires: 24 * 60 * 60 * 1000 }
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: 'luihfihuiluihiluh34hhglihlse893423rlhfsdiheiiqlqkbcsaajblaeww43232er3',
-  resave: false, //             resave - false means do not save back to the store unless there is a change
-  saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
-  cookie: { expires: 24 * 60 * 60 * 1000 }
-}));
-
 app.get('/', (req, res, next) => {
   console.log(`HOME SCREEN ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
   console.log('\x1b[33m%s\x1b[0m', `SESSION: ${JSON.stringify(req.session)}`);
+  console.log('\x1b[33m%s\x1b[0m', `USER: ${JSON.stringify(req.user)}`);
   next();
 });
 
@@ -173,13 +173,15 @@ app.get('/login/facebook/return',
 );
 //** **/
 
-passport.serializeUser((user, done) => {
-  console.log('SerializeUser', user);
-  done(null, user.id);
+passport.serializeUser((fbUser, done) => {
+  //console.log('fbUser: ', fbUser);
+  done(null, fbUser.id);
 });
-passport.deserializeUser((userid, done) => {
-  console.log('DeserializeUser', user);
-  done(null, user);
+passport.deserializeUser((fbUserid, done) => {
+  //console.log('fbUserid: ', fbUserid);
+  db.FBUser
+    .findById(fbUserid)
+    .then(user => done(null, user));
 });
 
 app.listen(PORT, () => {
