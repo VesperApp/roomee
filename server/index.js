@@ -6,6 +6,7 @@ const db = require('../database/index.js');
 const env = require('dotenv').config();
 const passport = require('passport');
 const { createSession } = require('./util.js');
+const { scope } = require('./server.config.js').fbConfig;
 
 // const passportLocal = require('passport-local');
 // const exphbs = require('express-handlebars');
@@ -107,7 +108,8 @@ app.post('/listing', (req, res) => {
 // app.get('/loginView', (req, res) => res.render('login'));
 
 app.get('/logout', (req, res) => {
-req.session.destroy(function() {
+  req.logOut();
+  req.session.destroy(function() {
     res.clearCookie('connect.sid');
     res.redirect('/');
   });
@@ -159,22 +161,26 @@ app.post('/login', (req, res) => {
 });
 
 //** Facebook Oauth2.0 **//
-app.get('/login/facebook', passport.authenticate('facebook'));
+app.get('/login/facebook', 
+  passport.authenticate('facebook', { authType: 'rerequest', scope: scope })
+);
 
 app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  passport.authenticate('facebook', { authType: 'rerequest', scope: scope, failureRedirect: '/login' }),
   function (req, res) {
     res.redirect('/');
   }
 );
 //** **/
 
-passport.serializeUser(function(userid, done) {
-  done(null, userid);
+passport.serializeUser((user, done) => {
+  console.log('SerializeUser', user);
+  done(null, user.id);
 });
-passport.deserializeUser(function(userid, done) {
-  done(null, userid);
-})
+passport.deserializeUser((userid, done) => {
+  console.log('DeserializeUser', user);
+  done(null, user);
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
