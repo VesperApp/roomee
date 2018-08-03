@@ -7,6 +7,7 @@ import LoginView from './loginView.jsx';
 import SignUpView from './signUpView.jsx';
 import CreateListingView from './createListingView.jsx';
 import HouseListingView from './houseListingView.jsx';
+import UserProfileView from './userProfileView.jsx'
 
 export default class App extends React.Component {
   constructor (props) {
@@ -92,19 +93,23 @@ export default class App extends React.Component {
     const renderHouseListingView = props => (
       <HouseListingView
         currentHouseView={this.state.currentHouseView}
-      />);
+      />
+    );
     const renderSignUpView = props => (
       <SignUpView
         onSignUp={this.onSignUp}
-      />);
+      />
+    );
     const renderLoginView = props => (
       <LoginView
         registered={this.state.justRegistered}
-      />);
+      />
+    );
     const renderCreateListingView = props => (
       <CreateListingView
         onSubmit={this.onSubmitPost}
-      />);
+      />
+    );
     const renderSearchView = props => (
       <SearchView
         onInput={this.onInput}
@@ -112,7 +117,11 @@ export default class App extends React.Component {
         listings={this.state.listings}
         onSearch={this.onSearch}
         onTitleClick={this.onTitleClick}
-      />);
+      />
+    );
+    const renderUserProfileView = props => (
+      <UserProfileView/>
+    );
     const Home = () => (
       <section className="hero is-medium is-primary">
         <div className="hero-body">
@@ -149,6 +158,9 @@ export default class App extends React.Component {
             <Link to="/signUpView" className="level-item">
             Sign Up
             </Link>
+            <Link to="/userProfileView" className="level-item">
+              Profile
+            </Link>
           </nav>
 
           <Route exact path="/" component={Home} />
@@ -157,6 +169,7 @@ export default class App extends React.Component {
           <Route path="/loginView" render={renderLoginView} />
           <Route path="/signUpView" render={renderSignUpView} />
           <Route path="/house" render={renderHouseListingView} />
+          <Route path="/userProfileView" render={renderUserProfileView} />
 
           <footer className="footer has-text-centered heading is-6">
           by the roomee project
