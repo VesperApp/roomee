@@ -90,18 +90,11 @@ app.post('/listing', (req, res) => {
 //   res.redirect('localhost:3000/loginView');
 // });
 
-<<<<<<< HEAD
-app.get('/house', (req, res) => {
-  // res.render('loginView');
-  res.redirect('localhost:3000/house');
-});
-=======
 
 // app.get('/house', (req, res) => {
 //   // res.render('loginView');
 //   res.redirect('localhost:3000/house');
 // });
->>>>>>> server edits
 
 // app.get('/search', (req, res) => {
 //   // res.render('searchView');
