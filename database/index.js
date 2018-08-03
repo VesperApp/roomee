@@ -58,19 +58,22 @@ const Listing = db.define('listing', {
   city: Sequelize.STRING,
   stateAbbr: Sequelize.STRING,
   zipCode: Sequelize.STRING,
-  lat: Sequelize.DECIMAL(9, 6),
-  lon: Sequelize.DECIMAL(9, 6),
+  // lat: Sequelize.DECIMAL(9, 6),
+  // lon: Sequelize.DECIMAL(9, 6),
   description: Sequelize.TEXT,
   price: Sequelize.INTEGER
 });
 
 const Photo = db.define('photo', {
-  title: Sequelize.STRING,
+  // title: Sequelize.STRING,
   url: Sequelize.STRING
 });
 
 // User.hasMany(Listing);
-Listing.hasMany(Photo);
+// Listing.hasMany(Photo);
+
+Listing.User = Listing.belongsTo(User);
+Photo.Listing = Photo.belongsTo(Listing);
 
 // sequelize.sync({ force: true });
 db.sync();
@@ -88,6 +91,26 @@ Listing.findListingsByID = (id, callback) => {
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
 };
+
+Photo.createListing2 = (listing, callback) => {
+  Photo.create(listing,{include:{association:Photo.Listing}}) 
+};
+
+// Photo.createListing2({
+//   url: 'www.yomama.com',
+//   listing: {
+//     title: 'test',
+//     address: 'test',
+//     address2: "TESTY",
+//     city: "TESTY",
+//     stateAbbr: "TESTY",
+//     zipCode: "TESTY",
+//     // lat: "TESTY",
+//     // lon: "TESTY",
+//     description: "TESTY",
+//     price: 444
+//   }
+// });
 
 Listing.createListing = (listing, callback) => {
   
@@ -111,15 +134,18 @@ Listing.createListing = (listing, callback) => {
     .catch(err => callback(err));
 };
 
-// var listing123 = { 
-//   title: "sdf123",
-//   address: "sdf123",
-//   city: "hi123"
-// };
-// console.log("ED WAS HERE!!!!!!!!")
-// Listing.createListing(listing123, function(err,data){console.log("HELLLLLOO",data)}) 
+// var test = { title: 'user favorites connected to sessions',
+//   address: '',
+//   city: '',
+//   stateAbbr: '',
+//   zipCode: '',
+//   price: '',
+//   description: '',
+//   photos: [],
+//   redirect: false 
+// }
+// Listing.createListing = (test, function(ele){console.log(ele);})
 
-// var generateHash = password =>bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
 
 User.findbyUsername = (username, callback) => {
   User.findOne({ where: { username } })
