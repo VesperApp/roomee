@@ -71,6 +71,15 @@ app.get("/searchListing", (req, res) => {
   });
 });
 
+/**
+ * Get all the fbusers for now, should be refactored to 
+ */
+app.get('/roomees', (req, res) => {
+  db.FBUser.findAll()
+           .then((roomees) => res.status(200).send(roomees))
+           .catch((err) => res.status(500).send(err));
+});
+
 //ED: DISABLED: SESSION FOR SERVER TESTING
 // const isLoggedIn = (req, res, next) =>
 //   req.isAuthenticated() ? next() : res.sendStatus(401);

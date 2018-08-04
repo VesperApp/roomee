@@ -1,14 +1,15 @@
 import React from 'react';
 import SearchResultView from './searchResultView.jsx';
 
-const SearchView = ({term, listings, onInput, onSearch, onTitleClick}) => (
+const SearchView = ({term, listings, onInput, onSearchRooms, onSearchRoomees, onTitleClick}) => (
   <div>
     <div className="columns level is-multiline is-mobile is-centered control">
-      <input className="column level-item is-one-quarter input is-small" style={{ textAlign: 'center' }}
-      type="text" value={term} onChange={onInput} placeholder="Zip Code" />
-      <button className="button is-small is-primary" style={{ textAlign: 'center' }}
-      type="submit" onClick={onSearch} >
-      Search
+      <input className="column level-item is-one-quarter input is-small" style={{ textAlign: 'center' }} type="text" value={term} onChange={onInput} placeholder="Zip Code" />
+      <button className="button is-small is-success" style={{ textAlign: 'center' }} type="submit" onClick={onSearchRooms}>
+        Rooms
+      </button>
+      <button className="button is-small is-info" style={{ textAlign: 'center' }} type="submit" onClick={onSearchRoomees}>
+        Roomees
       </button>
     </div>
     <div>
