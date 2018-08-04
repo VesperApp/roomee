@@ -78,7 +78,7 @@ class CreateListingView extends React.Component {
         temp.push({url: ele})
       })
       this.setState({
-        photos1: temp
+        photosData: temp
       })
 
 
