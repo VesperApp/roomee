@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import SearchResultView from './searchResultView.jsx';
+import RoomsSearchResultView from './roomsSearchResultView.jsx';
 
 class UserProfileView extends React.Component {
   constructor(props) {
@@ -60,40 +60,31 @@ class UserProfileView extends React.Component {
       return (<Redirect to='/house' />);
     }
    
-    return (
-      <section className="section">
+    return <section className="section">
         <div className="columns">
-        <div class="column">
-            <h4 className="subtitle">
-              My Profile:
-            </h4>
+          <div class="column">
+            <h4 className="subtitle">My Profile:</h4>
             <div className="field">
               <figure className="image is-128x128">
                 <img src={picture} />
               </figure>
             </div>
             <div className="field">
-              <label className="label">
-              Name:
-              </label>
+              <label className="label">Name:</label>
               <h5>{username}</h5>
               <div className="control">
                 {/*<input className="input is-normal" id="title" value={username} onChange={this.onChange} />*/}
               </div>
             </div>
             <div className="field">
-              <label className="label">
-                Gender:
-              </label>
+              <label className="label">Gender:</label>
               <h5>{gender}</h5>
               <div className="control">
                 {/*<input className="input" id="address" value={gender} onChange={this.onChange} />*/}
               </div>
             </div>
             <div className="field ">
-              <label className="label">
-                Birthday:
-              </label>
+              <label className="label">Birthday:</label>
               <h5>{birthday}</h5>
 
               <div className="control">
@@ -122,38 +113,32 @@ class UserProfileView extends React.Component {
                 <input className="input" id="description" value={hometown} onChange={this.onChange} />
               </div>
             </div>*/}
-            </div>
-            <div class="column is-half">
-
-            <h4 className="subtitle">
-              My Listings:
-            </h4>
-            {!this.state.userListing.length ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
-                this.state.userListing.map((item) =>
-                <SearchResultView
+          </div>
+          <div class="column is-half">
+            <h4 className="subtitle">My Listings:</h4>
+            {!this.state.userListing.length ? <div className="has-text-centered title is-4">
+                Sorry, no results found in this area
+              </div> : this.state.userListing.map(item => (
+                <RoomsSearchResultView
                   onTitleClick={this.props.onTitleClick}
                   listing={item}
                   key={item.id}
                 />
-              )}
+              ))}
 
             <div className="field">
               <div className="control">
-                <button className="button is-primary"
-                  type="submit"
-                  onClick={() => {
+                <button className="button is-primary" type="submit" onClick={() => {
                     this.props.onSubmit(this.state);
                     this.setRedirect();
-                  }}
-                >
+                  }}>
                   Save Changes
                 </button>
               </div>
             </div>
           </div>
-      </div>
-        </section>
-    );
+        </div>
+      </section>;
   }
 }
 
