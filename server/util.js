@@ -25,8 +25,8 @@ fbPassport.use(new FacebookStrategy(
  */
 const convertToSQLData = (rawData) => {
   rawData.picture = `http://graph.facebook.com/${rawData.id}/picture?height=128&width=128`;
-  rawData.hometown = rawData.hometown.name;
-  rawData.location = rawData.location.name;
+  rawData.hometown = rawData.hometown ? rawData.hometown.name : '';
+  rawData.location = rawData.location ? rawData.location.name : '';
   rawData.age = rawData.age_range.min;
   delete rawData.id;
   return rawData;
