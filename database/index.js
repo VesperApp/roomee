@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 const bCrypt = require('bcrypt-nodejs');
 const db = require('./db.js');
 const Op = Sequelize.Op;
@@ -47,7 +48,13 @@ const FBUser = db.define('fbuser', {
   gender: Sequelize.STRING,
   picture: Sequelize.STRING,
   age: Sequelize.INTEGER,
-  birthday: Sequelize.DATE,
+  birthday: {
+    type: Sequelize.DATEONLY,
+    get: function() {
+      return moment.utc(this.getDataValue('birthday'))
+                   .format('YYYY-MM-DD');
+    }
+  },
   hometown: Sequelize.STRING,
   location: Sequelize.STRING
 });
