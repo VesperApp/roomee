@@ -35,7 +35,7 @@ const convertToSQLData = (rawData) => {
   return rawData;
 };
 
-// Session stores the username.
+// Session stores the username. DEPRECATED.
 exports.createSession = (req, res, username) => {
   return req.session.regenerate(() => {
     req.session.user = username;
