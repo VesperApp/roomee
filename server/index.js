@@ -161,9 +161,9 @@ app.post('/login', (req, res) => {
 });
 
 /**
- * Get the login user.
+ * Get the login user object.
  */
-app.get('/loggedinUser', (req, res) => {
+app.get('/loginUser', (req, res) => {
   console.log('user:', req.user);
   res.status(200).send(req.user);
 });

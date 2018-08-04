@@ -7,11 +7,29 @@ class UserProfileView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      picture: 'https://bulma.io/images/placeholders/128x128.png',
+      username: '',
+      gender: '',
+      birthday: '',
+      location: '',
+      hometown: ''
     };
   }
 
   componentDidMount() {
+    this.fetchLoginUser((err, user) => {
+      if (err) {
+        console.log('Error on getting login user: ', err);
+      } else {
+        this.setState(user);
+      }
+    });
+  }
 
+  fetchLoginUser(callback) {
+    axios.get('/loginUser')
+         .then((res) => callback(null, res.data))
+         .catch((err) => callback(err, null));
   }
 
   onChange(event) {
@@ -22,7 +40,7 @@ class UserProfileView extends React.Component {
 
 
   render() {
-    const { redirect } = this.state;
+    const { redirect, picture, username, gender, birthday, location, hometown } = this.state;
     if (redirect) {
       return (<Redirect to='/house' />);
     }
@@ -35,7 +53,7 @@ class UserProfileView extends React.Component {
             </h4>
             <div className="field">
               <figure class="image is-128x128">
-                <img src="http://graph.facebook.com/281603545934802/picture?height=128&width=128" />
+                <img src={picture} />
               </figure>
             </div>
             <div className="field">
@@ -43,7 +61,7 @@ class UserProfileView extends React.Component {
                 Name:
               </label>
               <div className="control">
-                <input className="input is-normal" id="title" value={this.title} onChange={this.onChange} />
+                <input className="input is-normal" id="title" value={username} onChange={this.onChange} />
               </div>
             </div>
             <div className="field">
@@ -51,7 +69,7 @@ class UserProfileView extends React.Component {
                 Gender:
               </label>
               <div className="control">
-                <input className="input" id="address" value={this.address} onChange={this.onChange} />
+                <input className="input" id="address" value={gender} onChange={this.onChange} />
               </div>
             </div>
             <div className="field ">
@@ -59,7 +77,7 @@ class UserProfileView extends React.Component {
                 Birthday:
               </label>
               <div className="control">
-                <input className="input" id="price" size="4" value={this.price} onChange={this.onChange} />
+                <input className="input" id="price" size="4" value={birthday} type="date" onChange={this.onChange} />
               </div>
             </div>
             <div className="field">
@@ -68,7 +86,7 @@ class UserProfileView extends React.Component {
               </label>
               <div className="control">
 
-                <input className="input" id="description" value={this.description} onChange={this.onChange} />
+                <input className="input" id="description" value={location} onChange={this.onChange} />
               </div>
             </div>
             <div className="field">
@@ -76,7 +94,7 @@ class UserProfileView extends React.Component {
                 Hometown:
               </label>
               <div className="control">
-                <input className="input" id="description" value={this.description} onChange={this.onChange} />
+                <input className="input" id="description" value={hometown} onChange={this.onChange} />
               </div>
             </div>
             <div className="field">
