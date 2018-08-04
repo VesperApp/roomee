@@ -1,5 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 class UserProfileView extends React.Component {
@@ -7,6 +8,10 @@ class UserProfileView extends React.Component {
     super(props);
     this.state = {
     };
+  }
+
+  componentDidMount() {
+
   }
 
   onChange(event) {
@@ -28,6 +33,11 @@ class UserProfileView extends React.Component {
             <h4 className="subtitle">
               Usser Profile:
             </h4>
+            <div className="field">
+              <figure class="image is-128x128">
+                <img src="http://graph.facebook.com/281603545934802/picture?height=128&width=128" />
+              </figure>
+            </div>
             <div className="field">
               <label className="label">
                 Name:
@@ -66,7 +76,6 @@ class UserProfileView extends React.Component {
                 Hometown:
               </label>
               <div className="control">
-
                 <input className="input" id="description" value={this.description} onChange={this.onChange} />
               </div>
             </div>

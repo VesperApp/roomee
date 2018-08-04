@@ -160,7 +160,15 @@ app.post('/login', (req, res) => {
   });
 });
 
-//** Facebook Oauth2.0 **//
+/**
+ * Get the login user.
+ */
+app.get('/loggedinUser', (req, res) => {
+  console.log('user:', req.user);
+  res.status(200).send(req.user);
+});
+
+//** Facebook Oauth **//
 app.get('/login/facebook', 
   passport.authenticate('facebook', { authType: 'rerequest', scope: scope })
 );

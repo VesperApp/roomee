@@ -43,7 +43,13 @@ const FBUser = db.define('fbuser', {
   },
   about: Sequelize.TEXT,
   email: Sequelize.STRING,
-  last_login: Sequelize.DATE
+  last_login: Sequelize.DATE,
+  gender: Sequelize.STRING,
+  picture: Sequelize.STRING,
+  age: Sequelize.INTEGER,
+  birthday: Sequelize.DATE,
+  hometown: Sequelize.STRING,
+  location: Sequelize.STRING
 });
 
 const Listing = db.define('listing', {
