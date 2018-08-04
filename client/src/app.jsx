@@ -16,7 +16,8 @@ export default class App extends React.Component {
       term: '',
       listings: [],
       currentHouseView: {},
-      justRegistered: false
+      justRegistered: false,
+      isLogin: false
     };
     this.onSubmitPost = this.onSubmitPost.bind(this);
     this.onSearch = this.onSearch.bind(this);
@@ -36,6 +37,15 @@ export default class App extends React.Component {
         this.searchByZipCode(response.data.zip
       )})
       .catch(err => console.log(err));
+
+    // check login status  
+    this.getLoginUser((err, user) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.setState({isLogin: !!user});
+      }
+    })
   }
 
   onInput (e) {
@@ -80,8 +90,21 @@ export default class App extends React.Component {
   searchByZipCode (zipCode) {
     // get request queries databse for all listings matching the user's ip address zipcode
     axios.get('/searchListing', { params: { zip: zipCode } })
-      .then(res => this.setState({ listings: res.data }))
-      .catch(err => console.log(err) );
+         .then(res => this.setState({ listings: res.data }))
+         .catch(err => console.log(err) );
+  }
+
+  getLoginUser(callback) {
+    axios.get('/loginUser')
+         .then((res) => callback(null, res.data))
+         .catch((err) => callback(err, null));
+  }
+
+  logout() {
+    axios.get('/logout')
+         .then((res) => axios.get('/loginUser'))
+         .then((res) => this.setState({isLogin: !!user}))
+         .catch((err) => console.log(err));
   }
 
   /*  ******** axios Requests **********/
@@ -89,6 +112,8 @@ export default class App extends React.Component {
   /* ******** Render **********/
 
   render () {
+    const {isLogin} = this.state;
+
     // passing props to views with routes
     const renderHouseListingView = props => (
       <HouseListingView
@@ -152,15 +177,11 @@ export default class App extends React.Component {
             <Link to="/createListing" className="level-item">
             New Listing
             </Link>
-            <Link to="/loginView" className="level-item">
-            Login
-            </Link>
-            <Link to="/signUpView" className="level-item">
-            Sign Up
-            </Link>
-            <Link to="/userProfileView" className="level-item">
-              Profile
-            </Link>
+            {isLogin ? null : <Link to="/loginView" className="level-item">Login</Link>}
+            {isLogin ? null : <Link to="/signUpView" className="level-item">Sign Up</Link>}
+            {isLogin ? null : <a href="/login/facebook" className="level-item">LOGIN WITH FACEBOOK</a>}
+            {isLogin ? <Link to="/userProfileView" className="level-item">Profile</Link> : null}
+            {isLogin ? <a href="/logout" onClick={this.logout} className="level-item">LOGOUT</a> : null}
           </nav>
 
           <Route exact path="/" component={Home} />
