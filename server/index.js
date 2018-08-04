@@ -64,7 +64,7 @@ app.get("/searchListing", (req, res) => {
 
   db.Listing.findListingsByZip(queryStr, (err, data) => {
     if (err) {
-      res.sendStatus(500);
+      res.status(500).send(err);
     } else {
       res.send(data);
     }

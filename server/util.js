@@ -20,7 +20,7 @@ fbPassport.use(new FacebookStrategy(
 ));
 
 /**
- * Convert raw json data in to our SQL table acceptable format.
+ * Convert raw json data into our SQL table acceptable format.
  * @param {object} rawData - profile._json which is sent back from facebook after oauth authentication.
  */
 const convertToSQLData = (rawData) => {
