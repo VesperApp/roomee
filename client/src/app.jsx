@@ -27,7 +27,7 @@ export default class App extends React.Component {
     this.onSubmitPost = this.onSubmitPost.bind(this);
     this.onSearchRooms = this.onSearchRooms.bind(this);
     this.onSearchRoomees = this.onSearchRoomees.bind(this);
-    this.searchRoomsByZipCode = this.searchRoomsByZipCode.bind(this);g
+    this.searchRoomsByZipCode = this.searchRoomsByZipCode.bind(this);
     this.onSignUp = this.onSignUp.bind(this);
     this.onTitleClick = this.onTitleClick.bind(this);
     this.onInput = this.onInput.bind(this);

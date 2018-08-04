@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchResultView from './searchResultView.jsx';
+import RoomsSearchResultView from './RoomsSearchResultView.jsx';
 
 const SearchView = ({term, listings, onInput, onSearchRooms, onSearchRoomees, onTitleClick}) => (
   <div>
@@ -15,7 +15,7 @@ const SearchView = ({term, listings, onInput, onSearchRooms, onSearchRoomees, on
     <div>
       {!listings.length ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
         listings.map((item) =>
-        <SearchResultView
+        <RoomsSearchResultView
           onTitleClick={onTitleClick}
           listing={item}
           key={item.id}

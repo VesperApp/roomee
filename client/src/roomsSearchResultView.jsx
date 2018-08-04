@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-const SearchResultView = ({listing, onTitleClick}) => (
+const RoomsSearchResultView = ({listing, onTitleClick}) => (
   <div className="container is-fluid">
     <Link to="/house" >
       <h4 className="level-item has-text-centered " onClick={()=>onTitleClick(listing)}>
@@ -30,5 +30,5 @@ const SearchResultView = ({listing, onTitleClick}) => (
     </div>
   </div>
 );
- 
-export default SearchResultView;
+
+export default RoomsSearchResultView;
