@@ -30,7 +30,10 @@ export default class App extends React.Component {
   componentDidMount () {
     // get request fetches the zipcode of the user's IP address and calls onEnterSite
     axios.get('http://ip-api.com/json')
-      .then(response => this.searchByZipCode(response.data.zip))
+      .then(response => {
+        this.setState({ziptest: response.data.zip});
+        this.searchByZipCode(response.data.zip
+      )})
       .catch(err => console.log(err));
   }
 

@@ -64,14 +64,24 @@ class CreateListingView extends React.Component {
     axios.all(uploaders).then(() => {
       // while we are only saving files photo urls to state and passing those to our database, a user
       // could presently upload an unlimited amount of image files to our Cloudinary account
-      const photos = this.state.photos.slice(-5);
+      // const photos = this.state.photos.slice();
+      // this.setState({
+        //   photo1: photos[0],
+        //   photo2: photos[1],
+        //   photo3: photos[2],
+        //   photo4: photos[3],
+        //   photo5: photos[4]
+        // });
+        
+      var temp = [];
+      this.state.photos.forEach(function(ele){
+        temp.push({url: ele})
+      })
       this.setState({
-        photo1: photos[0],
-        photo2: photos[1],
-        photo3: photos[2],
-        photo4: photos[3],
-        photo5: photos[4]
-      });
+        photos1: temp
+      })
+
+
     });
   }
 
@@ -163,7 +173,7 @@ class CreateListingView extends React.Component {
                   maxSize={5242880}
                 >
                   <p>
-                  Add up to 5 images
+                  Add unlimited images!
                   </p>
                 </Dropzone>
               </div>
@@ -175,7 +185,7 @@ class CreateListingView extends React.Component {
                   {
                     this.state.photos.map((f, i) => {
                       // this is very odd, the line above correctly displays the file name, but
-                      <li key={f[0].name}>
+                      <li key={f}>
                        File {i}
                       </li>
                       // the line above is not rendering ANYTHING

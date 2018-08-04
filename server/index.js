@@ -46,10 +46,11 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/searchListing', (req, res) => {
   // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
-  
+  // console.log(req.body)
   let zip = req.param('zip');
   if (zip !== undefined) { zip = zip.substr(0, 3) + '__'; }
   const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
+
   db.Listing.findListingsByZip(queryStr, (err, data) => {
     if (err) {
       res.sendStatus(500);
@@ -59,7 +60,7 @@ app.get('/searchListing', (req, res) => {
   });
 });
 
-//ED: DIABLED SESSION FOR SERVER TESTING
+//ED: DISABLED: SESSION FOR SERVER TESTING
 // const isLoggedIn = (req, res, next) =>
 //   req.isAuthenticated() ? next() : res.sendStatus(401);
 //ED: add this middle ware to post route for /listing:
@@ -67,9 +68,10 @@ app.get('/searchListing', (req, res) => {
 
 app.post('/listing', (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-  // console.log(req.body);
+  req.body.photos = req.body.photos1;
+  console.log(req.body);
   req.body.price = req.body.price || null;
-  db.Listing.createListing(req.body, (err, result) => {
+  db.Listing.createListing2(req.body, (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
@@ -78,7 +80,7 @@ app.post('/listing', (req, res) => {
     }
   });
 });
-
+//ED: DISABLED: inactive routes
 // handlers for refresh button on all views
 // // res.redirect('back') will take user back to homepage
 // app.get('/createListing', (req, res) => {
