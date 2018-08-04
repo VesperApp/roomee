@@ -7,7 +7,6 @@ import SearchView from './searchView.jsx';
 // import SignUpView from './signUpView.jsx';
 import CreateListingView from './createListingView.jsx';
 import HouseListingView from './houseListingView.jsx';
-
 import Home from './Home.jsx';
 import Footer from './footer.jsx';
 
