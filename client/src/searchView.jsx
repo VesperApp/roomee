@@ -1,5 +1,6 @@
 import React from 'react';
 import RoomsSearchResultView from './RoomsSearchResultView.jsx';
+import RoomeesSearchResultView from './roomeesSearchResultView.jsx';
 
 const SearchView = ({term, listings, onInput, onSearchRooms, onSearchRoomees, onTitleClick}) => (
   <div>
@@ -21,6 +22,7 @@ const SearchView = ({term, listings, onInput, onSearchRooms, onSearchRoomees, on
           key={item.id}
         />
       )}
+      <RoomeesSearchResultView/>
     </div>
   </div>
 );
