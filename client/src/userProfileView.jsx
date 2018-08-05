@@ -123,7 +123,7 @@ class UserProfileView extends React.Component {
               </div>
             </div>*/}
             </div>
-  <div class="column is-half">
+            <div class="column is-half">
 
             <h4 className="subtitle">
               My Listings:
