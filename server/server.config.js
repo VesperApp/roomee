@@ -13,7 +13,9 @@ exports.fbConfig = {
     "user_location",
     "email",
     "user_birthday",
-    "user_age_range"
+    "user_age_range",
+    "user_photos",
+    "user_events"
   ],
   profileFields: [
     "id",

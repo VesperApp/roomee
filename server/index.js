@@ -199,14 +199,14 @@ app.get(
 //** **/
 
 passport.serializeUser((fbUser, done) => {
-  //console.log('fbUser: ', fbUser);
-  done(null, fbUser.id);
+  done(null, fbUser);
 });
-passport.deserializeUser((fbUserid, done) => {
-  //console.log('fbUserid: ', fbUserid);
-  db.FBUser.findById(fbUserid).then(user => done(null, user));
+passport.deserializeUser((fbUser, done) => {
+  done(null, fbUser);
 });
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
 });
+
+module.exports = app;
