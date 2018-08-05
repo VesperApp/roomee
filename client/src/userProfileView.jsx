@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import RoomsSearchResultView from './roomssearchResultView.jsx';
+import RoomsSearchResultView from './roomsSearchResultView.jsx';
 
 class UserProfileView extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class UserProfileView extends React.Component {
       zipCode: '',
     };
     this.onChange = this.onChange.bind(this);
-
   }
 
   componentDidMount() {
@@ -35,7 +34,6 @@ class UserProfileView extends React.Component {
     });
   }
 
-  
   fetchLoginUser(callback) {
     axios.get('/loginUser')
          .then((res) => callback(null, res.data))
@@ -55,7 +53,6 @@ class UserProfileView extends React.Component {
     change[event.target.id] = event.target.value;
     this.setState(change);
   }
-
 
   render() {
     const { redirect, picture, username, gender, birthday, location, hometown } = this.state;
@@ -136,6 +133,9 @@ class UserProfileView extends React.Component {
               </div>
 
 
+          </div>
+         
+
             <div className="field">
               <div className="control">
                 <button className="button is-primary" type="submit" onClick={() => {
@@ -145,7 +145,6 @@ class UserProfileView extends React.Component {
                   Save Changes
                 </button>
               </div>
-            </div>
             </div>
             </div>
             <div class="column is-half">

@@ -179,7 +179,7 @@ export default class App extends React.Component {
               Home
             </Link>
             <Link to="/search" className="level-item">
-              Search
+            Search
             </Link>
 
             {isLogin ? <Link to="/createListing" className="level-item">New Listing</Link> : null}
