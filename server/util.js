@@ -6,15 +6,15 @@ const { clientID, clientSecret, callbackURL, profileFields} = require('./server.
 fbPassport.use(new FacebookStrategy(
   {clientID, clientSecret, callbackURL, profileFields},
   (accessToken, refreshToken, profile, cb) => {
-    // console.log('\x1b[33m%s\x1b[0m', 'OAUTH profile: ', profile);
-    // console.log(profile._json.picture.data);
     db.FBUser
       .findOrCreate({
         where: {username: profile.displayName},
         defaults: convertToSQLData(profile._json)
       })
-      .spread((user, created) => {
-        cb(null, user);
+      .spread((sequelizedUser, created) => {
+        // this user data will be stored into session.
+        const sessionUser = convertToSessionUser(sequelizedUser, accessToken, profile.id);
+        cb(null, sessionUser);
       });
   }
 ));
@@ -27,13 +27,26 @@ const convertToSQLData = (rawData) => {
   rawData.picture = `http://graph.facebook.com/${rawData.id}/picture?height=128&width=128`;
   rawData.hometown = rawData.hometown ? rawData.hometown.name : '';
   rawData.location = rawData.location ? rawData.location.name : '';
+  rawData.age = rawData.age_range ? rawData.age_range.min : '';
 
-  rawData.age = rawData.age_range.min;
   delete rawData.id;
+  delete rawData.age_range;
   console.log('**************ED:')
   console.log(rawData);
   return rawData;
 };
+
+/**
+ * Convert seqeulize object model User into a plain user object that will be stored into db.
+ * @param {object} sequelizedUser - a seqeulize object model User.
+ * @param {string} accessToken - accessToken sent from facebook Oauth.
+ */
+const convertToSessionUser = (sequelizedUser, accessToken, fbId) => {
+  const user = sequelizedUser.get({plain: true});
+  user.accessToken = accessToken;
+  user.fbId = fbId;
+  return user;
+}
 
 // Session stores the username. DEPRECATED.
 exports.createSession = (req, res, username) => {
