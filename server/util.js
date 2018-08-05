@@ -6,8 +6,8 @@ const { clientID, clientSecret, callbackURL, profileFields} = require('./server.
 fbPassport.use(new FacebookStrategy(
   {clientID, clientSecret, callbackURL, profileFields},
   (accessToken, refreshToken, profile, cb) => {
-    console.log('\x1b[33m%s\x1b[0m', 'OAUTH profile: ', profile);
-    console.log(profile._json.picture.data);
+    // console.log('\x1b[33m%s\x1b[0m', 'OAUTH profile: ', profile);
+    // console.log(profile._json.picture.data);
     db.FBUser
       .findOrCreate({
         where: {username: profile.displayName},
@@ -27,8 +27,11 @@ const convertToSQLData = (rawData) => {
   rawData.picture = `http://graph.facebook.com/${rawData.id}/picture?height=128&width=128`;
   rawData.hometown = rawData.hometown ? rawData.hometown.name : '';
   rawData.location = rawData.location ? rawData.location.name : '';
+
   rawData.age = rawData.age_range.min;
   delete rawData.id;
+  console.log('**************ED:')
+  console.log(rawData);
   return rawData;
 };
 
@@ -41,3 +44,8 @@ exports.createSession = (req, res, username) => {
 };
 
 exports.fbPassport = fbPassport;
+
+
+
+// rrnmecijtq_1533402978@tfbnw.net 
+// ROOMEEHR32

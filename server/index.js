@@ -79,8 +79,9 @@ app.get("/searchListing", (req, res) => {
 
 app.post("/listing", (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-  req.body.photos = req.body.photos1;
   console.log(req.body);
+  req.body.userId=req.user.id;
+  req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
   db.Listing.createListing2(req.body, (err, result) => {
     if (err) {
@@ -91,30 +92,19 @@ app.post("/listing", (req, res) => {
     }
   });
 });
-//ED: DISABLED: inactive routes
-// handlers for refresh button on all views
-// // res.redirect('back') will take user back to homepage
-// app.get('/createListing', (req, res) => {
-//   res.redirect('localhost:3000/createListing');
-// });
 
-// app.get('/loginView', (req, res) => {
-//   // res.render('loginView');
-//   res.redirect('localhost:3000/loginView');
-// });
+app.get('/userListings', (req, res) =>{
+  console.log("DATABASE RESULT***********");
+  console.log(req.param('userId'));
 
-// app.get('/house', (req, res) => {
-//   // res.render('loginView');
-//   res.redirect('localhost:3000/house');
-// });
-
-// app.get('/search', (req, res) => {
-//   // res.render('searchView');
-//   res.redirect('localhost:3000/search');
-// });
-
-// app.get('/signup', (req, res) => res.render('signup'));
-// app.get('/loginView', (req, res) => res.render('login'));
+  db.Listing.findListingsByID(req.param('userId'), (err,result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
 
 app.get("/logout", (req, res) => {
   req.logOut();
@@ -172,8 +162,12 @@ app.post("/login", (req, res) => {
 /**
  * Get the login user object.
  */
-app.get("/loginUser", (req, res) => {
-  res.status(200).send(req.user);
+app.get('/loginUser', (req, res) => {
+  if(req.user) {
+    res.status(200).send(req.user);
+  } else{
+    res.status(401).send(req.user);
+  }
 });
 
 //** Facebook Oauth **//

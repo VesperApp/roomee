@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import SearchResultView from './searchResultView.jsx';
 
 class UserProfileView extends React.Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class UserProfileView extends React.Component {
       gender: '',
       birthday: '',
       location: '',
-      hometown: ''
+      hometown: '',
+      userListing: '' 
     };
   }
 
@@ -23,12 +25,24 @@ class UserProfileView extends React.Component {
         console.log('Error on getting login user: ', err);
       } else {
         this.setState(user);
+        this.fetchUserListings((err,data)=>{
+          this.setState({userListing: data});
+        })
       }
     });
   }
 
+  
   fetchLoginUser(callback) {
     axios.get('/loginUser')
+         .then((res) => callback(null, res.data))
+         .catch((err) => callback(err, null));
+  }
+
+  fetchUserListings(callback) {
+    axios.get('/userListings',{
+      params: {userId: this.state.id}
+    })
          .then((res) => callback(null, res.data))
          .catch((err) => callback(err, null));
   }
@@ -47,77 +61,98 @@ class UserProfileView extends React.Component {
     }
    
     return (
-      <div>
+      <section className="section">
+        <div className="columns">
+        <div class="column">
+            <h4 className="subtitle">
+              My Profile:
+            </h4>
+            <div className="field">
+              <figure className="image is-128x128">
+                <img src={picture} />
+              </figure>
+            </div>
+            <div className="field">
+              <label className="label">
+              Name:
+              </label>
+              <h5>{username}</h5>
+              <div className="control">
+                {/*<input className="input is-normal" id="title" value={username} onChange={this.onChange} />*/}
+              </div>
+            </div>
+            <div className="field">
+              <label className="label">
+                Gender:
+              </label>
+              <h5>{gender}</h5>
+              <div className="control">
+                {/*<input className="input" id="address" value={gender} onChange={this.onChange} />*/}
+              </div>
+            </div>
+            <div className="field ">
+              <label className="label">
+                Birthday:
+              </label>
+              <h5>{birthday}</h5>
 
-        <section className="section">
-          <div id="create-listing" className="columns">
-            <div className="column is-half is-offset-one-quarter">
-              <h4 className="subtitle">
-                User Profile:
-              </h4>
-              <div className="field">
-                <figure class="image is-128x128">
-                  <img src={picture} />
-                </figure>
+              <div className="control">
+                {/*<input className="input" id="price" size="4" value={birthday} type="date" onChange={this.onChange} />*/}
               </div>
-              <div className="field">
-                <label className="label">
-                  Name:
-                </label>
-                <div className="control">
-                  <input className="input is-normal" id="title" value={username} onChange={this.onChange} />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">
-                  Gender:
-                </label>
-                <div className="control">
-                  <input className="input" id="address" value={gender} onChange={this.onChange} />
-                </div>
-              </div>
-              <div className="field ">
-                <label className="label">
-                  Birthday:
-                </label>
-                <div className="control">
-                  <input className="input" id="price" size="4" value={birthday} type="date" onChange={this.onChange} />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">
-                  Location:
-                </label>
-                <div className="control">
+            </div>
+            {/*<div className="field">
+              <label className="label">
+                Location:
+              </label>
+              <h5>{location}</h5>
+
+              <div className="control">
 
                   <input className="input" id="description" value={location} onChange={this.onChange} />
                 </div>
               </div>
-              <div className="field">
-                <label className="label">
-                  Hometown:
-                </label>
-                <div className="control">
-                  <input className="input" id="description" value={hometown} onChange={this.onChange} />
-                </div>
+            </div>
+             <div className="field">
+              <label className="label">
+                Hometown:
+              </label>
+              <h5>{hometown}</h5>
+
+              <div className="control">
+                <input className="input" id="description" value={hometown} onChange={this.onChange} />
               </div>
-              <div className="field">
-                <div className="control">
-                  <button className="button is-primary"
-                    type="submit"
-                    onClick={() => {
-                      this.props.onSubmit(this.state);
-                      this.setRedirect();
-                    }}
-                  >
-                    Save Changes
-                  </button>
-                </div>
+            </div>*/}
+            </div>
+  <div class="column is-half">
+
+            <h4 className="subtitle">
+              My Listings:
+            </h4>
+            {!this.state.userListing.length ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
+                this.state.userListing.map((item) =>
+                <SearchResultView
+                  onTitleClick={this.props.onTitleClick}
+                  listing={item}
+                  key={item.id}
+                />
+              )}
+
+            <div className="field">
+              <div className="control">
+                <button className="button is-primary"
+                  type="submit"
+                  onClick={() => {
+                    this.props.onSubmit(this.state);
+                    this.setRedirect();
+                  }}
+                >
+                  Save Changes
+                </button>
               </div>
             </div>
           </div>
-        </section>
       </div>
+        </section>
     );
   }
 }

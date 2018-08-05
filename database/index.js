@@ -70,8 +70,8 @@ const Listing = db.define('listing', {
   city: Sequelize.STRING,
   stateAbbr: Sequelize.STRING,
   zipCode: Sequelize.STRING,
-  // lat: Sequelize.DECIMAL(9, 6),
-  // lon: Sequelize.DECIMAL(9, 6),
+  lat: Sequelize.DECIMAL(9, 6),
+  lon: Sequelize.DECIMAL(9, 6),
   description: Sequelize.TEXT,
   price: Sequelize.INTEGER
 });
@@ -108,7 +108,7 @@ Listing.findListingsByZip = (queryStr, callback) => {
 
 
 Listing.findListingsByID = (id, callback) => {
-  const queryStr = { where: { id }, includes: [{ model: Photo }] };
+  const queryStr = { where: { UserId : id }, include:[Photo] };
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
@@ -138,42 +138,6 @@ Listing.createListing2 = (listing, callback) => {
 //     {url: 'www.333.com'},
 //   ]
 // },function(ele){console.log(ele)});
-
-//old code without association between listing and photos: [DELETE this only for reference]
-Listing.createListing = (listing, callback) => {
-  
-  Listing.create(listing)
-    .then(
-      data => 
-      // {
-      // if (listing.photos.length > 0) {
-      //   const listingResult = data;
-      //   const photos = listing.photos.map(url => {
-      //     const p = { url, listingId: listingResult.id };
-      //     return p;
-      //   });
-      //   Photo.bulkCreate(photos).then(() => Listing.findListingsByID(listingResult.id, callback) );
-      
-      // } else {
-        callback(data)
-      // }
-      // }
-    )
-    .catch(err => callback(err));
-};
-//ED TEST: for 'Listing.createListing' function [old function to be deleted]
-// var test = { title: 'user favorites connected to sessions',
-//   address: '',
-//   city: '',
-//   stateAbbr: '',
-//   zipCode: '',
-//   price: '',
-//   description: '',
-//   photos: [],
-//   redirect: false 
-// }
-// Listing.createListing = (test, function(ele){console.log(ele);})
-
 
 User.findbyUsername = (username, callback) => {
   User.findOne({ where: { username } })

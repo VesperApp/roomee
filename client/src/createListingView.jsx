@@ -150,7 +150,7 @@ class CreateListingView extends React.Component {
                 Price:
               </label>
               <div className="control">
-                <input className="input" id="price" size="4" value={this.price} onChange={this.onChange} />
+                <input className="input" id="price" type="number" size="4" value={this.price} onChange={this.onChange} />
                 <p className="help">USD</p>
               </div>
             </div>

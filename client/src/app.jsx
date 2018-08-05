@@ -3,8 +3,8 @@ import $ from 'jquery';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import axios from 'axios';
 import SearchView from './searchView.jsx';
-import LoginView from './loginView.jsx';
-import SignUpView from './signUpView.jsx';
+// import LoginView from './loginView.jsx';
+// import SignUpView from './signUpView.jsx';
 import CreateListingView from './createListingView.jsx';
 import HouseListingView from './houseListingView.jsx';
 
@@ -122,16 +122,16 @@ export default class App extends React.Component {
         currentHouseView={this.state.currentHouseView}
       />
     );
-    const renderSignUpView = props => (
-      <SignUpView
-        onSignUp={this.onSignUp}
-      />
-    );
-    const renderLoginView = props => (
-      <LoginView
-        registered={this.state.justRegistered}
-      />);
-      
+    // const renderSignUpView = props => (
+    //   <SignUpView
+    //     onSignUp={this.onSignUp}
+    //   />
+    // );
+    // const renderLoginView = props => (
+    //   <LoginView
+    //     registered={this.state.justRegistered}
+    //   />
+    // );
     const renderCreateListingView = props => (
       <CreateListingView
         onSubmit={this.onSubmitPost}
@@ -166,11 +166,10 @@ export default class App extends React.Component {
             <Link to="/search" className="level-item">
               Search
             </Link>
-            <Link to="/createListing" className="level-item">
-              New Listing
-            </Link>
-            {isLogin ? null : <Link to="/loginView" className="level-item">Login</Link>}
-            {isLogin ? null : <Link to="/signUpView" className="level-item">Sign Up</Link>}
+
+            {isLogin ? <Link to="/createListing" className="level-item">New Listing</Link> : null}
+            {/*isLogin ? null : <Link to="/loginView" className="level-item">Login</Link>*/}
+            {/*isLogin ? null : <Link to="/signUpView" className="level-item">Sign Up</Link>*/}
             {isLogin ? null : <a href="/login/facebook" className="level-item">LOGIN WITH FACEBOOK</a>}
             {isLogin ? <Link to="/userProfileView" className="level-item">Profile</Link> : null}
             {isLogin ? <a href="/logout" onClick={this.logout} className="level-item">LOGOUT</a> : null}
@@ -180,8 +179,8 @@ export default class App extends React.Component {
           <Route exact path="/" component={renderHome} />
           <Route path="/search" render={renderSearchView} />
           <Route path="/createListing" render={renderCreateListingView} />
-          <Route path="/loginView" render={renderLoginView} />
-          <Route path="/signUpView" render={renderSignUpView} />
+          {/*<Route path="/loginView" render={renderLoginView} />
+          <Route path="/signUpView" render={renderSignUpView} />*/}
           <Route path="/house" render={renderHouseListingView} />
           <Route path="/userProfileView" render={renderUserProfileView} />
 

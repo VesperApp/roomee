@@ -34,7 +34,10 @@ const HouseListingView = ({currentHouseView}) => (
       </div>
     </div>
     <div className="column">
-        {currentHouseView.photos.map((photo,ind) => {
+        {
+          currentHouseView.photos.map((photo,ind) => {
+            if(photo.url===null) {return null;}
+
             // this array could contain strings (when rendered after a user creates a new listing) or
             // objects from our database when rednered after a serach, if it is an array of
             // objects, we need the string located at photo.url, otherwise we can use the string as
