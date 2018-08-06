@@ -15,8 +15,11 @@ class UserProfileView extends React.Component {
       birthday: '',
       location: '',
       hometown: '',
-      userListing: ''
+      userListing: '',
+      zipCode: '',
     };
+    this.onChange = this.onChange.bind(this);
+
   }
 
   componentDidMount() {
@@ -62,8 +65,12 @@ class UserProfileView extends React.Component {
    
     return <section className="section">
         <div className="columns">
-          <div class="column">
-            <h4 className="subtitle">My Profile:</h4>
+        <div class="column">
+        <div class="box">
+
+            <h4 className="subtitle">
+              My Profile:
+            </h4>
             <div className="field">
               <figure className="image is-128x128">
                 <img src={picture} />
@@ -114,8 +121,36 @@ class UserProfileView extends React.Component {
               </div>
             </div>*/}
             </div>
+            <div class="box">
+
+              <label className="label">
+                Search Zipcode:
+              </label>
+            <p className="help">Enter your desired search zipcode for Roomee(s) or shared room listings</p>
+
+              <div className="field column is-one-fifth">
+                <div className="control">
+                  <input className="input" id="zipCode" size="5" value={this.zipCode} onChange={this.onChange} />
+                  <p className="help">ZipCode</p>
+                </div>
+              </div>
+
+
+            <div className="field">
+              <div className="control">
+                <button className="button is-primary" type="submit" onClick={() => {
+                    this.props.onSubmit(this.state);
+                    this.setRedirect();
+                  }}>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+            </div>
+            </div>
             <div class="column is-half">
 
+            <div class="box" >
             <h4 className="subtitle">
               My Listings:
             </h4>
@@ -128,16 +163,6 @@ class UserProfileView extends React.Component {
                 key={item.id}
                 />
               )}
-
-            <div className="field">
-              <div className="control">
-                <button className="button is-primary" type="submit" onClick={() => {
-                    this.props.onSubmit(this.state);
-                    this.setRedirect();
-                  }}>
-                  Save Changes
-                </button>
-              </div>
             </div>
           </div>
         </div>
