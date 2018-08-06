@@ -36,13 +36,26 @@ const getCoverPhotoUrl = (token, albumID) => {
     .catch(err => {throw err});
 }
 
+/**
+ * Extends the server's endpoints.
+ * @param {object} app - Running server from server/index.js.
+ */
 module.exports = (app) => {
   app.get('/cover_photo', (req, res) => {
     const { token, fbID } = req.query;
     getAlbumID(token, fbID)
       .then(albumID => getCoverPhotoUrl(token, albumID))
-      .then(photoURL => res.status(200).send(photoURL))
-      .catch(err => res.status(500).send(err.response.data));
+      .then(photoURL => {
+        return db.FBUser
+          .findOne({ where: { id: req.user.id } })
+          .then(fbUser => {
+            fbUser.coverPhoto = photoURL;
+            fbUser.save();
+          })
+          .catch(err => {throw err});
+      })
+      .then(result => res.status(200).send(photoURL))
+      .catch(err => res.status(500).send(err));
   });
 };
 

@@ -110,59 +110,10 @@ app.get('/userListings', (req, res) =>{
     if (err) {
       res.sendStatus(err);
     } else {
-// Post Comment 
-
-app.post("/comment", (req, res) => {
- 
-  db.Comment.createComment(req.body, (err, result) => {
-    if (err) {
-      res.sendStatus(err);
-    } else {
-      // console.log(result);
       res.send(result);
     }
   });
 });
-
-//find comment by id 
-app.get("/comment", (req, res) => {
-  var id = req.body 
-
-  db.Comment.findComment((err, result) => {
-    if (err) {
-      res.sendStatus(err);
-    } else {
-      // console.log(result);
-      res.send(result);
-    }
-  });
-});
-
-
-//ED: DISABLED: inactive routes
-// handlers for refresh button on all views
-// // res.redirect('back') will take user back to homepage
-// app.get('/createListing', (req, res) => {
-//   res.redirect('localhost:3000/createListing');
-// });
-
-// app.get('/loginView', (req, res) => {
-//   // res.render('loginView');
-//   res.redirect('localhost:3000/loginView');
-// });
-
-// app.get('/house', (req, res) => {
-//   // res.render('loginView');
-//   res.redirect('localhost:3000/house');
-// });
-
-// app.get('/search', (req, res) => {
-//   // res.render('searchView');
-//   res.redirect('localhost:3000/search');
-// });
-
-// app.get('/signup', (req, res) => res.render('signup'));
-// app.get('/loginView', (req, res) => res.render('login'));
 
 app.get("/logout", (req, res) => {
   req.logOut();
@@ -260,4 +211,4 @@ app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
 });
 
-module.exports = app; 
+module.exports = app;

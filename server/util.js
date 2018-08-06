@@ -1,4 +1,6 @@
 const db = require('../database/index.js');
+const axios = require('axios');
+const request = require('request');
 const fbPassport = require('passport');
 const FacebookStrategy = require('passport-facebook');
 const { clientID, clientSecret, callbackURL, profileFields} = require('./server.config.js').fbConfig;
@@ -8,7 +10,7 @@ fbPassport.use(new FacebookStrategy(
   (accessToken, refreshToken, profile, cb) => {
     db.FBUser
       .findOrCreate({
-        where: {username: profile.displayName},
+        where: { username: profile.displayName },
         defaults: convertToSQLData(profile._json)
       })
       .spread((sequelizedUser, created) => {
@@ -18,6 +20,10 @@ fbPassport.use(new FacebookStrategy(
       });
   }
 ));
+
+const saveUser = (profile, accessToken, cb) => {
+  
+};
 
 /**
  * Convert raw json data into our SQL table acceptable format.
@@ -55,6 +61,25 @@ exports.createSession = (req, res, username) => {
     res.redirect('/');
   });
 };
+
+exports.saveExtraUserInfo = (req, res) => {
+  // grab cover_photo
+ return axios
+    .get('/cover_photo', {
+      params: {
+        token: req.user.accessToken,
+        fbID: req.user.fbID
+      }
+    })
+    .then(r => {
+      db.FBUser
+        .findOne({where:{id: req.user.id}})
+        .then(fbUser => {
+          fbUser.cover_photo = r.data;
+          fbUser.save();
+        })
+    });
+}
 
 exports.fbPassport = fbPassport;
 

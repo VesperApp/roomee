@@ -6,7 +6,6 @@ exports.fbConfig = {
   callbackURL: 'http://localhost:4000/login/facebook/return',
   scope: [
     'public_profile',
-    'user_friends',
     'user_likes',
     'user_gender',
     'user_hometown',
@@ -15,7 +14,7 @@ exports.fbConfig = {
     'user_birthday',
     'user_age_range',
     'user_photos',
-    'user_events'
+    'user_link'
   ],
   profileFields: [
     'id',
@@ -26,6 +25,7 @@ exports.fbConfig = {
     'age_range',
     'birthday',
     'hometown',
-    'location'
+    'location',
+    'link'
   ],
 };

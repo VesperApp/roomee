@@ -55,7 +55,9 @@ const FBUser = db.define('fbuser', {
     }
   },
   hometown: Sequelize.STRING,
-  location: Sequelize.STRING
+  location: Sequelize.STRING,
+  zipCode: Sequelize.STRING,
+  coverPhoto: Sequelize.STRING
 });
 
 const Listing = db.define('listing', {
@@ -167,7 +169,6 @@ Listing.createListing2 = (listing, callback) => {
 //   ]
 // },function(ele){console.log(ele)});
 
-//old code without association between listing and photos: [DELETE this only for reference]
 Listing.createListing = (listing, callback) => {
   Listing.create(listing)
     .then(
@@ -229,6 +230,14 @@ User.validateLogin = (username, password, callback) => {
       }
     } ))
     .catch(err => callback(err, null));
+};
+
+FBUser.findRoomeesByZip = (queryStr, callback) => {
+  //queryStr.include = [{ model: FBUser }];
+  console.log(queryStr);
+  FBUser.findAll(queryStr)
+        .then(data => callback(null, data))
+        .catch(err => callback(err, null));
 };
 
 module.exports.sequelize = db;
