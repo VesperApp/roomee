@@ -6,11 +6,11 @@ const HouseListingView = ({currentHouseView}) => (
   <div id="house-listing-view" className="section columns">
     <div className="column has-text-left is-half">
       <div>
-        <h4 className="heading">Title</h4>
+        <h3 className="heading">Title</h3>
         <p className="content">{currentHouseView.title}</p>
       </div>
       <div>
-        <h4 className="heading">Address</h4>
+        <h3 className="heading">Address</h3>
         <p className="content">
           {currentHouseView.address + ' '}
           {currentHouseView.city + ', '}
@@ -19,18 +19,17 @@ const HouseListingView = ({currentHouseView}) => (
         </p>
       </div>
       <div>
-        <h4 className="heading">Price</h4>
+        <h3 className="heading">Price</h3>
         <p className="content">{'$' +currentHouseView.price}</p>
       </div>
       <div>
-        <h6 className="heading">Description</h6>
+        <h3 className="heading">Description</h3>
         <p className="content">
         {currentHouseView.description}</p>
         </div>
       <div>
-        <h4 className="heading">Contact</h4>
-        <a>Email</a>
-        <p><a>Email</a></p>
+        <h3 className="heading">Contact via Email</h3>
+        <p>{currentHouseView.user ? <a> {currentHouseView.user.email} </a>: "N/A"}</p>
       </div>
     </div>
     <div className="column">

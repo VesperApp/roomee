@@ -159,7 +159,9 @@ export default class App extends React.Component {
         onTitleClick={this.onTitleClick}
       />);
       const renderUserProfileView = props => (
-        <UserProfileView/>
+        <UserProfileView
+        onTitleClick={this.onTitleClick}
+        />
       );
       const renderHome = props => (
        <Home  />
@@ -172,7 +174,7 @@ export default class App extends React.Component {
             Roomee
           </h1>
           {/* React router routes*/}
-          <nav className="level container has-text-centered heading is-6">
+          <nav className="level">
             <Link to="/" className="level-item">
               Home
             </Link>
@@ -183,9 +185,9 @@ export default class App extends React.Component {
             {isLogin ? <Link to="/createListing" className="level-item">New Listing</Link> : null}
             {/*isLogin ? null : <Link to="/loginView" className="level-item">Login</Link>*/}
             {/*isLogin ? null : <Link to="/signUpView" className="level-item">Sign Up</Link>*/}
-            {isLogin ? null : <a href="/login/facebook" className="level-item">LOGIN WITH FACEBOOK</a>}
+            {isLogin ? null : <a href="/login/facebook" className="level-item">Login with Facebook</a>}
             {isLogin ? <Link to="/userProfileView" className="level-item">Profile</Link> : null}
-            {isLogin ? <a href="/logout" onClick={this.logout} className="level-item">LOGOUT</a> : null}
+            {isLogin ? <a href="/logout" onClick={this.logout} className="level-item">Logout</a> : null}
           </nav>
 
           {/* define root */}
@@ -195,7 +197,9 @@ export default class App extends React.Component {
           {/*<Route path="/loginView" render={renderLoginView} />
           <Route path="/signUpView" render={renderSignUpView} />*/}
           <Route path="/house" render={renderHouseListingView} />
-          <Route path="/userProfileView" render={renderUserProfileView} />
+          <Route path="/userProfileView" 
+          render={renderUserProfileView}
+          />
 
           <Footer />
         </div>

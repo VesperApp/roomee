@@ -92,7 +92,7 @@ Listing.User = Listing.belongsTo(User);
  db.sync();
 
 Listing.findListingsByZip = (queryStr, callback) => {
-  queryStr.include = [{ model: Photo }];
+  queryStr.include = [{ model: Photo },{model: User}];
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
@@ -108,7 +108,7 @@ Listing.findListingsByZip = (queryStr, callback) => {
 
 
 Listing.findListingsByID = (id, callback) => {
-  const queryStr = { where: { UserId : id }, include:[Photo] };
+  const queryStr = { where: { UserId : id }, include:[Photo, User] };
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
