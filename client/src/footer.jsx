@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 const Footer = () => (
   <footer className="footer has-background-grey">
@@ -12,6 +13,9 @@ const Footer = () => (
           <ul>Status</ul>
           <ul>Contact Us</ul>
           <ul>@roomeeproject</ul>
+          <Link to="/presentation" className="level-item">
+            Presentation
+            </Link>
         </div>
       </div>
       <div className="column">

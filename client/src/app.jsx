@@ -9,6 +9,7 @@ import CreateListingView from './createListingView.jsx';
 import HouseListingView from './houseListingView.jsx';
 import Home from './Home.jsx';
 import Footer from './footer.jsx';
+import Presentation from './hrrPresentation.jsx';
 
 import UserProfileView from './userProfileView.jsx'
 
@@ -167,7 +168,9 @@ export default class App extends React.Component {
       const renderHome = props => (
        <Home  />
       );
-
+      const renderPresentation = props => (
+        <Presentation  />
+       );
     return (
       <Router>
         <div className="hero">
@@ -189,6 +192,7 @@ export default class App extends React.Component {
             {isLogin ? null : <a href="/login/facebook" className="level-item">Login with Facebook</a>}
             {isLogin ? <Link to="/userProfileView" className="level-item">Profile</Link> : null}
             {isLogin ? <a href="/logout" onClick={this.logout} className="level-item">Logout</a> : null}
+
           </nav>
 
           {/* define root */}
@@ -198,6 +202,8 @@ export default class App extends React.Component {
           {/*<Route path="/loginView" render={renderLoginView} />
           <Route path="/signUpView" render={renderSignUpView} />*/}
           <Route path="/house" render={renderHouseListingView} />
+          <Route path="/presentation" render={renderPresentation} />
+
           <Route path="/userProfileView" 
           render={renderUserProfileView}
           />
