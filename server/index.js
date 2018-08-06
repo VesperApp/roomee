@@ -2,10 +2,11 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
+const axios = require("axios");
 const db = require("../database/index.js");
 const env = require("dotenv").config();
 const passport = require("passport");
-const { createSession } = require("./util.js");
+const { createSession, saveExtraUserInfo } = require("./util.js");
 const { scope } = require("./server.config.js").fbConfig;
 
 // const passportLocal = require('passport-local');
@@ -192,7 +193,7 @@ app.get(
     scope: scope,
     failureRedirect: "/login"
   }),
-  function(req, res) {
+  (req, res) => {
     res.redirect("/");
   }
 );
@@ -206,6 +207,8 @@ passport.deserializeUser((fbUser, done) => {
 });
 
 const routes = require('./graphAPI.js')(app);
+
+app.get('/test', (req, res) => res.send('AWESOMEE'));
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);

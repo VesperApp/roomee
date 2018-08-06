@@ -154,6 +154,7 @@ export default class App extends React.Component {
         onInput={this.onInput}
         value={this.state.term}
         listings={this.state.listings}
+        roomees={this.state.roomees}
         onSearchRooms={this.onSearchRooms}
         onSearchRoomees={this.onSearchRoomees}
         onTitleClick={this.onTitleClick}

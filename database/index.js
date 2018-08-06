@@ -55,7 +55,9 @@ const FBUser = db.define('fbuser', {
     }
   },
   hometown: Sequelize.STRING,
-  location: Sequelize.STRING
+  location: Sequelize.STRING,
+  zipCode: Sequelize.STRING,
+  coverPhoto: Sequelize.STRING
 });
 
 const Listing = db.define('listing', {
