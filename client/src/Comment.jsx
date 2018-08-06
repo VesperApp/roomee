@@ -13,6 +13,10 @@ class Comment extends React.Component {
         }
         this.loadComment(this.props.id)
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        console.log(
+             " the use r s", JSON.parse(localStorage.getItem("user_fb") || "{}")
+        )
     }
 
     loadComment(idListing) {
@@ -23,7 +27,8 @@ class Comment extends React.Component {
             data: idListing,
             success: data => {
                 this.setState({
-                    listComment: data
+                    listComment: data,
+                    user_fb : JSON.parse(localStorage.getItem("user_fb") || "{}")
                 })
             },
             error: err => {
@@ -55,15 +60,15 @@ class Comment extends React.Component {
     }
 
     render() {
-        return (
+            return (
             <div>
                 <article className="media">
                     <figure className="media-left">
                         <p className="image is-64x64">
-                            <img src={this.state.listComment} />
+                            <img src={this.state.picture} />
                         </p>
                     </figure>
-                    <form onSubmit={this.handleSubmit} >
+                    <form className="form" onSubmit={this.handleSubmit} >
                         <div className="media-content">
                             <div className="field">
                                 <p className="control">

@@ -178,6 +178,30 @@ app.get('/loginUser', (req, res) => {
     res.status(401).send(req.user);
   }
 });
+// get comment
+
+
+app.get('/comment', (req, res) =>{
+  db.Comment.findComment((err,result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+
+app.post('/comment', (req, res) =>{
+  db.Comment.createComment(req.body , (err,result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 
 //** Facebook Oauth **//
 app.get(

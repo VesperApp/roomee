@@ -117,6 +117,9 @@ body {
   background: #fff;
 z-index: 5;
 }
+.form{
+  width: 90%;
+}
 
 .footerModal .rigth {
   width: 30%;
