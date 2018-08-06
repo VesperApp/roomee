@@ -55,7 +55,9 @@ const FBUser = db.define('fbuser', {
     }
   },
   hometown: Sequelize.STRING,
-  location: Sequelize.STRING
+  location: Sequelize.STRING,
+  zipCode: Sequelize.STRING,
+  coverPhoto: Sequelize.STRING
 });
 
 const Listing = db.define('listing', {
@@ -70,8 +72,8 @@ const Listing = db.define('listing', {
   city: Sequelize.STRING,
   stateAbbr: Sequelize.STRING,
   zipCode: Sequelize.STRING,
-  // lat: Sequelize.DECIMAL(9, 6),
-  // lon: Sequelize.DECIMAL(9, 6),
+  lat: Sequelize.DECIMAL(9, 6),
+  lon: Sequelize.DECIMAL(9, 6),
   description: Sequelize.TEXT,
   price: Sequelize.INTEGER
 });
@@ -112,7 +114,7 @@ Comment.belongsTo(FBUser)
  }
 
 Listing.findListingsByZip = (queryStr, callback) => {
-  queryStr.include = [{ model: Photo }];
+  queryStr.include = [{ model: Photo },{model: User}];
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
@@ -128,7 +130,7 @@ Listing.findListingsByZip = (queryStr, callback) => {
 
 
 Listing.findListingsByID = (id, callback) => {
-  const queryStr = { where: { id }, includes: [{ model: Photo }] };
+  const queryStr = { where: { UserId : id }, include:[Photo, User] };
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
@@ -167,7 +169,6 @@ Listing.createListing2 = (listing, callback) => {
 //   ]
 // },function(ele){console.log(ele)});
 
-//old code without association between listing and photos: [DELETE this only for reference]
 Listing.createListing = (listing, callback) => {
   Listing.create(listing)
     .then(
@@ -229,6 +230,14 @@ User.validateLogin = (username, password, callback) => {
       }
     } ))
     .catch(err => callback(err, null));
+};
+
+FBUser.findRoomeesByZip = (queryStr, callback) => {
+  //queryStr.include = [{ model: FBUser }];
+  console.log(queryStr);
+  FBUser.findAll(queryStr)
+        .then(data => callback(null, data))
+        .catch(err => callback(err, null));
 };
 
 module.exports.sequelize = db;

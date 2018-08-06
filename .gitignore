@@ -4,5 +4,4 @@ client/dist/bundle.js
 .env
 config/config.json
 .vscode
-
 client/api.config.js

@@ -64,11 +64,20 @@ app.get("/searchListing", (req, res) => {
 
   db.Listing.findListingsByZip(queryStr, (err, data) => {
     if (err) {
-      res.sendStatus(500);
+      res.status(500).send(err);
     } else {
       res.send(data);
     }
   });
+});
+
+/**
+ * Get all the fbusers for now, should be refactored to 
+ */
+app.get('/roomees', (req, res) => {
+  db.FBUser.findAll()
+           .then((roomees) => res.status(200).send(roomees))
+           .catch((err) => res.status(500).send(err));
 });
 
 //ED: DISABLED: SESSION FOR SERVER TESTING
@@ -79,8 +88,9 @@ app.get("/searchListing", (req, res) => {
 
 app.post("/listing", (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-  req.body.photos = req.body.photos1;
   console.log(req.body);
+  req.body.userId=req.user.id;
+  req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
   db.Listing.createListing2(req.body, (err, result) => {
     if (err) {
@@ -92,59 +102,18 @@ app.post("/listing", (req, res) => {
   });
 });
 
-// Post Comment 
+app.get('/userListings', (req, res) =>{
+  console.log("DATABASE RESULT***********");
+  console.log(req.param('userId'));
 
-app.post("/comment", (req, res) => {
- 
-  db.Comment.createComment(req.body, (err, result) => {
+  db.Listing.findListingsByID(req.param('userId'), (err,result) => {
     if (err) {
       res.sendStatus(err);
     } else {
-      // console.log(result);
       res.send(result);
     }
   });
 });
-
-//find comment by id 
-app.get("/comment", (req, res) => {
-  var id = req.body 
-
-  db.Comment.findComment((err, result) => {
-    if (err) {
-      res.sendStatus(err);
-    } else {
-      // console.log(result);
-      res.send(result);
-    }
-  });
-});
-
-
-//ED: DISABLED: inactive routes
-// handlers for refresh button on all views
-// // res.redirect('back') will take user back to homepage
-// app.get('/createListing', (req, res) => {
-//   res.redirect('localhost:3000/createListing');
-// });
-
-// app.get('/loginView', (req, res) => {
-//   // res.render('loginView');
-//   res.redirect('localhost:3000/loginView');
-// });
-
-// app.get('/house', (req, res) => {
-//   // res.render('loginView');
-//   res.redirect('localhost:3000/house');
-// });
-
-// app.get('/search', (req, res) => {
-//   // res.render('searchView');
-//   res.redirect('localhost:3000/search');
-// });
-
-// app.get('/signup', (req, res) => res.render('signup'));
-// app.get('/loginView', (req, res) => res.render('login'));
 
 app.get("/logout", (req, res) => {
   req.logOut();
@@ -202,8 +171,12 @@ app.post("/login", (req, res) => {
 /**
  * Get the login user object.
  */
-app.get("/loginUser", (req, res) => {
-  res.status(200).send(req.user);
+app.get('/loginUser', (req, res) => {
+  if(req.user) {
+    res.status(200).send(req.user);
+  } else{
+    res.status(401).send(req.user);
+  }
 });
 
 //** Facebook Oauth **//
@@ -226,14 +199,16 @@ app.get(
 //** **/
 
 passport.serializeUser((fbUser, done) => {
-  //console.log('fbUser: ', fbUser);
-  done(null, fbUser.id);
+  done(null, fbUser);
 });
-passport.deserializeUser((fbUserid, done) => {
-  //console.log('fbUserid: ', fbUserid);
-  db.FBUser.findById(fbUserid).then(user => done(null, user));
+passport.deserializeUser((fbUser, done) => {
+  done(null, fbUser);
 });
+
+const routes = require('./graphAPI.js')(app);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
 });
+
+module.exports = app;
