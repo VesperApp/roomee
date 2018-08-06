@@ -170,7 +170,7 @@ export default class App extends React.Component {
     return (
       <Router>
         <div className="hero">
-          <h1 className="level-item title has-text-centered is-medium">
+          <h1 className="level-item title has-text-centered is-medium   animated pulse">
             Roomee
           </h1>
           {/* React router routes*/}

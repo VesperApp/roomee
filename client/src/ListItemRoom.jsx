@@ -43,7 +43,7 @@ const ListItemRoom = ({room, handleClickitem}) => (
     <span>  per month </span> <br/>
     <div style={rate}>
 
-    <StarRatingComponent 
+        <StarRatingComponent 
           name="rate2" 
           editing={false}
           starCount={5}

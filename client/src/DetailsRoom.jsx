@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import StarRatingComponent from "react-star-rating-component";
 import GoogleMapReact from "google-map-react";
 
+import Comment from "./Comment.jsx";
+
 var modal = {
   background: "#fff",
   position: "fixed",
@@ -77,79 +79,10 @@ const DetailsRoom = ({ listing, closeDetailRoom }) => (
 				<div style={marginTopBottom}>
 				</div>
 
-        <article className="media">
-          <figure className="media-left">
-            <p className="image is-64x64">
-              <img src="https://bulma.io/images/placeholders/128x128.png" />
-            </p>
-          </figure>
-          <div className="media-content">
-            <div className="field">
-              <p className="control">
-                <textarea className="textarea" placeholder="Add a comment..." />
-              </p>
-            </div>
-            <nav className="level">
-              <div className="level-left">
-                <div className="level-item">
-                  <a className="button is-info">Submit</a>
-                </div>
-              </div>
-              <div className="level-right">
-                <div className="level-item">
-                  <label className="checkbox">
-                    <input type="checkbox" /> Press enter to submit
-                  </label>
-                </div>
-              </div>
-            </nav>
-          </div>
-        </article>
-
-        <article className="media">
-          <figure className="media-left">
-            <p className="image is-64x64">
-              <img src="https://bulma.io/images/placeholders/128x128.png" />
-            </p>
-          </figure>
-          <div className="media-content">
-            <div className="content">
-              <p>
-                <strong>John Smith</strong> <small>@johnsmith</small>{" "}
-                <small>31m</small>
-                <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-                ornare magna eros, eu pellentesque tortor vestibulum ut.
-                Maecenas non massa sem. Etiam finibus odio quis feugiat
-                facilisis.
-              </p>
-            </div>
-            <nav className="level is-mobile">
-              <div className="level-left">
-                <a className="level-item">
-                  <span className="icon is-small">
-                    <i className="fas fa-reply" />
-                  </span>
-                </a>
-                <a className="level-item">
-                  <span className="icon is-small">
-                    <i className="fas fa-retweet" />
-                  </span>
-                </a>
-                <a className="level-item">
-                  <span className="icon is-small">
-                    <i className="fas fa-heart" />
-                  </span>
-                </a>
-              </div>
-            </nav>
-          </div>
-          <div className="media-right">
-            <button className="delete" />
-          </div>
-        </article>
       </div>
+      <Comment id = {listing.id} />
     </footer>
+
 
     <div className="footerModal">
       <div className="left">

@@ -102,6 +102,7 @@ app.post("/listing", (req, res) => {
   });
 });
 
+<<<<<<< HEAD
 app.get('/userListings', (req, res) =>{
   console.log("DATABASE RESULT***********");
   console.log(req.param('userId'));
@@ -110,10 +111,64 @@ app.get('/userListings', (req, res) =>{
     if (err) {
       res.sendStatus(err);
     } else {
+=======
+// Post Comment 
+
+app.post("/comment", (req, res) => {
+ 
+  db.Comment.createComment(req.body, (err, result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      // console.log(result);
+>>>>>>> works2
       res.send(result);
     }
   });
 });
+<<<<<<< HEAD
+=======
+
+//find comment by id 
+app.get("/comment", (req, res) => {
+  var id = req.body 
+
+  db.Comment.findComment((err, result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      // console.log(result);
+      res.send(result);
+    }
+  });
+});
+
+
+//ED: DISABLED: inactive routes
+// handlers for refresh button on all views
+// // res.redirect('back') will take user back to homepage
+// app.get('/createListing', (req, res) => {
+//   res.redirect('localhost:3000/createListing');
+// });
+
+// app.get('/loginView', (req, res) => {
+//   // res.render('loginView');
+//   res.redirect('localhost:3000/loginView');
+// });
+
+// app.get('/house', (req, res) => {
+//   // res.render('loginView');
+//   res.redirect('localhost:3000/house');
+// });
+
+// app.get('/search', (req, res) => {
+//   // res.render('searchView');
+//   res.redirect('localhost:3000/search');
+// });
+
+// app.get('/signup', (req, res) => res.render('signup'));
+// app.get('/loginView', (req, res) => res.render('login'));
+>>>>>>> works2
 
 app.get("/logout", (req, res) => {
   req.logOut();
