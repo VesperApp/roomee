@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import RoomsSearchResultView from './roomsSearchResultView.jsx';
+import RoomsSearchResultView from './roomssearchResultView.jsx';
 
 class UserProfileView extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class UserProfileView extends React.Component {
       birthday: '',
       location: '',
       hometown: '',
-      userListing: '' 
+      userListing: ''
     };
   }
 
@@ -113,18 +113,21 @@ class UserProfileView extends React.Component {
                 <input className="input" id="description" value={hometown} onChange={this.onChange} />
               </div>
             </div>*/}
-          </div>
-          <div class="column is-half">
-            <h4 className="subtitle">My Listings:</h4>
-            {!this.state.userListing.length ? <div className="has-text-centered title is-4">
-                Sorry, no results found in this area
-              </div> : this.state.userListing.map(item => (
+            </div>
+            <div class="column is-half">
+
+            <h4 className="subtitle">
+              My Listings:
+            </h4>
+            {!this.state.userListing.length ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
+                
+                this.state.userListing.map(item =>
                 <RoomsSearchResultView
-                  onTitleClick={this.props.onTitleClick}
-                  listing={item}
-                  key={item.id}
+                onTitleClick={this.props.onTitleClick}
+                listing={item}
+                key={item.id}
                 />
-              ))}
+              )}
 
             <div className="field">
               <div className="control">
