@@ -2,11 +2,10 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
-const axios = require("axios");
 const db = require("../database/index.js");
 const env = require("dotenv").config();
 const passport = require("passport");
-const { createSession, saveExtraUserInfo } = require("./util.js");
+const { createSession } = require("./util.js");
 const { scope } = require("./server.config.js").fbConfig;
 
 // const passportLocal = require('passport-local');
@@ -64,24 +63,6 @@ app.get("/searchListing", (req, res) => {
   const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
 
   db.Listing.findListingsByZip(queryStr, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.send(data);
-    }
-  });
-});
-
-app.get("/searchRoomees", (req, res) => {
-  // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
-  // console.log(req.body)
-  let zip = req.param("zip");
-  if (zip !== undefined) {
-    zip = zip.substr(0, 3) + "__";
-  }
-  const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
-
-  db.FBUser.findRoomeesByZip(queryStr, (err, data) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -197,6 +178,30 @@ app.get('/loginUser', (req, res) => {
     res.status(401).send(req.user);
   }
 });
+// get comment
+
+
+app.get('/comment', (req, res) =>{
+  db.Comment.findComment((err,result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+
+app.post('/comment', (req, res) =>{
+  db.Comment.createComment(req.body , (err,result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 
 //** Facebook Oauth **//
 app.get(
@@ -211,7 +216,7 @@ app.get(
     scope: scope,
     failureRedirect: "/login"
   }),
-  (req, res) => {
+  function(req, res) {
     res.redirect("/");
   }
 );
@@ -225,8 +230,6 @@ passport.deserializeUser((fbUser, done) => {
 });
 
 const routes = require('./graphAPI.js')(app);
-
-app.get('/test', (req, res) => res.send('AWESOMEE'));
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);

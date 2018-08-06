@@ -27,6 +27,7 @@ class UserProfileView extends React.Component {
         console.log('Error on getting login user: ', err);
       } else {
         this.setState(user);
+    
         this.fetchUserListings((err,data)=>{
           this.setState({userListing: data});
         })
