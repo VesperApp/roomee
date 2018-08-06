@@ -31,6 +31,8 @@ const saveUser = (profile, accessToken, cb) => {
  */
 const convertToSQLData = (rawData) => {
   rawData.picture = `http://graph.facebook.com/${rawData.id}/picture?height=128&width=128`;
+  rawData.coverPhoto = "https://source.unsplash.com//i1CR3CY2hE4";
+  rawData.zipCode = '90024';
   rawData.hometown = rawData.hometown ? rawData.hometown.name : '';
   rawData.location = rawData.location ? rawData.location.name : '';
   rawData.age = rawData.age_range ? rawData.age_range.min : '';
