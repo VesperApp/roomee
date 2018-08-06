@@ -99,13 +99,13 @@ export default class App extends React.Component {
   searchRoomsByZipCode (zipCode) {
     // get request queries databse for all listings matching the user's ip address zipcode
     axios.get('/searchListing', { params: { zip: zipCode } })
-         .then(res => this.setState({ listings: res.data }))
+         .then(res => this.setState({ listings: res.data , roomees:[]}))
          .catch(err => console.log(err) );
   }
 
   searchRoomeesByZipCode(zipCode) {
-    axios.get('/roomees')
-         .then(res => this.setState({roomees: res.data}))
+    axios.get("/searchRoomees", { params: { zip: zipCode } })
+         .then(res => this.setState({ roomees: res.data , listings:[]}))
          .catch(err => console.log(err));
   }
 

@@ -72,6 +72,24 @@ app.get("/searchListing", (req, res) => {
   });
 });
 
+app.get("/searchRoomees", (req, res) => {
+  // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
+  // console.log(req.body)
+  let zip = req.param("zip");
+  if (zip !== undefined) {
+    zip = zip.substr(0, 3) + "__";
+  }
+  const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
+
+  db.FBUser.findRoomeesByZip(queryStr, (err, data) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.send(data);
+    }
+  });
+});
+
 /**
  * Get all the fbusers for now, should be refactored to 
  */

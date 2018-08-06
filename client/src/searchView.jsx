@@ -14,7 +14,7 @@ const SearchView = ({term, listings, roomees, onInput, onSearchRooms, onSearchRo
       </button>
     </div>
     <div>
-      {!listings.length ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
+      {(!listings.length && !roomees.length) ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
         listings.map((item) =>
         <RoomsSearchResultView
           onTitleClick={onTitleClick}

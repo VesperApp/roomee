@@ -1,7 +1,7 @@
 import React from "react";
 
 const RoomeeItemView = ({roomee}) => {
-  const {coverPhoto, picture, location} = roomee;
+  const {coverPhoto, picture, location, username, email} = roomee;
   return (
     <div class="column is-one-third">
       <div class="card large round">
@@ -21,10 +21,10 @@ const RoomeeItemView = ({roomee}) => {
               </figure>
             </div>
             <div class="media-content">
-              <p class="title is-4 no-padding">Atsui</p>
+              <p class="title is-4 no-padding">{username}</p>
               <p>
                 <span class="title is-6">
-                  <a href="http://twitter.com/#">potatoeater0127@gmail.com</a>
+                  <a href="http://twitter.com/#">{email}</a>
                 </span>
               </p>
               <p class="subtitle is-6">{location}</p>
