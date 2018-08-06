@@ -91,6 +91,36 @@ app.post("/listing", (req, res) => {
     }
   });
 });
+
+// Post Comment 
+
+app.post("/comment", (req, res) => {
+ 
+  db.Comment.createComment(req.body, (err, result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      // console.log(result);
+      res.send(result);
+    }
+  });
+});
+
+//find comment by id 
+app.get("/comment", (req, res) => {
+  var id = req.body 
+
+  db.Comment.findComment((err, result) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      // console.log(result);
+      res.send(result);
+    }
+  });
+});
+
+
 //ED: DISABLED: inactive routes
 // handlers for refresh button on all views
 // // res.redirect('back') will take user back to homepage

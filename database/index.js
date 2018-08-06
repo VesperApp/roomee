@@ -87,9 +87,29 @@ Listing.hasMany(Photo);
 Listing.User = Listing.belongsTo(User);
 // Photo.Listing = Photo.belongsTo(Listing);
 
+// create comment table 
+const Comment = db.define("comment",{
+  text_comment:Sequelize.STRING
+})
+
+Listing.hasMany(Comment)
+Comment.belongsTo(Listing)
+
+FBUser.hasMany(Comment)
+Comment.belongsTo(FBUser)
+
 // sequelize.sync({ force: true });
 // ED: DISABLED: Database sync to create schema tables:
  db.sync();
+
+
+ // add comment 
+
+ Comment.createComment = (comment,callback)=>{
+  Comment.create(comment,{include:[Listing,FBUser]})
+  .then(data => callback(null,data))
+  .catch(err => callback(err,null))
+ }
 
 Listing.findListingsByZip = (queryStr, callback) => {
   queryStr.include = [{ model: Photo }];
@@ -110,6 +130,14 @@ Listing.findListingsByZip = (queryStr, callback) => {
 Listing.findListingsByID = (id, callback) => {
   const queryStr = { where: { id }, includes: [{ model: Photo }] };
   Listing.findAll(queryStr)
+    .then(data => callback(null, data))
+    .catch(err => callback(err, null));
+};
+
+// find comments ;
+Comment.findComment = (callback) => {
+  //const queryStr = { where: { }, includes: [{ model: FBUser }]};
+  Comment.findAll({ include:[ {model:FBUser} , {model:Listing} ] })
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
 };
@@ -141,7 +169,6 @@ Listing.createListing2 = (listing, callback) => {
 
 //old code without association between listing and photos: [DELETE this only for reference]
 Listing.createListing = (listing, callback) => {
-  
   Listing.create(listing)
     .then(
       data => 
@@ -208,3 +235,5 @@ module.exports.sequelize = db;
 module.exports.Listing = Listing;
 module.exports.User = User;
 module.exports.FBUser = FBUser;
+module.exports.Comment = Comment;
+
