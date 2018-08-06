@@ -102,7 +102,6 @@ app.post("/listing", (req, res) => {
   });
 });
 
-<<<<<<< HEAD
 app.get('/userListings', (req, res) =>{
   console.log("DATABASE RESULT***********");
   console.log(req.param('userId'));
@@ -111,7 +110,6 @@ app.get('/userListings', (req, res) =>{
     if (err) {
       res.sendStatus(err);
     } else {
-=======
 // Post Comment 
 
 app.post("/comment", (req, res) => {
@@ -121,13 +119,10 @@ app.post("/comment", (req, res) => {
       res.sendStatus(err);
     } else {
       // console.log(result);
->>>>>>> works2
       res.send(result);
     }
   });
 });
-<<<<<<< HEAD
-=======
 
 //find comment by id 
 app.get("/comment", (req, res) => {
@@ -168,7 +163,6 @@ app.get("/comment", (req, res) => {
 
 // app.get('/signup', (req, res) => res.render('signup'));
 // app.get('/loginView', (req, res) => res.render('login'));
->>>>>>> works2
 
 app.get("/logout", (req, res) => {
   req.logOut();
