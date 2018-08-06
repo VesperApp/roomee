@@ -41,10 +41,10 @@ const convertToSQLData = (rawData) => {
  * @param {object} sequelizedUser - a seqeulize object model User.
  * @param {string} accessToken - accessToken sent from facebook Oauth.
  */
-const convertToSessionUser = (sequelizedUser, accessToken, fbId) => {
+const convertToSessionUser = (sequelizedUser, accessToken, fbID) => {
   const user = sequelizedUser.get({plain: true});
   user.accessToken = accessToken;
-  user.fbId = fbId;
+  user.fbID = fbID;
   return user;
 }
 

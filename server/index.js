@@ -205,6 +205,8 @@ passport.deserializeUser((fbUser, done) => {
   done(null, fbUser);
 });
 
+const routes = require('./graphAPI.js')(app);
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
 });
