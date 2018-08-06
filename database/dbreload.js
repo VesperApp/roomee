@@ -50,6 +50,7 @@ const Photo = db.define('photo', {
   url: Sequelize.STRING
 });
 
+
 User.hasMany(Listing);
 Listing.hasMany(Photo);
 db.sync({ force: true });

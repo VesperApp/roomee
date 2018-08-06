@@ -89,9 +89,29 @@ Listing.hasMany(Photo);
 Listing.User = Listing.belongsTo(User);
 // Photo.Listing = Photo.belongsTo(Listing);
 
+// create comment table 
+const Comment = db.define("comment",{
+  text_comment:Sequelize.STRING
+})
+
+Listing.hasMany(Comment)
+Comment.belongsTo(Listing)
+
+FBUser.hasMany(Comment)
+Comment.belongsTo(FBUser)
+
 // sequelize.sync({ force: true });
 // ED: DISABLED: Database sync to create schema tables:
  db.sync();
+
+
+ // add comment 
+
+ Comment.createComment = (comment,callback)=>{
+  Comment.create(comment,{include:[Listing,FBUser]})
+  .then(data => callback(null,data))
+  .catch(err => callback(err,null))
+ }
 
 Listing.findListingsByZip = (queryStr, callback) => {
   queryStr.include = [{ model: Photo },{model: User}];
@@ -112,6 +132,14 @@ Listing.findListingsByZip = (queryStr, callback) => {
 Listing.findListingsByID = (id, callback) => {
   const queryStr = { where: { UserId : id }, include:[Photo, User] };
   Listing.findAll(queryStr)
+    .then(data => callback(null, data))
+    .catch(err => callback(err, null));
+};
+
+// find comments ;
+Comment.findComment = (callback) => {
+  //const queryStr = { where: { }, includes: [{ model: FBUser }]};
+  Comment.findAll({ include:[ {model:FBUser} , {model:Listing} ] })
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
 };
@@ -140,6 +168,40 @@ Listing.createListing2 = (listing, callback) => {
 //     {url: 'www.333.com'},
 //   ]
 // },function(ele){console.log(ele)});
+
+Listing.createListing = (listing, callback) => {
+  Listing.create(listing)
+    .then(
+      data => 
+      // {
+      // if (listing.photos.length > 0) {
+      //   const listingResult = data;
+      //   const photos = listing.photos.map(url => {
+      //     const p = { url, listingId: listingResult.id };
+      //     return p;
+      //   });
+      //   Photo.bulkCreate(photos).then(() => Listing.findListingsByID(listingResult.id, callback) );
+      
+      // } else {
+        callback(data)
+      // }
+      // }
+    )
+    .catch(err => callback(err));
+};
+//ED TEST: for 'Listing.createListing' function [old function to be deleted]
+// var test = { title: 'user favorites connected to sessions',
+//   address: '',
+//   city: '',
+//   stateAbbr: '',
+//   zipCode: '',
+//   price: '',
+//   description: '',
+//   photos: [],
+//   redirect: false 
+// }
+// Listing.createListing = (test, function(ele){console.log(ele);})
+
 
 User.findbyUsername = (username, callback) => {
   User.findOne({ where: { username } })
@@ -182,3 +244,5 @@ module.exports.sequelize = db;
 module.exports.Listing = Listing;
 module.exports.User = User;
 module.exports.FBUser = FBUser;
+module.exports.Comment = Comment;
+

@@ -55,9 +55,10 @@ class Home extends React.Component {
       <div>
         <section className="hero is-medium is-primary">
           <div className="hero-body">
-            <h1 className="title is-1">Welcome to Roomee</h1>
-
-            <h2 className="subtitle is-2">We're not craigslist.</h2>
+            <h1 className="animated pulse">Welcome to Roomee</h1>
+                <div className="banner"> 
+                  <img src="http://www.vesaliusdesign.com/wp-content/uploads/2018/07/extraordinary-home-and-garden-furniture-22-category-banner-750x360.jpg"/>
+                </div> 
           </div>
         </section>
         <div>

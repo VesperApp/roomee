@@ -7,7 +7,7 @@
     "test": "./node_modules/mocha/bin/mocha",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js",
-    "rebuild-db": "node database/dbreload.js && mysql -u root < database/mysql-load-sample"
+    "rebuild-db": "node database/dbreload.js && mysql -u root -p 'password' "
   },
   "repository": {
     "type": "git",
