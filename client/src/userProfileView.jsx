@@ -3,7 +3,11 @@ import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+<<<<<<< HEAD
 import RoomsSearchResultView from './roomsSearchResultView.jsx';
+=======
+import RoomsSearchResultView from './RoomsSearchResultView.jsx';
+>>>>>>> Adding data
 
 class UserProfileView extends React.Component {
   constructor(props) {
@@ -120,6 +124,7 @@ class UserProfileView extends React.Component {
             </div>
             <div class="box">
 
+<<<<<<< HEAD
               <label className="label">
                 Search Zipcode:
               </label>
@@ -135,6 +140,20 @@ class UserProfileView extends React.Component {
 
           </div>
          
+=======
+            <h4 className="subtitle">
+              My Listings:
+            </h4>
+            {!this.state.userListing.length ? <div className="has-text-centered title is-4">Sorry, no results found in this area</div> :
+                this.state.userListing.map((item) =>
+                <RoomsSearchResultView
+              
+                  onTitleClick={this.props.onTitleClick}
+                  listing={item}
+                  key={item.id}
+                />
+              )}
+>>>>>>> Adding data
 
             <div className="field">
               <div className="control">
