@@ -102,7 +102,7 @@ Comment.belongsTo(FBUser)
 
 // sequelize.sync({ force: true });
 // ED: DISABLED: Database sync to create schema tables:
- db.sync();
+//  db.sync();
 
 
  // add comment 
@@ -234,7 +234,7 @@ User.validateLogin = (username, password, callback) => {
 
 FBUser.findRoomeesByZip = (queryStr, callback) => {
   //queryStr.include = [{ model: FBUser }];
-  console.log(queryStr);
+  // console.log(queryStr);
   FBUser.findAll(queryStr)
         .then(data => callback(null, data))
         .catch(err => callback(err, null));
