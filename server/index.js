@@ -46,8 +46,8 @@ app.get("/", (req, res, next) => {
     }
     << and this user authentication is >>${req.isAuthenticated()}<< ============`
   );
-  console.log("\x1b[33m%s\x1b[0m", `SESSION: ${JSON.stringify(req.session)}`);
-  console.log("\x1b[33m%s\x1b[0m", `USER: ${JSON.stringify(req.user)}`);
+  // console.log("\x1b[33m%s\x1b[0m", `SESSION: ${JSON.stringify(req.session)}`);
+  // console.log("\x1b[33m%s\x1b[0m", `USER: ${JSON.stringify(req.user)}`);
   next();
 });
 
@@ -88,7 +88,7 @@ app.get('/roomees', (req, res) => {
 
 app.post("/listing", (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-  console.log(req.body);
+  // console.log(req.body);
   req.body.userId=req.user.id;
   req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
@@ -103,8 +103,8 @@ app.post("/listing", (req, res) => {
 });
 
 app.get('/userListings', (req, res) =>{
-  console.log("DATABASE RESULT***********");
-  console.log(req.param('userId'));
+  // console.log("DATABASE RESULT***********");
+  // console.log(req.param('userId'));
 
   db.Listing.findListingsByID(req.param('userId'), (err,result) => {
     if (err) {
