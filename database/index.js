@@ -6,40 +6,40 @@ const Op = Sequelize.Op;
 const operatorsAliases = { $like: Op.like };
 
 db.authenticate()
-  .then(() => console.log('Database connection has been established successfully.') )
+  .then(() => console.log('Database connection has been established successfully.'))
   .catch(err => console.log('Unable to connect to the database:', err));
 
 const User = db.define('user', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   firstname: Sequelize.STRING,
   lastname: Sequelize.STRING,
   username: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   about: Sequelize.TEXT,
   email: Sequelize.STRING,
   password: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
-  last_login: Sequelize.DATE
+  last_login: Sequelize.DATE,
 });
 const FBUser = db.define('fbuser', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   firstname: Sequelize.STRING,
   lastname: Sequelize.STRING,
   username: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   about: Sequelize.TEXT,
   email: Sequelize.STRING,
@@ -50,21 +50,20 @@ const FBUser = db.define('fbuser', {
   birthday: {
     type: Sequelize.DATEONLY,
     get: function() {
-      return moment.utc(this.getDataValue('birthday'))
-                   .format('YYYY-MM-DD');
-    }
+      return moment.utc(this.getDataValue('birthday')).format('YYYY-MM-DD');
+    },
   },
   hometown: Sequelize.STRING,
   location: Sequelize.STRING,
   zipCode: Sequelize.STRING,
-  coverPhoto: Sequelize.STRING
+  coverPhoto: Sequelize.STRING,
 });
 
 const Listing = db.define('listing', {
   id: {
     autoIncrement: true,
     primaryKey: true,
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   title: Sequelize.STRING,
   address: Sequelize.STRING,
@@ -75,12 +74,12 @@ const Listing = db.define('listing', {
   lat: Sequelize.DECIMAL(9, 6),
   lon: Sequelize.DECIMAL(9, 6),
   description: Sequelize.TEXT,
-  price: Sequelize.INTEGER
+  price: Sequelize.INTEGER,
 });
 
 const Photo = db.define('photo', {
   // title: Sequelize.STRING,
-  url: Sequelize.STRING
+  url: Sequelize.STRING,
 });
 
 // User.hasMany(Listing);
@@ -89,32 +88,31 @@ Listing.hasMany(Photo);
 Listing.User = Listing.belongsTo(User);
 // Photo.Listing = Photo.belongsTo(Listing);
 
-// create comment table 
-const Comment = db.define("comment",{
-  text_comment:Sequelize.STRING
-})
+// create comment table
+const Comment = db.define('comment', {
+  text_comment: Sequelize.STRING,
+});
 
-Listing.hasMany(Comment)
-Comment.belongsTo(Listing)
+Listing.hasMany(Comment);
+Comment.belongsTo(Listing);
 
-FBUser.hasMany(Comment)
-Comment.belongsTo(FBUser)
+FBUser.hasMany(Comment);
+Comment.belongsTo(FBUser);
 
 // sequelize.sync({ force: true });
 // ED: DISABLED: Database sync to create schema tables:
 //  db.sync();
 
+// add comment
 
- // add comment 
-
- Comment.createComment = (comment,callback)=>{
-  Comment.create(comment,{include:[Listing,FBUser]})
-  .then(data => callback(null,data))
-  .catch(err => callback(err,null))
- }
+Comment.createComment = (comment, callback) => {
+  Comment.create(comment, { include: [Listing, FBUser] })
+    .then(data => callback(null, data))
+    .catch(err => callback(err, null));
+};
 
 Listing.findListingsByZip = (queryStr, callback) => {
-  queryStr.include = [{ model: Photo },{model: User}];
+  queryStr.include = [{ model: Photo }, { model: User }];
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
@@ -124,29 +122,28 @@ Listing.findListingsByZip = (queryStr, callback) => {
 // console.log(Listing.findAll({
 //   where: { zipCode: { $like: '770__' } },
 //   include: [{
-//     model: Photo, 
+//     model: Photo,
 //   }]
 //   }).then(data=>console.log(data)));
 
-
 Listing.findListingsByID = (id, callback) => {
-  const queryStr = { where: { UserId : id }, include:[Photo, User] };
+  const queryStr = { where: { UserId: id }, include: [Photo, User] };
   Listing.findAll(queryStr)
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
 };
 
 // find comments ;
-Comment.findComment = (callback) => {
+Comment.findComment = callback => {
   //const queryStr = { where: { }, includes: [{ model: FBUser }]};
-  Comment.findAll({ include:[ {model:FBUser} , {model:Listing} ] })
+  Comment.findAll({ include: [{ model: FBUser }, { model: Listing }] })
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
 };
 
 //this code correctly creates instances with association between listing and photos:
 Listing.createListing2 = (listing, callback) => {
-  Listing.create(listing,{include:[Photo]}) 
+  Listing.create(listing, { include: [Photo] });
 };
 
 // //ED TEST: for 'Listing.createListing2' function -> many photos to one relationship:
@@ -172,17 +169,17 @@ Listing.createListing2 = (listing, callback) => {
 Listing.createListing = (listing, callback) => {
   Listing.create(listing)
     .then(
-      data => 
-      // {
-      // if (listing.photos.length > 0) {
-      //   const listingResult = data;
-      //   const photos = listing.photos.map(url => {
-      //     const p = { url, listingId: listingResult.id };
-      //     return p;
-      //   });
-      //   Photo.bulkCreate(photos).then(() => Listing.findListingsByID(listingResult.id, callback) );
-      
-      // } else {
+      data =>
+        // {
+        // if (listing.photos.length > 0) {
+        //   const listingResult = data;
+        //   const photos = listing.photos.map(url => {
+        //     const p = { url, listingId: listingResult.id };
+        //     return p;
+        //   });
+        //   Photo.bulkCreate(photos).then(() => Listing.findListingsByID(listingResult.id, callback) );
+
+        // } else {
         callback(data)
       // }
       // }
@@ -198,10 +195,9 @@ Listing.createListing = (listing, callback) => {
 //   price: '',
 //   description: '',
 //   photos: [],
-//   redirect: false 
+//   redirect: false
 // }
 // Listing.createListing = (test, function(ele){console.log(ele);})
-
 
 User.findbyUsername = (username, callback) => {
   User.findOne({ where: { username } })
@@ -222,13 +218,15 @@ User.createUser = (newUser, callback) => {
 
 User.validateLogin = (username, password, callback) => {
   User.findOne({ where: { username } })
-    .then(data => bCrypt.compare(password, data.password, (err, result) => {
-      if (err) {
-        callback(err, null);
-      } else {
-        callback(null, result ? data.id : false);
-      }
-    } ))
+    .then(data =>
+      bCrypt.compare(password, data.password, (err, result) => {
+        if (err) {
+          callback(err, null);
+        } else {
+          callback(null, result ? data.id : false);
+        }
+      })
+    )
     .catch(err => callback(err, null));
 };
 
@@ -236,8 +234,8 @@ FBUser.findRoomeesByZip = (queryStr, callback) => {
   //queryStr.include = [{ model: FBUser }];
   // console.log(queryStr);
   FBUser.findAll(queryStr)
-        .then(data => callback(null, data))
-        .catch(err => callback(err, null));
+    .then(data => callback(null, data))
+    .catch(err => callback(err, null));
 };
 
 module.exports.sequelize = db;
@@ -245,4 +243,3 @@ module.exports.Listing = Listing;
 module.exports.User = User;
 module.exports.FBUser = FBUser;
 module.exports.Comment = Comment;
-

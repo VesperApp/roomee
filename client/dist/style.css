@@ -3,19 +3,87 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -24,21 +92,34 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block;
 }
 body {
   line-height: 1;
 }
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
   content: '';
   content: none;
 }
@@ -47,17 +128,15 @@ table {
   border-spacing: 0;
 }
 
-
 /*
 =======
 Custom Styles
 =======
 */
 
-
 body {
   color: #888;
-  font: 300 16px/22px "Karla", "Open Sans", "Helvetica Neue",Helvetica, Arial, sans-serif;
+  font: 300 16px/22px 'Karla', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: white;
 }
 
@@ -71,7 +150,7 @@ body {
 }
 
 *:focus {
-    outline: none;
+  outline: none;
 }
 
 .login {
@@ -97,7 +176,7 @@ body {
   height: 80px;
   font-size: 14px;
 }
-/* Julio css */ 
+/* Julio css */
 
 .footerModal {
   height: 80px;
@@ -106,18 +185,17 @@ body {
   bottom: 0;
   width: 100%;
   background: #fff;
-
 }
-.headModal{
+.headModal {
   padding: 20px;
-  box-shadow:0px 0px 3px #ccc;
-  margin-bottom:50px;
+  box-shadow: 0px 0px 3px #ccc;
+  margin-bottom: 50px;
   position: fixed;
-  width: 100%; 
+  width: 100%;
   background: #fff;
-z-index: 5;
+  z-index: 5;
 }
-.form{
+.form {
   width: 90%;
 }
 
@@ -132,7 +210,7 @@ z-index: 5;
 .footerModal .rigth .pricing {
   font-size: 22px;
   font-weight: bold;
-  color:#333;
+  color: #333;
   margin-top: 30px;
 }
 
@@ -142,14 +220,13 @@ z-index: 5;
   height: 30px;
   line-height: 30px;
   font-weight: bold;
-  color:#fff;
+  color: #fff;
   margin-top: 28px;
   background: #336699;
   text-align: center;
   float: right;
   margin-right: 40px;
 }
-
 
 .footerModal .left {
   width: 30%;
@@ -161,7 +238,7 @@ z-index: 5;
 .level-itemMe {
   margin-top: 100px;
 }
-.footer{
+.footer {
   position: relative;
   bottom: 0px;
   width: 100%;

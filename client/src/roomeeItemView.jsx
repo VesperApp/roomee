@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-const RoomeeItemView = ({roomee}) => {
-  const {coverPhoto, picture, location, username, email} = roomee;
+const RoomeeItemView = ({ roomee }) => {
+  const { coverPhoto, picture, location, username, email } = roomee;
   return (
     <div class="column is-one-third">
       <div class="card large round">
@@ -14,10 +14,7 @@ const RoomeeItemView = ({roomee}) => {
           <div class="media">
             <div class="media-left">
               <figure class="image is-96x96">
-                <img
-                  src={picture}
-                  alt="Image"
-                />
+                <img src={picture} alt="Image" />
               </figure>
             </div>
             <div class="media-content">
@@ -31,10 +28,9 @@ const RoomeeItemView = ({roomee}) => {
             </div>
           </div>
           <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum
-            consequatur numquam aliquam tenetur ad amet inventore hic beatae,
-            quas accusantium perferendis sapiente explicabo, corporis totam!
-            Labore reprehenderit beatae magnam animi!
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum consequatur numquam aliquam tenetur ad
+            amet inventore hic beatae, quas accusantium perferendis sapiente explicabo, corporis totam! Labore
+            reprehenderit beatae magnam animi!
           </div>
         </div>
       </div>
