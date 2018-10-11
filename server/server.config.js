@@ -14,7 +14,7 @@ exports.fbConfig = {
     'user_birthday',
     'user_age_range',
     'user_photos',
-    'user_link'
+    'user_link',
   ],
   profileFields: [
     'id',
@@ -26,6 +26,6 @@ exports.fbConfig = {
     'birthday',
     'hometown',
     'location',
-    'link'
+    'link',
   ],
 };
