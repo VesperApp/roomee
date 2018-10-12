@@ -47,7 +47,7 @@ app.get('/', (req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+app.use(express.static(`${__dirname}/../client/dist`));
 
 app.get('/searchListing', (req, res) => {
   // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
