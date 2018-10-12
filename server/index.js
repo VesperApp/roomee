@@ -2,9 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const db = require('../database/index.js');
-const env = require('dotenv').config();
 const passport = require('passport');
+const db = require('../database/index.js');
 const { createSession } = require('./util.js');
 const { scope } = require('./server.config.js').fbConfig;
 
@@ -28,8 +27,8 @@ const cookieparser = require('cookie-parser');
 app.use(
   session({
     secret: 'luihfihuiluihiluh34hhglihlse893423rlhfsdiheiiqlqkbcsaajblaeww43232er3',
-    //resave: false, //             resave - false means do not save back to the store unless there is a change
-    //saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
+    // resave: false, //             resave - false means do not save back to the store unless there is a change
+    // saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
     cookie: { expires: 24 * 60 * 60 * 1000 },
   })
 );
@@ -48,7 +47,7 @@ app.get('/', (req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 app.get('/searchListing', (req, res) => {
   // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
@@ -77,11 +76,11 @@ app.get('/roomees', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
-//ED: DISABLED: SESSION FOR SERVER TESTING
+// ED: DISABLED: SESSION FOR SERVER TESTING
 // const isLoggedIn = (req, res, next) =>
 //   req.isAuthenticated() ? next() : res.sendStatus(401);
-//ED: add this middle ware to post route for /listing:
-//app.post('/listing', isLoggedIn, (req, res) => {
+// ED: add this middle ware to post route for /listing:
+// app.post('/listing', isLoggedIn, (req, res) => {
 
 app.post('/listing', (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
@@ -197,7 +196,7 @@ app.post('/comment', (req, res) => {
   });
 });
 
-//** Facebook Oauth **//
+// ** Facebook Oauth **//
 app.get('/login/facebook', passport.authenticate('facebook', { authType: 'rerequest', scope: scope }));
 
 app.get(
@@ -211,7 +210,7 @@ app.get(
     res.redirect('/');
   }
 );
-//** **/
+// ** **/
 
 passport.serializeUser((fbUser, done) => {
   done(null, fbUser);
