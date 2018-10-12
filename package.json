@@ -6,6 +6,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "start": "node server/index.js",
+    "heroku-postbuild": "webpack",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js",
     "rebuild-db": "node database/dbreload.js && mysql -u root -p 'password' "

@@ -32,10 +32,13 @@ app.use(
     cookie: { expires: 24 * 60 * 60 * 1000 },
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(`${__dirname}/../client/dist`));
 
 app.get('/', (req, res, next) => {
   console.log(
@@ -46,8 +49,6 @@ app.get('/', (req, res, next) => {
   // console.log("\x1b[33m%s\x1b[0m", `USER: ${JSON.stringify(req.user)}`);
   next();
 });
-
-app.use(express.static(`${__dirname}/../client/dist`));
 
 app.get('/searchListing', (req, res) => {
   // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);

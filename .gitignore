@@ -1,5 +1,5 @@
 node_modules
-client/dist/bundle.js
+dist/
 ./database/db.config.js
 .env
 config/config.json
