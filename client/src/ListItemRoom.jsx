@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
+
 const contentStyle = {
   margin: '40px',
   border: 'none',

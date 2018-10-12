@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import RoomsSearchResultView from './RoomsSearchResultView.jsx';
+import RoomsSearchResultView from './roomsSearchResultView';
 
 class UserProfileView extends React.Component {
   constructor(props) {

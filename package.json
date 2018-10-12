@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "start": "node server/index.js",
-    "heroku-postbuild": "webpack",
+    "heroku-postbuild": "webpack -p",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js",
     "rebuild-db": "node database/dbreload.js && mysql -u root -p 'password' "
@@ -28,6 +28,7 @@
     "babel-preset-react": "^6.24.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
+    "bulma": "^0.7.1",
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
     "cookie-parser": "^1.4.3",
@@ -63,7 +64,6 @@
     "babel-loader": "^7.1.5",
     "babel-preset-airbnb": "^2.5.2",
     "babel-preset-env": "^1.7.0",
-    "bulma": "^0.7.1",
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^1.0.0",
     "eslint": "^4.19.1",

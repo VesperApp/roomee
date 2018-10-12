@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import API from '../api.config.js';
+import API from '../api.config';
 
 class ContactUs extends React.Component {
   constructor(props) {

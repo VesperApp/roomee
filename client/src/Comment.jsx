@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 
-import CommentItem from './CommentItem.jsx';
+import CommentItem from './CommentItem';
 
 class Comment extends React.Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import API from '../api.config.js';
+import API from '../api.config';
 
 class CreateListingView extends React.Component {
   constructor(props) {
