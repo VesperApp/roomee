@@ -1,17 +1,16 @@
 import React from 'react';
-import $ from 'jquery';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import axios from 'axios';
-import SearchView from './searchView.jsx';
+import SearchView from './searchView';
 // import LoginView from './loginView.jsx';
 // import SignUpView from './signUpView.jsx';
-import CreateListingView from './createListingView.jsx';
-import HouseListingView from './houseListingView.jsx';
-import Home from './Home.jsx';
-import Footer from './footer.jsx';
-import Presentation from './hrrPresentation.jsx';
+import CreateListingView from './createListingView';
+import HouseListingView from './houseListingView';
+import Home from './Home';
+import Footer from './footer';
+import Presentation from './hrrPresentation';
 
-import UserProfileView from './userProfileView.jsx';
+import UserProfileView from './userProfileView';
 
 export default class App extends React.Component {
   constructor(props) {
