@@ -2,8 +2,8 @@ import React from 'react';
 import $ from 'jquery';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-import ListItemRoom from './ListItemRoom.jsx';
-import DetailsRoom from './DetailsRoom.jsx';
+import ListItemRoom from './ListItemRoom';
+import DetailsRoom from './DetailsRoom';
 
 var mostRate = {
   background: '#eee',

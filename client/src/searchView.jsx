@@ -1,6 +1,6 @@
 import React from 'react';
-import RoomsSearchResultView from './RoomsSearchResultView.jsx';
-import RoomeesSearchResultView from './roomeesSearchResultView.jsx';
+import RoomsSearchResultView from './roomsSearchResultView';
+import RoomeesSearchResultView from './roomeesSearchResultView';
 
 const SearchView = ({ term, listings, roomees, onInput, onSearchRooms, onSearchRoomees, onTitleClick }) => (
   <div>

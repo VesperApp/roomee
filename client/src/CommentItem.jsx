@@ -1,5 +1,4 @@
 import React from 'react';
-import DetailsRoom from './DetailsRoom.jsx';
 
 const CommentItem = ({ comment }) => (
   <div>

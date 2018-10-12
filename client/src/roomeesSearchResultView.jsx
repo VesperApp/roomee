@@ -1,5 +1,5 @@
 import React from 'react';
-import RoomeeItemView from './roomeeItemView.jsx';
+import RoomeeItemView from './roomeeItemView';
 
 const RoomeesSearchResultView = ({ roomees }) => {
   return (
