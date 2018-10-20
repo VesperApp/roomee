@@ -9,13 +9,12 @@ db.authenticate()
   .then(() => console.log('Database connection has been established successfully.'))
   .catch(err => console.log('Unable to connect to the database:', err));
 
-User.hasMany(Listing);
+User.belongsToMany(Listing, {through: 'UserListings'});
+Listing.belongsToMany(User, {through: 'UserListings'});
 Listing.hasMany(Photo);
-Listing.User = Listing.belongsTo(User);
 
 // TODO: Set force to false before deployment.
 db.sync({ force: true });
-
 
 Listing.findListingsByZip = (queryStr, callback) => {
   queryStr.include = [{ model: Photo }, { model: User }];
@@ -31,63 +30,7 @@ Listing.findListingsByID = (id, callback) => {
     .catch(err => callback(err, null));
 };
 
-// this code correctly creates instances with association between listing and photos:
-Listing.createListing2 = (listing, callback) => {
-  Listing.create(listing, { include: [Photo] });
-};
 
-// //ED TEST: for 'Listing.createListing2' function -> many photos to one relationship:
-// Listing.createListing2({
-//   title: 'this is a test123',
-//   address: 'test',
-//   address2: "TESTY",
-//   city: "TESTY",
-//   stateAbbr: "TESTY",
-//   zipCode: "TESTY",
-//   // lat: "TESTY",
-//   // lon: "TESTY",
-//   description: "TESTY",
-//   price: 444,
-//   photos: [
-//     {url: 'www.heesdfhee.com'},
-//     {url: 'www.hee33hee.com'},
-//     {url: 'www.heeh33ee.com'},
-//     {url: 'www.333.com'},
-//   ]
-// },function(ele){console.log(ele)});
-
-Listing.createListing = (listing, callback) => {
-  Listing.create(listing)
-    .then(
-      data =>
-        // {
-        // if (listing.photos.length > 0) {
-        //   const listingResult = data;
-        //   const photos = listing.photos.map(url => {
-        //     const p = { url, listingId: listingResult.id };
-        //     return p;
-        //   });
-        //   Photo.bulkCreate(photos).then(() => Listing.findListingsByID(listingResult.id, callback) );
-
-        // } else {
-        callback(data)
-      // }
-      // }
-    )
-    .catch(err => callback(err));
-};
-// ED TEST: for 'Listing.createListing' function [old function to be deleted]
-// var test = { title: 'user favorites connected to sessions',
-//   address: '',
-//   city: '',
-//   stateAbbr: '',
-//   zipCode: '',
-//   price: '',
-//   description: '',
-//   photos: [],
-//   redirect: false
-// }
-// Listing.createListing = (test, function(ele){console.log(ele);})
 
 User.findbyUsername = (username, callback) => {
   User.findOne({ where: { username } })
