@@ -1,6 +1,6 @@
 const db = require('./index.js');
 
-var userDummyData = [
+const userDummyData = [
   {
     name: 'Boseph Bun',
     email: 'slowcoder@yahoo.com',

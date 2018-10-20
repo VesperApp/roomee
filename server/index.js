@@ -3,7 +3,16 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const passport = require('passport');
-const db = require('../database/index.js');
+
+const {
+  db,
+  createListing,
+  findListingsByZip,
+  findListingsByID,
+  createUser,
+  validateLogin,
+} = require('../database/databaseRoutes.js');
+
 const { createSession } = require('./util.js');
 const { scope } = require('./server.config.js').fbConfig;
 
@@ -26,7 +35,9 @@ const cookieparser = require('cookie-parser');
 // initialize passport and the express sessions and passport sessions
 app.use(
   session({
-    secret: Math.random().toString(36).substring(2),
+    secret: Math.random()
+      .toString(36)
+      .substring(2),
     // resave: false, //             resave - false means do not save back to the store unless there is a change
     // saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
     cookie: { expires: 24 * 60 * 60 * 1000 },
@@ -59,7 +70,7 @@ app.get('/searchListing', (req, res) => {
   }
   const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
 
-  db.Listing.findListingsByZip(queryStr, (err, data) => {
+  findListingsByZip(queryStr, (err, data) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -89,7 +100,7 @@ app.post('/listing', (req, res) => {
   req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
   req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
-  db.Listing.createListing(req.body, (err, result) => {
+  createListing(req.body, (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
@@ -103,7 +114,7 @@ app.get('/userListings', (req, res) => {
   // console.log("DATABASE RESULT***********");
   // console.log(req.param('userId'));
 
-  db.Listing.findListingsByID(req.param('userId'), (err, result) => {
+  findListingsByID(req.param('userId'), (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
@@ -114,7 +125,7 @@ app.get('/userListings', (req, res) => {
 
 app.get('/logout', (req, res) => {
   req.logOut();
-  req.session.destroy(function() {
+  req.session.destroy(() => {
     res.clearCookie('connect.sid');
     res.redirect('/');
   });
@@ -128,38 +139,33 @@ app.get('/logout', (req, res) => {
  * 409 when the databse rejected an add user
  */
 app.post('/signup', (req, res) => {
-  db.User.findbyUsername(req.body.username, (err, user) => {
-    if (user) {
-      return res.status(202).redirect('/signupview');
+  if (!req.body.password) {
+    return res.status(204).redirect('/signupview');
+  }
+  // if we got to this point, we have a valid request to create a user in our database
+  const { username, password, firstname, lastname, zipCode, gender, age } = req.body;
+  const newUser = {
+    username,
+    password,
+    firstname,
+    lastname,
+    email: username,
+    zipCode,
+    gender,
+    age,
+  };
+  createUser(newUser, (e, user) => {
+    if (e) {
+      res.status(409).send(e);
+    } else {
+      createSession(req, res.status(201), newUser.username);
     }
-    if (!req.body.password) {
-      return res.status(204).redirect('/signupview');
-    }
-    // if we got to this point, we have a valid request to create a user in our database
-    const { username, password, firstname, lastname, zipCode, gender, age } = req.body;
-    const newUser = {
-      username,
-      password,
-      firstname,
-      lastname,
-      email: username,
-      zipCode,
-      gender,
-      age,
-    };
-    db.User.createUser(newUser, (err, user) => {
-      if (err) {
-        res.status(409).send(err);
-      } else {
-        createSession(req, res.status(201), newUser.username);
-      }
-    });
   });
 });
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  db.User.validateLogin(username, password, (err, userid) => {
+  validateLogin(username, password, (err, userid) => {
     if (userid) {
       createSession(req, res.status(200), username);
     } else {
@@ -207,10 +213,10 @@ app.get(
   '/login/facebook/return',
   passport.authenticate('facebook', {
     authType: 'rerequest',
-    scope: scope,
+    scope,
     failureRedirect: '/login',
   }),
-  function(req, res) {
+  (req, res) => {
     res.redirect('/');
   }
 );

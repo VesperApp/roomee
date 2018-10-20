@@ -1,6 +1,5 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 const db = require('../db');
-const Photo = require('./Photo');
 
 const Listing = db.define('listing', {
   id: {
@@ -19,23 +18,5 @@ const Listing = db.define('listing', {
   description: Sequelize.TEXT,
   price: Sequelize.INTEGER,
 });
-
-Listing.createListing = (listing, callback) => {
-  Listing.create(listing, { include: [Photo] });
-};
-
-Listing.findListingsByZip = (queryStr, callback) => {
-  queryStr.include = [{ model: Photo }, { model: User }];
-  Listing.findAll(queryStr)
-    .then(data => callback(null, data))
-    .catch(err => {console.log(err); callback(err, null);});
-};
-
-Listing.findListingsByID = (id, callback) => {
-  const queryStr = { where: { UserId: id }, include: [Photo, User] };
-  Listing.findAll(queryStr)
-    .then(data => callback(null, data))
-    .catch(err => callback(err, null));
-};
 
 module.exports = Listing;

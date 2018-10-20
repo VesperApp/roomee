@@ -1,0 +1,147 @@
+const bCrypt = require('bcrypt-nodejs');
+
+const { db, Listing, User, Photo } = require('./index');
+
+/* ****************** ******************
+LISTING - create listing - need to include username
+****************** ****************** */
+const createListing = async listing => {
+  const existingUser = await User.findAll({ where: { username: listing.username } });
+  const listingInstance = await Listing.create(listing, { include: [Photo] });
+  return listingInstance.addUser(existingUser);
+};
+
+// createListing({
+//   username: 'test1234',
+//   title: 'test',
+//   address: 'test',
+//   address2: 'test',
+//   city: 'test',
+//   stateAbbr: 'test',
+//   zipCode: 'test',
+//   photos: [
+//     { url: 'www.test.com/pic1' },
+//     { url: 'www.test.com/pic2' },
+//     { url: 'www.test.com/pic3' },
+//     { url: 'www.test.com/pic4' },
+//   ],
+// });
+
+/* ****************** ******************
+LISTING - find listings by zip
+****************** ****************** */
+const findListingsByZip = (queryStr, callback) => {
+  queryStr.include = [{ model: Photo }, { model: User }];
+  Listing.findAll(queryStr)
+    .then(data => callback(null, data))
+    .catch(err => {
+      console.log(err);
+      callback(err, null);
+    });
+};
+
+/* ****************** ******************
+LISTING - find listings by creator ID
+****************** ****************** */
+const findListingsByID = async (id, callback) => {
+  User.findAll({
+    where: { id: 11 },
+    include: [
+      {
+        model: Listing,
+        include: [Photo],
+      },
+    ],
+  })
+    .then(data => callback(null, data))
+    .catch(err => callback(err, null));
+};
+
+// findListingsByID(1, (x, y) => {
+//   console.log('*********');
+//   console.log('*********');
+//   console.log('*********');
+//   console.log('*********');
+//   console.log(x, y);
+// });
+
+/* ****************** ******************
+LISTING - edit listing
+****************** ****************** */
+// to do
+
+/* ****************** ******************
+LISTING - delete listing
+****************** ****************** */
+//  to do
+
+/* ****************** ******************
+USER - create user
+****************** ****************** */
+const createUser = async (newUser, callback) => {
+  const existingUser = await User.findAll({ where: { username: newUser.username } });
+  if (!existingUser.length) {
+    return bCrypt.genSalt(14, (err, salt) => {
+      bCrypt.hash(newUser.password, salt, null, (err, hash) => {
+        newUser.password = hash;
+        User.create(newUser)
+          .then(data => callback(null, data))
+          .catch(e => callback(e, null));
+      });
+    });
+  }
+  return callback('Username taken!', null);
+};
+
+// const userTest = {
+//   firstname: 'test123',
+//   lastname: 'test123',
+//   username: 'test1234',
+//   password: 'test123',
+//   about: 'about123',
+//   email: 'test123',
+//   zipCode: 'test123',
+//   gender: false,
+//   age: 22,
+// };
+// createUser(userTest, (data, data2) => {
+//   console.log('***********');
+//   console.log('***********');
+//   console.log('***********');
+//   console.log('***********');
+//   console.log('test return:', data, data2);
+// });
+
+/* ****************** ******************
+USER - authenticate user, returns user ID or false
+****************** ****************** */
+const validateLogin = async (username, password, callback) => {
+  User.findOne({ where: { username } })
+    .then(data =>
+      bCrypt.compare(password, data.password, (err, result) => {
+        if (err) {
+          callback(err, null);
+        } else {
+          callback(null, result ? data.id : false);
+        }
+      })
+    )
+    .catch(err => callback(err, null));
+};
+
+// validateLogin('test123', 'test1234', (x, y) => {
+//   console.log('******************');
+//   console.log('******************');
+//   console.log('******************');
+
+//   console.log(x, y);
+// });
+
+module.exports = {
+  db,
+  createListing,
+  findListingsByZip,
+  findListingsByID,
+  createUser,
+  validateLogin,
+};

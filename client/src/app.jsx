@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import axios from 'axios';
 import SearchView from './searchView';
-// import LoginView from './loginView.jsx';
-// import SignUpView from './signUpView.jsx';
+import LoginView from './loginView';
+import SignUpView from './signUpView';
 import CreateListingView from './createListingView';
 import HouseListingView from './houseListingView';
 import Home from './Home';
@@ -32,7 +32,7 @@ export default class App extends React.Component {
     this.onInput = this.onInput.bind(this);
   }
 
-  /* ******** Helpers and Events **********/
+  /* ******** Helpers and Events ********* */
 
   componentDidMount() {
     // get request fetches the zipcode of the user's IP address and calls onEnterSite
@@ -65,24 +65,26 @@ export default class App extends React.Component {
     });
   }
 
-  onSignUp(e) {
+  onSignUp() {
     // give user a human way to know they have registered
     this.setState({
       justRegistered: true,
     });
   }
 
-  /* ******** Helpers and Events **********/
-  /*  ******** axios Requests **********/
+  /* ******** Helpers and Events ********* */
+  /*  ******** axios Requests ********* */
 
   onSearchRooms(event) {
+    const { term } = this.state;
     event.preventDefault();
-    this.searchRoomsByZipCode(this.state.term);
+    this.searchRoomsByZipCode(term);
   }
 
   onSearchRoomees(event) {
+    const { term } = this.state;
     event.preventDefault();
-    this.searchRoomeesByZipCode(this.state.term);
+    this.searchRoomeesByZipCode(term);
   }
 
   onSubmitPost(newListingData) {
@@ -92,10 +94,17 @@ export default class App extends React.Component {
     // post request to server
     axios
       .post('/listing', newListingData)
-      .then(res => {
+      .then(() => {
         // console.log(`-------> Folowing data returned from server POST -> ${res}`)
       })
       .catch(err => console.log(err));
+  }
+
+  getLoginUser(callback) {
+    axios
+      .get('/loginUser')
+      .then(res => callback(null, res.data))
+      .catch(err => callback(err, null));
   }
 
   searchRoomsByZipCode(zipCode) {
@@ -113,13 +122,6 @@ export default class App extends React.Component {
       .catch(err => console.log(err));
   }
 
-  getLoginUser(callback) {
-    axios
-      .get('/loginUser')
-      .then(res => callback(null, res.data))
-      .catch(err => callback(err, null));
-  }
-
   logout() {
     axios
       .get('/logout')
@@ -128,44 +130,36 @@ export default class App extends React.Component {
       .catch(err => console.log(err));
   }
 
-  /*  ******** axios Requests **********/
-  /* ******** Render **********/
+  /*  ******** axios Requests ********* */
+  /* ******** Render ********* */
 
   render() {
-    const { isLogin } = this.state;
+    const { isLogin, currentHouseView, justRegistered, term, listings, roomees } = this.state;
 
     // passing props to views with routes
-    const renderHouseListingView = props => <HouseListingView currentHouseView={this.state.currentHouseView} />;
-    // const renderSignUpView = props => (
-    //   <SignUpView
-    //     onSignUp={this.onSignUp}
-    //   />
-    // );
-    // const renderLoginView = props => (
-    //   <LoginView
-    //     registered={this.state.justRegistered}
-    //   />
-    // );
-    const renderCreateListingView = props => <CreateListingView onSubmit={this.onSubmitPost} />;
-    const renderSearchView = props => (
+    const renderHouseListingView = () => <HouseListingView currentHouseView={currentHouseView} />;
+    const renderSignUpView = () => <SignUpView onSignUp={this.onSignUp} />;
+    const renderLoginView = () => <LoginView registered={justRegistered} />;
+    const renderCreateListingView = () => <CreateListingView onSubmit={this.onSubmitPost} />;
+    const renderSearchView = () => (
       <SearchView
         onInput={this.onInput}
-        value={this.state.term}
-        listings={this.state.listings}
-        roomees={this.state.roomees}
+        value={term}
+        listings={listings}
+        roomees={roomees}
         onSearchRooms={this.onSearchRooms}
         onSearchRoomees={this.onSearchRoomees}
         onTitleClick={this.onTitleClick}
       />
     );
-    const renderUserProfileView = props => <UserProfileView onTitleClick={this.onTitleClick} />;
-    const renderHome = props => <Home />;
-    const renderPresentation = props => <Presentation />;
+    const renderUserProfileView = () => <UserProfileView onTitleClick={this.onTitleClick} />;
+    const renderHome = () => <Home />;
+    const renderPresentation = () => <Presentation />;
     return (
       <Router>
         <div className="hero">
           <h1 className="level-item title has-text-centered is-medium   animated pulse">Roomee</h1>
-          {/* React router routes*/}
+          {/* React router routes */}
           <nav className="level">
             <Link to="/" className="level-item">
               Home
@@ -173,14 +167,21 @@ export default class App extends React.Component {
             <Link to="/search" className="level-item">
               Search
             </Link>
-
             {isLogin ? (
               <Link to="/createListing" className="level-item">
                 New Listing
               </Link>
             ) : null}
-            {/*isLogin ? null : <Link to="/loginView" className="level-item">Login</Link>*/}
-            {/*isLogin ? null : <Link to="/signUpView" className="level-item">Sign Up</Link>*/}
+            {isLogin ? null : (
+              <Link to="/loginView" className="level-item">
+                Login
+              </Link>
+            )}
+            {isLogin ? null : (
+              <Link to="/signUpView" className="level-item">
+                Sign Up
+              </Link>
+            )}
             {isLogin ? null : (
               <a href="/login/facebook" className="level-item">
                 Login with Facebook
@@ -202,8 +203,8 @@ export default class App extends React.Component {
           <Route exact path="/" component={renderHome} />
           <Route path="/search" render={renderSearchView} />
           <Route path="/createListing" render={renderCreateListingView} />
-          {/*<Route path="/loginView" render={renderLoginView} />
-          <Route path="/signUpView" render={renderSignUpView} />*/}
+          <Route path="/loginView" render={renderLoginView} />
+          <Route path="/signUpView" render={renderSignUpView} />
           <Route path="/house" render={renderHouseListingView} />
           <Route path="/presentation" render={renderPresentation} />
 
@@ -215,7 +216,7 @@ export default class App extends React.Component {
     );
   }
 
-  /* ******** Render **********/
+  /* ******** Render ********* */
 }
 
 // <footer className="footer has-text-centered heading is-6">

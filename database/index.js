@@ -1,4 +1,3 @@
-const bCrypt = require('bcrypt-nodejs');
 const db = require('./db.js');
 
 const User = require('./models/User');
@@ -9,12 +8,16 @@ db.authenticate()
   .then(() => console.log('Database connection has been established successfully.'))
   .catch(err => console.log('Unable to connect to the database:', err));
 
-User.belongsToMany(Listing, {through: 'UserListings'});
-Listing.belongsToMany(User, {through: 'UserListings'});
+User.belongsToMany(Listing, { through: 'UserListings' });
+Listing.belongsToMany(User, { through: 'UserListings' });
+
 Listing.hasMany(Photo);
 
 db.sync();
 
-module.exports.sequelize = db;
-module.exports.Listing = Listing;
-module.exports.User = User;
+module.exports = {
+  sequelize: db,
+  Listing,
+  User,
+  Photo,
+};
