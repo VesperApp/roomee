@@ -13,8 +13,7 @@ User.belongsToMany(Listing, {through: 'UserListings'});
 Listing.belongsToMany(User, {through: 'UserListings'});
 Listing.hasMany(Photo);
 
-// TODO: Set force to false before deployment.
-db.sync({ force: true });
+db.sync();
 
 Listing.findListingsByZip = (queryStr, callback) => {
   queryStr.include = [{ model: Photo }, { model: User }];
@@ -31,23 +30,12 @@ Listing.findListingsByID = (id, callback) => {
 };
 
 
-
 User.findbyUsername = (username, callback) => {
   User.findOne({ where: { username } })
     .then(data => callback(null, data))
     .catch(err => callback(err, null));
 };
 
-User.createUser = (newUser, callback) => {
-  bCrypt.genSalt(14, function(err, salt) {
-    bCrypt.hash(newUser.password, salt, null, (err, hash) => {
-      newUser.password = hash;
-      User.create(newUser)
-        .then(data => callback(null, data))
-        .catch(err => callback(err, null));
-    });
-  });
-};
 
 User.validateLogin = (username, password, callback) => {
   User.findOne({ where: { username } })
