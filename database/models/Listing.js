@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
+const Photo = require('./Photo');
 
 const Listing = db.define('listing', {
   id: {
@@ -18,5 +19,9 @@ const Listing = db.define('listing', {
   description: Sequelize.TEXT,
   price: Sequelize.INTEGER,
 });
+
+Listing.createListing = (listing, callback) => {
+  Listing.create(listing, { include: [Photo] });
+};
 
 module.exports = Listing;

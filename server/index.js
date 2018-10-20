@@ -26,7 +26,7 @@ const cookieparser = require('cookie-parser');
 // initialize passport and the express sessions and passport sessions
 app.use(
   session({
-    secret: 'luihfihuiluihiluh34hhglihlse893423rlhfsdiheiiqlqkbcsaajblaeww43232er3',
+    secret: Math.random().toString(36).substring(2),
     // resave: false, //             resave - false means do not save back to the store unless there is a change
     // saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
     cookie: { expires: 24 * 60 * 60 * 1000 },
@@ -86,10 +86,10 @@ app.get('/roomees', (req, res) => {
 app.post('/listing', (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
   // console.log(req.body);
-  req.body.userId = req.user.id;
+  req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
   req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
-  db.Listing.createListing2(req.body, (err, result) => {
+  db.Listing.createListing(req.body, (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
@@ -136,13 +136,16 @@ app.post('/signup', (req, res) => {
       return res.status(204).redirect('/signupview');
     }
     // if we got to this point, we have a valid request to create a user in our database
-    const { username, password, firstname, lastname } = req.body;
+    const { username, password, firstname, lastname, zipCode, gender, age } = req.body;
     const newUser = {
       username,
       password,
       firstname,
       lastname,
       email: username,
+      zipCode,
+      gender,
+      age,
     };
     db.User.createUser(newUser, (err, user) => {
       if (err) {
