@@ -22,6 +22,7 @@ export default class App extends React.Component {
       currentHouseView: {},
       justRegistered: false,
       showLogin: true,
+      isLogin: false,
     };
     this.onSubmitPost = this.onSubmitPost.bind(this);
     this.onSearchRooms = this.onSearchRooms.bind(this);
