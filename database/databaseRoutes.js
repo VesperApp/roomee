@@ -30,15 +30,27 @@ const createListing = async listing => {
 /* ****************** ******************
 LISTING - find listings by zip
 ****************** ****************** */
-const findListingsByZip = (queryStr, callback) => {
+const findListingsByZip = async (queryStr, callback) => {
   queryStr.include = [{ model: Photo }, { model: User }];
-  Listing.findAll(queryStr)
-    .then(data => callback(null, data))
-    .catch(err => {
-      console.log(err);
-      callback(err, null);
-    });
+  try {
+    const listings = await Listing.findAll(queryStr);
+    callback(null, listings);
+  } catch(err) {
+    callback(err, null);
+  }
 };
+
+// // Make sure the sample data is loaded to db before testing.
+// // The queryStr logic is copied from server route.
+// const zip = `${'70826'.substr(0, 3)}__`;
+// const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
+// findListingsByZip(queryStr, (err, data) => {
+//   console.log('**********');
+//   console.log('**********');
+//   console.log('FIND_BY_ZIP ', err || data);
+//   console.log('**********');
+//   console.log('**********');
+// });
 
 /* ****************** ******************
 LISTING - find listings by creator ID
