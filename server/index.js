@@ -77,6 +77,8 @@ app.get('/searchListing', (req, res) => {
       res.send(data);
     }
   });
+  // POSTMAN TEST DATA
+  // params => Key:zip, Value:70826
 });
 
 /**
@@ -94,20 +96,34 @@ app.get('/roomees', (req, res) => {
 // ED: add this middle ware to post route for /listing:
 // app.post('/listing', isLoggedIn, (req, res) => {
 
-app.post('/listing', (req, res) => {
+app.post('/listing', async (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
   // console.log(req.body);
   req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
   req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
-  createListing(req.body, (err, result) => {
-    if (err) {
-      res.sendStatus(err);
-    } else {
-      // console.log(result);
-      res.send(result);
-    }
-  });
+  try {
+    const createdListing = await createListing(req.body);
+    res.status(201).send(createdListing);
+  } catch(err) {
+    const log = err.name || err
+    res.status(500).send(`Failed to create: ${log}`);
+  }
+  // PSOTMAN TEST DATA
+  // {
+  //   "userId": 1,
+  //   "price": 500,
+  //   "title": "cozy room",
+  //   "city": "gotham",
+  //   "stateAbbr": "IDK",
+  //   "address": "some street",
+  //   "address2": "some place",
+  //   "lon": 100.5,
+  //   "lat": 102.5,
+  //   "zipCode": 666,
+  //   "description": "nice",
+  //   "photosData": [{"url": "http://yo.jpg"}, {"url": "http://yo.jpg"}]
+  // }
 });
 
 app.get('/userListings', (req, res) => {
