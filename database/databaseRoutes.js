@@ -1,12 +1,14 @@
-const bCrypt = require('bcrypt-nodejs');
+const bCrypt = require("bcrypt-nodejs");
 
-const { db, Listing, User, Photo } = require('./index');
+const { db, Listing, User, Photo } = require("./index");
 
 /* ****************** ******************
 LISTING - create listing - need to include username
 ****************** ****************** */
 const createListing = async listing => {
-  const existingUser = await User.findOne({ where: { username: listing.username } });
+  const existingUser = await User.findOne({
+    where: { username: listing.username }
+  });
   const listingInstance = await Listing.create(listing, { include: [Photo] });
   return existingUser.addListing(listingInstance);
 };
@@ -35,7 +37,7 @@ const findListingsByZip = async (queryStr, callback) => {
   try {
     const listings = await Listing.findAll(queryStr);
     callback(null, listings);
-  } catch(err) {
+  } catch (err) {
     callback(err, null);
   }
 };
@@ -53,28 +55,28 @@ const findListingsByZip = async (queryStr, callback) => {
 // });
 
 /* ****************** ******************
-LISTING - find listings by creator ID
+LISTING - find listings by creator ID. 
+          return the same format as findListingsByZip().
 ****************** ****************** */
 const findListingsByID = async (id, callback) => {
-  User.findAll({
-    where: { id: 11 },
-    include: [
-      {
-        model: Listing,
-        include: [Photo],
-      },
-    ],
-  })
-    .then(data => callback(null, data))
-    .catch(err => callback(err, null));
+  try {
+    const listings = await Listing.findAll({
+      where: { userId: id },
+      include: [{ model: Photo }, { model: User }]
+    });
+    callback(null, listings);
+  } catch(err) {
+    callback(err, null);
+  }
 };
 
-// findListingsByID(1, (x, y) => {
+// const userId = 1
+// findListingsByID(userId, (err, listings) => {
 //   console.log('*********');
 //   console.log('*********');
+//   console.log(err || listings);
 //   console.log('*********');
 //   console.log('*********');
-//   console.log(x, y);
 // });
 
 /* ****************** ******************
@@ -91,7 +93,9 @@ LISTING - delete listing
 USER - create user
 ****************** ****************** */
 const createUser = async (newUser, callback) => {
-  const existingUser = await User.findAll({ where: { username: newUser.username } });
+  const existingUser = await User.findAll({
+    where: { username: newUser.username }
+  });
   if (!existingUser.length) {
     return bCrypt.genSalt(14, (err, salt) => {
       bCrypt.hash(newUser.password, salt, null, (err, hash) => {
@@ -102,7 +106,7 @@ const createUser = async (newUser, callback) => {
       });
     });
   }
-  return callback('Username taken!', null);
+  return callback("Username taken!", null);
 };
 
 // const userTest = {
@@ -155,5 +159,5 @@ module.exports = {
   findListingsByZip,
   findListingsByID,
   createUser,
-  validateLogin,
+  validateLogin
 };
