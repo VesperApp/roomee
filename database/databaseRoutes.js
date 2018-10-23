@@ -6,9 +6,9 @@ const { db, Listing, User, Photo } = require('./index');
 LISTING - create listing - need to include username
 ****************** ****************** */
 const createListing = async listing => {
-  const existingUser = await User.findAll({ where: { username: listing.username } });
+  const existingUser = await User.findOne({ where: { username: listing.username } });
   const listingInstance = await Listing.create(listing, { include: [Photo] });
-  return listingInstance.addUser(existingUser);
+  return existingUser.addListing(listingInstance);
 };
 
 // createListing({

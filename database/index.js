@@ -8,8 +8,8 @@ db.authenticate()
   .then(() => console.log('Database connection has been established successfully.'))
   .catch(err => console.log('Unable to connect to the database:', err));
 
-User.belongsToMany(Listing, { through: 'UserListings' });
-Listing.belongsToMany(User, { through: 'UserListings' });
+User.hasMany(Listing);
+Listing.belongsTo(User);
 
 Listing.hasMany(Photo);
 
