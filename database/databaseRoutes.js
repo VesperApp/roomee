@@ -7,7 +7,7 @@ LISTING - create listing - need to include username
 ****************** ****************** */
 const createListing = async listing => {
   const existingUser = await User.findOne({
-    where: { username: listing.username }
+    where: { id: listing.userId }
   });
   const listingInstance = await Listing.create(listing, { include: [Photo] });
   return existingUser.addListing(listingInstance);
