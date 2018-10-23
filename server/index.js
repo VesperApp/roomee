@@ -109,7 +109,7 @@ app.post('/listing', async (req, res) => {
     const log = err.name || err
     res.status(500).send(`Failed to create: ${log}`);
   }
-  // PSOTMAN TEST DATA
+  // POSTMAN TEST DATA
   // {
   //   "userId": 1,
   //   "price": 500,
@@ -122,14 +122,11 @@ app.post('/listing', async (req, res) => {
   //   "lat": 102.5,
   //   "zipCode": 666,
   //   "description": "nice",
-  //   "photosData": [{"url": "http://yo.jpg"}, {"url": "http://yo.jpg"}]
+  //   "photosData": [{"url": "http://yo1.jpg"}, {"url": "http://yo2.jpg"}]
   // }
 });
 
 app.get('/userListings', (req, res) => {
-  // console.log("DATABASE RESULT***********");
-  // console.log(req.param('userId'));
-
   findListingsByID(req.param('userId'), (err, result) => {
     if (err) {
       res.sendStatus(err);
@@ -137,6 +134,8 @@ app.get('/userListings', (req, res) => {
       res.send(result);
     }
   });
+  // POSTMAN TEST DATA
+  // params => Key:userId, Value:1
 });
 
 app.get('/logout', (req, res) => {
