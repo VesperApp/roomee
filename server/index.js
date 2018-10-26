@@ -1,7 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
 const passport = require('passport');
 
 const {
@@ -14,7 +13,6 @@ const {
 } = require('../database/databaseRoutes.js');
 
 const { createSession } = require('./util.js');
-const { scope } = require('./server.config.js').fbConfig;
 
 // const passportLocal = require('passport-local');
 // const exphbs = require('express-handlebars');
@@ -22,7 +20,6 @@ const { scope } = require('./server.config.js').fbConfig;
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-const cookieparser = require('cookie-parser');
 // const models = require("../database/models");
 // const authRoute = require('../database/passport_routes/auth.js')(app,passport);
 // const passportStrat = require('../database/passport/passport.js')(passport, models.user);
@@ -79,15 +76,6 @@ app.get('/searchListing', (req, res) => {
   });
   // POSTMAN TEST DATA
   // params => Key:zip, Value:70826
-});
-
-/**
- * Get all the fbusers for now, should be refactored to
- */
-app.get('/roomees', (req, res) => {
-  db.FBUser.findAll()
-    .then(roomees => res.status(200).send(roomees))
-    .catch(err => res.status(500).send(err));
 });
 
 // ED: DISABLED: SESSION FOR SERVER TESTING
@@ -199,31 +187,6 @@ app.get('/loginUser', (req, res) => {
     res.status(401).send(req.user);
   }
 });
-
-// ** Facebook Oauth **//
-app.get('/login/facebook', passport.authenticate('facebook', { authType: 'rerequest', scope: scope }));
-
-app.get(
-  '/login/facebook/return',
-  passport.authenticate('facebook', {
-    authType: 'rerequest',
-    scope,
-    failureRedirect: '/login',
-  }),
-  (req, res) => {
-    res.redirect('/');
-  }
-);
-// ** **/
-
-passport.serializeUser((fbUser, done) => {
-  done(null, fbUser);
-});
-passport.deserializeUser((fbUser, done) => {
-  done(null, fbUser);
-});
-
-const routes = require('./graphAPI.js')(app);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
