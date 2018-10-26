@@ -132,17 +132,14 @@ const createUser = async (newUser, callback) => {
 USER - authenticate user, returns user ID or false
 ****************** ****************** */
 const validateLogin = async (username, password, callback) => {
-  User.findOne({ where: { username } })
-    .then(data =>
-      bCrypt.compare(password, data.password, (err, result) => {
-        if (err) {
-          callback(err, null);
-        } else {
-          callback(null, result ? data.id : false);
-        }
-      })
-    )
-    .catch(err => callback(err, null));
+  const user = await User.findOne({ where: { username } });
+  bCrypt.compare(password, user.password, (err, result) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }
+  });
 };
 
 // validateLogin('test123', 'test1234', (x, y) => {
