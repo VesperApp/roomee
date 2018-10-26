@@ -1,6 +1,6 @@
-const bCrypt = require("bcrypt");
+const bCrypt = require('bcrypt');
 
-const { db, Listing, User, Photo } = require("./index");
+const { db, Listing, User, Photo } = require('./index');
 
 /* ****************** ******************
 LISTING - create listing - need to include username
@@ -65,7 +65,7 @@ const findListingsByID = async (id, callback) => {
       include: [{ model: Photo }, { model: User }]
     });
     callback(null, listings);
-  } catch(err) {
+  } catch (err) {
     callback(err, null);
   }
 };
@@ -92,21 +92,18 @@ LISTING - delete listing
 /* ****************** ******************
 USER - create user
 ****************** ****************** */
-const createUser = async (newUser, callback) => {
+const createUser = async newUser => {
   const existingUser = await User.findAll({
     where: { username: newUser.username }
   });
   if (!existingUser.length) {
-    return bCrypt.genSalt(14, (err, salt) => {
-      bCrypt.hash(newUser.password, salt, null, (err, hash) => {
-        newUser.password = hash;
-        User.create(newUser)
-          .then(data => callback(null, data))
-          .catch(e => callback(e, null));
-      });
-    });
+    const salt = await bCrypt.genSalt(14);
+    const hash = await bCrypt.hash(newUser.password, salt);
+    newUser.password = hash;
+    const createdUser = await User.create(newUser);
+    return createdUser;
   }
-  return callback("Username taken!", null);
+  return null;
 };
 
 // const userTest = {
@@ -118,15 +115,9 @@ const createUser = async (newUser, callback) => {
 //   email: 'test123',
 //   zipCode: 'test123',
 //   gender: false,
-//   age: 22,
+//   age: 22
 // };
-// createUser(userTest, (data, data2) => {
-//   console.log('***********');
-//   console.log('***********');
-//   console.log('***********');
-//   console.log('***********');
-//   console.log('test return:', data, data2);
-// });
+// createUser(userTest).then(user => console.log('****createUser()****', user));
 
 /* ****************** ******************
 USER - authenticate user, returns user ID or false
@@ -136,7 +127,7 @@ const validateLogin = async (username, password) => {
     const user = await User.findOne({ where: { username } });
     const isValidated = await bCrypt.compare(password, user.password);
     return isValidated ? user : null;
-  } catch(err) {
+  } catch (err) {
     throw err;
   }
 };
