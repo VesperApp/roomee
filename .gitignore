@@ -5,3 +5,4 @@ dist/
 config/config.json
 .vscode
 client/api.config.js
+package-lock.json
