@@ -1,8 +1,7 @@
-const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const passport = require('./auth');
-
+const express = require("express");
+const session = require("express-session");
+const bodyParser = require("body-parser");
+const passport = require("./auth");
 
 const {
   db,
@@ -10,11 +9,11 @@ const {
   findListingsByZip,
   findListingsByID,
   createUser,
-  validateLogin,
-} = require('../database/databaseRoutes.js');
-const User = require('../database/models/User');
+  validateLogin
+} = require("../database/databaseRoutes.js");
+const User = require("../database/models/User");
 
-const { createSession } = require('./util.js');
+const { createSession } = require("./util.js");
 
 // const passportLocal = require('passport-local');
 // const exphbs = require('express-handlebars');
@@ -39,7 +38,7 @@ app.use(
       .substring(2),
     // resave: false, //             resave - false means do not save back to the store unless there is a change
     // saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
-    cookie: { expires: 24 * 60 * 60 * 1000 },
+    cookie: { expires: 24 * 60 * 60 * 1000 }
   })
 );
 
@@ -59,7 +58,7 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
-app.get('/', (req, res, next) => {
+app.get("/", (req, res, next) => {
   console.log(
     `HOME SCREEN ========current user is >>${req.user}
     << and this user authentication is >>${req.isAuthenticated()}<< ============`
@@ -69,12 +68,12 @@ app.get('/', (req, res, next) => {
   next();
 });
 
-app.get('/searchListing', (req, res) => {
+app.get("/searchListing", (req, res) => {
   // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
   // console.log(req.body)
-  let zip = req.param('zip');
+  let zip = req.param("zip");
   if (zip !== undefined) {
-    zip = zip.substr(0, 3) + '__';
+    zip = zip.substr(0, 3) + "__";
   }
   const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
 
@@ -95,7 +94,7 @@ app.get('/searchListing', (req, res) => {
 // ED: add this middle ware to post route for /listing:
 // app.post('/listing', isLoggedIn, (req, res) => {
 
-app.post('/listing', async (req, res) => {
+app.post("/listing", async (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
   // console.log(req.body);
   req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
@@ -104,8 +103,8 @@ app.post('/listing', async (req, res) => {
   try {
     const createdListing = await createListing(req.body);
     res.status(201).send(createdListing);
-  } catch(err) {
-    const log = err.name || err
+  } catch (err) {
+    const log = err.name || err;
     res.status(500).send(`Failed to create: ${log}`);
   }
   // POSTMAN TEST DATA
@@ -125,8 +124,8 @@ app.post('/listing', async (req, res) => {
   // }
 });
 
-app.get('/userListings', (req, res) => {
-  findListingsByID(req.param('userId'), (err, result) => {
+app.get("/userListings", (req, res) => {
+  findListingsByID(req.param("userId"), (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
@@ -137,11 +136,11 @@ app.get('/userListings', (req, res) => {
   // params => Key:userId, Value:1
 });
 
-app.get('/logout', (req, res) => {
+app.get("/logout", (req, res) => {
   req.logOut();
   req.session.destroy(() => {
-    res.clearCookie('connect.sid');
-    res.redirect('/');
+    res.clearCookie("connect.sid");
+    res.redirect("/");
   });
 });
 /**
@@ -152,54 +151,30 @@ app.get('/logout', (req, res) => {
  * 204 indicates username is not in use, but since no password was sent with the request, no creation will happen
  * 409 when the databse rejected an add user
  */
-app.post('/signup', (req, res) => {
-  if (!req.body.password) {
-    return res.status(204).redirect('/signupview');
+app.post(
+  "/signup",
+  passport.authenticate("local-signup", { failureRedirect: "/signupView" }),
+  (req, res) => {
+    // After authentication, we can fetch the user model through req.
+    console.log("***SESSION****", req.user);
+    res.redirect("/");
   }
-  // if we got to this point, we have a valid request to create a user in our database
-  const { username, password, firstname, lastname, zipCode, gender, age } = req.body;
-  const newUser = {
-    username,
-    password,
-    firstname,
-    lastname,
-    email: username,
-    zipCode,
-    gender,
-    age,
-  };
-  createUser(newUser, (e, user) => {
-    if (e) {
-      res.status(409).send(e);
-    } else {
-      createSession(req, res.status(201), newUser.username);
-    }
-  });
-});
+);
 
-app.post('/login',
-  // DEPRECATED
-  // async (req, res) => {
-  //   const { username, password } = req.body;
-  //   const user = await validateLogin(username, password);
-  //   if (user) {
-  //     createSession(req, res.status(200), username);
-  //   } else {
-  //     res.status(401).redirect('/loginView');
-  // }
-
-  // After authentication, we can fetch the user model through req.
-  passport.authenticate('local', { failureRedirect: '/loginView' }), 
-  (req, res) => { 
-    console.log('***SESSION****', req.user);
-    res.redirect('/');
+app.post(
+  "/login",
+  passport.authenticate("local-login", { failureRedirect: "/loginView" }),
+  (req, res) => {
+    // After authentication, we can fetch the user model through req.
+    console.log("***SESSION****", req.user);
+    res.redirect("/");
   }
 );
 
 /**
  * Get the login user object.
  */
-app.get('/loginUser', (req, res) => {
+app.get("/loginUser", (req, res) => {
   if (req.user) {
     res.status(200).send(req.user);
   } else {
