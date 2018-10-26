@@ -3,6 +3,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
+
 const {
   db,
   createListing,
@@ -47,6 +48,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(`${__dirname}/../client/dist`));
+
 
 app.get('/', (req, res, next) => {
   console.log(
@@ -168,8 +170,8 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  validateLogin(username, password, (err, userid) => {
-    if (userid) {
+  validateLogin(username, password, (err, user) => {
+    if (user) {
       createSession(req, res.status(200), username);
     } else {
       res.status(401).redirect('/loginView');
