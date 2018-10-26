@@ -142,7 +142,7 @@ const validateLogin = async (username, password, callback) => {
   });
 };
 
-// validateLogin('test123', 'test1234', (x, y) => {
+// validateLogin('test1234', 'test123', (x, y) => {
 //   console.log('******************');
 //   console.log('******************');
 //   console.log('******************');
