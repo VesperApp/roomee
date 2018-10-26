@@ -1,4 +1,4 @@
-const bCrypt = require("bcrypt-nodejs");
+const bCrypt = require("bcrypt");
 
 const { db, Listing, User, Photo } = require("./index");
 
@@ -131,26 +131,18 @@ const createUser = async (newUser, callback) => {
 /* ****************** ******************
 USER - authenticate user, returns user ID or false
 ****************** ****************** */
-const validateLogin = async (username, password, callback) => {
-  const user = await User.findOne({ where: { username } });
-  bCrypt.compare(password, user.password, (err, isValidated) => {
-    if (err) {
-      callback(err, null);
-    } else if (isValidated) {
-      callback(null, user);
-    } else {
-      callback(null, null);
-    }
-  });
+const validateLogin = async (username, password) => {
+  try {
+    const user = await User.findOne({ where: { username } });
+    const isValidated = await bCrypt.compare(password, user.password);
+    return isValidated ? user : null;
+  } catch(err) {
+    throw err;
+  }
 };
 
-// validateLogin('test1234', 'test123', (x, y) => {
-//   console.log('******************');
-//   console.log('******************');
-//   console.log('******************');
-
-//   console.log(x, y);
-// });
+// validateLogin('test1234', 'test123')
+//   .then((isValidated) => console.log('*****validateLogin()*****', isValidated));
 
 module.exports = {
   db,

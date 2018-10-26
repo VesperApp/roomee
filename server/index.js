@@ -168,15 +168,14 @@ app.post('/signup', (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  validateLogin(username, password, (err, user) => {
-    if (user) {
-      createSession(req, res.status(200), username);
-    } else {
-      res.status(401).redirect('/loginView');
-    }
-  });
+  const user = await validateLogin(username, password);
+  if (user) {
+    createSession(req, res.status(200), username);
+  } else {
+    res.status(401).redirect('/loginView');
+  }
 });
 
 /**
