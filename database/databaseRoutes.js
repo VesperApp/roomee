@@ -133,11 +133,13 @@ USER - authenticate user, returns user ID or false
 ****************** ****************** */
 const validateLogin = async (username, password, callback) => {
   const user = await User.findOne({ where: { username } });
-  bCrypt.compare(password, user.password, (err, result) => {
+  bCrypt.compare(password, user.password, (err, isValidated) => {
     if (err) {
       callback(err, null);
+    } else if (isValidated) {
+      callback(null, user);
     } else {
-      callback(null, result);
+      callback(null, null);
     }
   });
 };
