@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const passport = require('passport');
+const passport = require('./auth');
 
 
 const {
@@ -12,6 +12,7 @@ const {
   createUser,
   validateLogin,
 } = require('../database/databaseRoutes.js');
+const User = require('../database/models/User');
 
 const { createSession } = require('./util.js');
 
@@ -49,6 +50,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(`${__dirname}/../client/dist`));
 
+// See: https://www.sitepoint.com/local-authentication-using-passport-node-js/
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+passport.deserializeUser(async (id, done) => {
+  const user = await User.findById(id);
+  done(null, user);
+});
 
 app.get('/', (req, res, next) => {
   console.log(
@@ -168,15 +177,24 @@ app.post('/signup', (req, res) => {
   });
 });
 
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const user = await validateLogin(username, password);
-  if (user) {
-    createSession(req, res.status(200), username);
-  } else {
-    res.status(401).redirect('/loginView');
+app.post('/login',
+  // DEPRECATED
+  // async (req, res) => {
+  //   const { username, password } = req.body;
+  //   const user = await validateLogin(username, password);
+  //   if (user) {
+  //     createSession(req, res.status(200), username);
+  //   } else {
+  //     res.status(401).redirect('/loginView');
+  // }
+
+  // After authentication, we can fetch the user model through req.
+  passport.authenticate('local', { failureRedirect: '/loginView' }), 
+  (req, res) => { 
+    console.log('***SESSION****', req.user);
+    res.redirect('/');
   }
-});
+);
 
 /**
  * Get the login user object.
