@@ -1,5 +1,4 @@
 import React from 'react';
-import Dropzone from 'react-dropzone';
 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -35,6 +34,12 @@ class UserProfileView extends React.Component {
     });
   }
 
+  onChange(event) {
+    const change = {};
+    change[event.target.id] = event.target.value;
+    this.setState(change);
+  }
+
   fetchLoginUser(callback) {
     axios
       .get('/loginUser')
@@ -51,12 +56,6 @@ class UserProfileView extends React.Component {
       .catch(err => callback(err, null));
   }
 
-  onChange(event) {
-    const change = {};
-    change[event.target.id] = event.target.value;
-    this.setState(change);
-  }
-
   render() {
     const { redirect, picture, username, gender, birthday, location, hometown } = this.state;
     if (redirect) {
@@ -66,8 +65,8 @@ class UserProfileView extends React.Component {
     return (
       <section className="section">
         <div className="columns">
-          <div class="column">
-            <div class="box">
+          <div className="column">
+            <div className="box">
               <h4 className="subtitle">My Profile:</h4>
               <div className="field">
                 <figure className="image is-128x128">
@@ -119,7 +118,7 @@ class UserProfileView extends React.Component {
               </div>
             </div>*/}
             </div>
-            <div class="box">
+            <div className="box">
               <label className="label">Search Zipcode:</label>
               <p className="help">Enter your desired search zipcode for Roomee(s) or shared room listings</p>
 
@@ -146,8 +145,8 @@ class UserProfileView extends React.Component {
               </div>
             </div>
           </div>
-          <div class="column is-half">
-            <div class="box">
+          <div className="column is-half">
+            <div className="box">
               <h4 className="subtitle">My Listings:</h4>
               {!this.state.userListing.length ? (
                 <div className="has-text-centered title is-4">Sorry, no results found in this area</div>

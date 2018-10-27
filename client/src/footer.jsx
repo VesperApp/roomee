@@ -1,13 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Link } from 'react-router-dom';
 
 const Footer = () => (
-  <footer class="footer">
-    <div class="content has-text-centered">
+  <footer className="footer">
+    <div className="content has-text-centered">
       <p>
-        <strong>Roomee</strong> by <a href="https://github.com/VesperApp">Vesper App.</a>
+        <strong>Roomee</strong> by <a href="https://github.com/VesperApp">Vesper App</a>.
         <Link to="/presentation" className="level-item">
-          Learn more about this website.
+          Learn more about this project.
         </Link>
       </p>
     </div>

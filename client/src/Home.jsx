@@ -1,11 +1,10 @@
 import React from 'react';
 import $ from 'jquery';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
-import ListItemRoom from './ListItemRoom';
-import DetailsRoom from './DetailsRoom';
+import ListItemRoom from './unusedComponents/ListItemRoom';
+import DetailsRoom from './unusedComponents/DetailsRoom';
 
-var mostRate = {
+const mostRate = {
   background: '#eee',
   textAlign: 'center',
   fontSize: '2em',
@@ -26,8 +25,8 @@ class Home extends React.Component {
     $.ajax({
       url: '/searchListing',
       success: data => {
-        var dat = data;
-        dat.map(function(value) {
+        const dat = data;
+        dat.map(value => {
           return value.price > 500;
         });
         this.setState({
@@ -35,21 +34,24 @@ class Home extends React.Component {
         });
       },
       error: err => {
-        // console.log('mon error c', err);
+        console.log('mon error c', err);
       },
     });
   }
+
   handleClickitem(room) {
     this.setState({
       detRoom: room,
       showDetailsComponent: true,
     });
   }
+
   closeDetailRoom() {
     this.setState({
       showDetailsComponent: false,
     });
   }
+
   render() {
     return (
       <div>
@@ -63,7 +65,6 @@ class Home extends React.Component {
             <DetailsRoom listing={this.state.detRoom} closeDetailRoom={this.closeDetailRoom.bind(this)} />
           ) : null}
         </div>
-
         <nav>
           <div style={mostRate}> The most rate </div>
           {this.state.listRoom.map(room => (

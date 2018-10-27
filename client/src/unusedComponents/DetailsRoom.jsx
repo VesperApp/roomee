@@ -1,11 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 import GoogleMapReact from 'google-map-react';
 
 import Comment from './Comment.jsx';
 
-var modal = {
+const modal = {
   background: '#fff',
   position: 'fixed',
   width: '100%',
@@ -16,19 +15,22 @@ var modal = {
   rigth: '0',
   zIndex: '5',
 };
-var modalContent = {
+
+const modalContent = {
   background: '#fff',
   position: 'relative',
   width: '100%',
   height: '100%',
   overflow: 'auto',
 };
-var marginTopBottom = {
+
+const marginTopBottom = {
   position: 'relative',
   width: '100%',
   height: '40px',
   marginLeft: '40px',
 };
+
 const DetailsRoom = ({ listing, closeDetailRoom }) => (
   <div style={modal}>
     <div style={modalContent}>

@@ -34,6 +34,7 @@ class Comment extends React.Component {
       },
     });
   }
+
   handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target);
@@ -93,6 +94,7 @@ class Comment extends React.Component {
     );
   }
 }
+
 function stringifyFormData(fd) {
   const data = {};
   for (let key of fd.keys()) {
