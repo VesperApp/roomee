@@ -21,8 +21,6 @@ class CreateListingView extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.setRedirect = this.setRedirect.bind(this);
-
-    const { title, stateAbbr, address, city, zipCode, price, description, photos } = this.state;
   }
 
   onChange(event) {
@@ -73,10 +71,12 @@ class CreateListingView extends React.Component {
       //   photo5: photos[4]
       // });
 
-      var temp = [];
+      const temp = [];
+
       this.state.photos.forEach(function(ele) {
         temp.push({ url: ele });
       });
+
       this.setState({
         photosData: temp,
       });

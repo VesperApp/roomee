@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-
 const SignUpView = ({ onSignUp }) => (
   <div className="columns section level is-half is-offset-one-quarter">
     <form className="column level-item is-narrow is-offset-5" id="signUp" name="signUp" method="post" action="/signUp">

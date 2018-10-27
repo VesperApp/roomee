@@ -5,7 +5,7 @@ import React from 'react';
 const HouseListingView = ({ currentHouseView }) => (
   <div id="house-listing-view" className="section columns">
     <div className="column has-text-left is-half">
-      <div class="box">
+      <div className="box">
         <label className="label">Listing details</label>
         <p className="content">{currentHouseView.title}</p>
         <div>
@@ -32,7 +32,7 @@ const HouseListingView = ({ currentHouseView }) => (
       </div>
     </div>
     <div className="column">
-      <div class="box">
+      <div className="box">
         <label className="label">Listing images</label>
 
         {currentHouseView.photos.map((photo, ind) => {
@@ -53,8 +53,8 @@ const HouseListingView = ({ currentHouseView }) => (
           const uploadWidth = 'upload/w_412,c_scale/';
           const resizedPhotoUrl = arr.join(uploadWidth);
           return (
-            <div class="box">
-              <img src={resizedPhotoUrl} alt="picture of room for rent" key={ind} />
+            <div className="box">
+              <img src={resizedPhotoUrl} alt="" key={ind} />
             </div>
           );
         })}

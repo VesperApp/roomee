@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { HashRouter, Link, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
+
 import SearchView from './searchView';
 import LoginView from './loginView';
 import SignUpView from './signUpView';
@@ -9,7 +10,6 @@ import HouseListingView from './houseListingView';
 import Home from './Home';
 import Footer from './footer';
 import Presentation from './hrrPresentation';
-
 import UserProfileView from './userProfileView';
 
 export default class App extends React.Component {
@@ -131,17 +131,9 @@ export default class App extends React.Component {
       .catch(err => console.log(err));
   }
 
-  /*  ******** axios Requests ********* */
-  /* ******** Render ********* */
-
   render() {
     const { isLogin, currentHouseView, justRegistered, term, listings, roomees } = this.state;
 
-    // passing props to views with routes
-    const renderHouseListingView = () => <HouseListingView currentHouseView={currentHouseView} />;
-    const renderSignUpView = () => <SignUpView onSignUp={this.onSignUp} />;
-    const renderLoginView = () => <LoginView registered={justRegistered} />;
-    const renderCreateListingView = () => <CreateListingView onSubmit={this.onSubmitPost} />;
     const renderSearchView = () => (
       <SearchView
         onInput={this.onInput}
@@ -153,14 +145,11 @@ export default class App extends React.Component {
         onTitleClick={this.onTitleClick}
       />
     );
-    const renderUserProfileView = () => <UserProfileView onTitleClick={this.onTitleClick} />;
-    const renderHome = () => <Home />;
-    const renderPresentation = () => <Presentation />;
+
     return (
-      <Router>
-        <div className="hero">
-          <h1 className="level-item title has-text-centered is-medium   animated pulse">Roomee</h1>
-          {/* React router routes */}
+      <HashRouter>
+        <div>
+          <h1 className="level-item title has-text-centered is-medium animated pulse">Roomee</h1>
           <nav className="level">
             <Link to="/" className="level-item">
               Home
@@ -200,26 +189,19 @@ export default class App extends React.Component {
             ) : null}
           </nav>
 
-          {/* define root */}
-          <Route exact path="/" component={renderHome} />
-          <Route path="/search" render={renderSearchView} />
-          <Route path="/createListing" render={renderCreateListingView} />
-          <Route path="/loginView" render={renderLoginView} />
-          <Route path="/signUpView" render={renderSignUpView} />
-          <Route path="/house" render={renderHouseListingView} />
-          <Route path="/presentation" render={renderPresentation} />
-
-          <Route path="/userProfileView" render={renderUserProfileView} />
-
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/search" component={renderSearchView} />
+            <Route path="/presentation" component={Presentation} />
+            <Route path="/createListing" render={() => <CreateListingView onSubmit={this.onSubmitPost} />} />
+            <Route path="/loginView" render={() => <LoginView registered={justRegistered} />} />
+            <Route path="/signUpView" render={() => <SignUpView onSignUp={this.onSignUp} />} />
+            <Route path="/house" render={() => <HouseListingView currentHouseView={currentHouseView} />} />
+            <Route path="/userProfileView" render={() => <UserProfileView onTitleClick={this.onTitleClick} />} />
+          </Switch>
           <Footer />
         </div>
-      </Router>
+      </HashRouter>
     );
   }
-
-  /* ******** Render ********* */
 }
-
-// <footer className="footer has-text-centered heading is-6">
-// by the roomee project
-// </footer>

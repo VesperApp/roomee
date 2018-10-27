@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import API from '../api.config';
+import API from '../../api.config';
 
 class ContactUs extends React.Component {
   constructor(props) {
@@ -20,8 +20,6 @@ class ContactUs extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.setRedirect = this.setRedirect.bind(this);
-
-    const { title, stateAbbr, address, city, zipCode, price, description, photos } = this.state;
   }
 
   onChange(event) {

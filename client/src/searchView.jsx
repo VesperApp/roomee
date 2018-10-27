@@ -1,6 +1,6 @@
 import React from 'react';
 import RoomsSearchResultView from './roomsSearchResultView';
-import RoomeesSearchResultView from './roomeesSearchResultView';
+import RoomeesSearchResultView from './unusedComponents/roomeesSearchResultView';
 
 const SearchView = ({ term, listings, roomees, onInput, onSearchRooms, onSearchRoomees, onTitleClick }) => (
   <div>
@@ -42,6 +42,3 @@ const SearchView = ({ term, listings, roomees, onInput, onSearchRooms, onSearchR
 );
 
 export default SearchView;
-//column is-half is-offset-one-quarter level-item heading input
-//column level-item has-text-centered heading button
-//column is-one-fifth is-narrow

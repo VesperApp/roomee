@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const RoomsSearchResultView = ({ listing, onTitleClick }) => (
   <div className="container is-fluid">
-    <div class="box">
+    <div className="box">
       <Link to="/house">
         <h4 className="level-item has-text-centered " onClick={() => onTitleClick(listing)}>
           {listing.title}
@@ -28,8 +28,8 @@ const RoomsSearchResultView = ({ listing, onTitleClick }) => (
             const resizedPhotoUrl = arr.join(uploadWidth);
 
             return (
-              <figure class="image is-200x200">
-                <img src={resizedPhotoUrl} alt="picture of room for rent" key={ind} />
+              <figure className="image is-200x200">
+                <img src={resizedPhotoUrl} alt="" key={ind} />
               </figure>
             );
           })}
