@@ -76,49 +76,21 @@ class UserProfileView extends React.Component {
               <div className="field">
                 <label className="label">Name:</label>
                 <h5>{username}</h5>
-                <div className="control">
-                  {/*<input className="input is-normal" id="title" value={username} onChange={this.onChange} />*/}
-                </div>
+                <div className="control" />
               </div>
               <div className="field">
                 <label className="label">Gender:</label>
                 <h5>{gender}</h5>
-                <div className="control">
-                  {/*<input className="input" id="address" value={gender} onChange={this.onChange} />*/}
-                </div>
+                <div className="control" />
               </div>
               <div className="field ">
                 <label className="label">Birthday:</label>
                 <h5>{birthday}</h5>
 
-                <div className="control">
-                  {/*<input className="input" id="price" size="4" value={birthday} type="date" onChange={this.onChange} />*/}
-                </div>
-              </div>
-              {/*<div className="field">
-              <label className="label">
-                Location:
-              </label>
-              <h5>{location}</h5>
-
-              <div className="control">
-
-                  <input className="input" id="description" value={location} onChange={this.onChange} />
-                </div>
+                <div className="control" />
               </div>
             </div>
-             <div className="field">
-              <label className="label">
-                Hometown:
-              </label>
-              <h5>{hometown}</h5>
-
-              <div className="control">
-                <input className="input" id="description" value={hometown} onChange={this.onChange} />
-              </div>
-            </div>*/}
-            </div>
-            <div className="box">
+            {/* <div className="box">
               <label className="label">Search Zipcode:</label>
               <p className="help">Enter your desired search zipcode for Roomee(s) or shared room listings</p>
 
@@ -128,7 +100,7 @@ class UserProfileView extends React.Component {
                   <p className="help">ZipCode</p>
                 </div>
               </div>
-            </div>
+            </div> 
 
             <div className="field">
               <div className="control">
@@ -141,9 +113,9 @@ class UserProfileView extends React.Component {
                   }}
                 >
                   Save Changes
-                </button>
+                </button> 
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="column is-half">
             <div className="box">

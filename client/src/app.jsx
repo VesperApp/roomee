@@ -21,7 +21,6 @@ export default class App extends React.Component {
       roomees: [],
       currentHouseView: {},
       justRegistered: false,
-      showLogin: true,
       isLogin: false,
     };
     this.onSubmitPost = this.onSubmitPost.bind(this);
@@ -33,26 +32,26 @@ export default class App extends React.Component {
     this.onInput = this.onInput.bind(this);
   }
 
-  /* ******** Helpers and Events ********* */
-
-  componentDidMount() {
-    // get request fetches the zipcode of the user's IP address and calls onEnterSite
-    axios
-      .get('http://ip-api.com/json')
-      .then(response => {
-        this.setState({ ziptest: response.data.zip });
-        this.searchRoomsByZipCode(response.data.zip);
-      })
-      .catch(err => console.log(err));
+  async componentDidMount() {
+    const userZipcode = await axios('https://ipapi.co/json');
+    this.setState({ ziptest: userZipcode.zip });
+    this.searchRoomsByZipCode(userZipcode.zip);
 
     // check login status
     this.getLoginUser((err, user) => {
       if (err) {
-        console.log(err);
+        console.log('User not logged in');
       } else {
-        this.setState({ isLogin: !!user });
+        this.setState({ isLogin: true });
       }
     });
+  }
+
+  getLoginUser(callback) {
+    axios
+      .get('/loginUser')
+      .then(res => callback(null, res.data))
+      .catch(err => callback(err, null));
   }
 
   onInput(e) {
@@ -72,9 +71,6 @@ export default class App extends React.Component {
       justRegistered: true,
     });
   }
-
-  /* ******** Helpers and Events ********* */
-  /*  ******** axios Requests ********* */
 
   onSearchRooms(event) {
     const { term } = this.state;
@@ -101,13 +97,6 @@ export default class App extends React.Component {
       .catch(err => console.log(err));
   }
 
-  getLoginUser(callback) {
-    axios
-      .get('/loginUser')
-      .then(res => callback(null, res.data))
-      .catch(err => callback(err, null));
-  }
-
   searchRoomsByZipCode(zipCode) {
     // get request queries databse for all listings matching the user's ip address zipcode
     axios
@@ -126,25 +115,13 @@ export default class App extends React.Component {
   logout() {
     axios
       .get('/logout')
-      .then(res => axios.get('/loginUser'))
-      .then(res => this.setState({ isLogin: !!user }))
+      .then(() => axios.get('/loginUser'))
+      .then(() => this.setState({ isLogin: false }))
       .catch(err => console.log(err));
   }
 
   render() {
     const { isLogin, currentHouseView, justRegistered, term, listings, roomees } = this.state;
-
-    const renderSearchView = () => (
-      <SearchView
-        onInput={this.onInput}
-        value={term}
-        listings={listings}
-        roomees={roomees}
-        onSearchRooms={this.onSearchRooms}
-        onSearchRoomees={this.onSearchRoomees}
-        onTitleClick={this.onTitleClick}
-      />
-    );
 
     return (
       <HashRouter>
@@ -172,11 +149,11 @@ export default class App extends React.Component {
                 Sign Up
               </Link>
             )}
-            {isLogin ? null : (
+            {/* isLogin ? null : (
               <a href="/login/facebook" className="level-item">
                 Login with Facebook
               </a>
-            )}
+            ) */}
             {isLogin ? (
               <Link to="/userProfileView" className="level-item">
                 Profile
@@ -191,7 +168,20 @@ export default class App extends React.Component {
 
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/search" component={renderSearchView} />
+            <Route
+              path="/search"
+              render={() => (
+                <SearchView
+                  onInput={this.onInput}
+                  value={term}
+                  listings={listings}
+                  roomees={roomees}
+                  onSearchRooms={this.onSearchRooms}
+                  onSearchRoomees={this.onSearchRoomees}
+                  onTitleClick={this.onTitleClick}
+                />
+              )}
+            />
             <Route path="/presentation" component={Presentation} />
             <Route path="/createListing" render={() => <CreateListingView onSubmit={this.onSubmitPost} />} />
             <Route path="/loginView" render={() => <LoginView registered={justRegistered} />} />

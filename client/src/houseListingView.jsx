@@ -42,17 +42,18 @@ const HouseListingView = ({ currentHouseView }) => (
           // objects from our database when rednered after a serach, if it is an array of
           // objects, we need the string located at photo.url, otherwise we can use the string as
           // provided. a better solution would be for this page to receive consistent props
+          let photoURL;
           if (photo.url) {
-            photo = photo.url;
+            photoURL = photo.url;
           }
-          const arr = photo.split('upload/');
+          const arr = photoURL.split('upload/');
           // pictures are hosted on cloudinary and inserting these parameters in the url resizes the
           // picures. Ideally the ratio of the images would be consistent for better layout but we //didn't get to that feature
           const uploadWidth = 'upload/w_412,c_scale/';
           const resizedPhotoUrl = arr.join(uploadWidth);
           return (
-            <div className="box">
-              <img src={resizedPhotoUrl} alt="" key={ind} />
+            <div className="box" key={photoURL}>
+              <img src={resizedPhotoUrl} alt="" />
             </div>
           );
         })}

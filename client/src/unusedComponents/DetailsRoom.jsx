@@ -73,7 +73,7 @@ const DetailsRoom = ({ listing, closeDetailRoom }) => (
           </div>
           <div style={marginTopBottom} />
         </div>
-        <Comment id={listing.id} />
+        {/* <Comment id={listing.id} /> */}
       </footer>
 
       <div className="footerModal">

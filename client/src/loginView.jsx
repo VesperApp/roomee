@@ -2,8 +2,6 @@ import React from 'react';
 
 const LoginView = ({ registered }) => (
   <form id="login" name="login" method="post" action="login" className="column is-half is-offset-one-quarter">
-    {// conditional rendering of sign up message
-    registered ? <h4>Thanks for signing up! Please log in.</h4> : null}
     <div className="field">
       <label className="label">Email</label>
       <div className="control has-icons-left">
