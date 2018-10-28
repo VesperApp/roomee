@@ -42,9 +42,7 @@ const ListItemRoom = ({ room, handleClickitem }) => (
       ${room.price}{' '}
     </span>
     <span> per month </span> <br />
-    <div style={rate}>
-      <StarRatingComponent name="rate2" editing={false} starCount={5} value={4.5} />
-    </div>
+    {/* <div style={rate}><StarRatingComponent name="rate2" editing={false} starCount={5} value={4.5} /> </div> */}
   </div>
 );
 

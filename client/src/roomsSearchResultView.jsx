@@ -16,7 +16,7 @@ const RoomsSearchResultView = ({ listing, onTitleClick }) => (
         <h5 className="level-item has-text-centered ">Price: ${listing.price}</h5>
 
         <div className="level-item">
-          {listing.photos.map((photo, ind) => {
+          {listing.photos.map(photo => {
             // cloundinary image sizes are manipulated by inserting arguments after the 'upload' part of the file parth
             // example: "http://res.cloudinary.com/dwysumxzw/image/upload/v1532558555/kog_r_full_shot_x2ggw7.jpg";
             // I'm not connected to the database yet and will need to test the lines below once we are
@@ -28,8 +28,8 @@ const RoomsSearchResultView = ({ listing, onTitleClick }) => (
             const resizedPhotoUrl = arr.join(uploadWidth);
 
             return (
-              <figure className="image is-200x200">
-                <img src={resizedPhotoUrl} alt="" key={ind} />
+              <figure className="image is-200x200" key={photo.url}>
+                <img src={resizedPhotoUrl} alt="" />
               </figure>
             );
           })}
