@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-
 import ListItemRoom from './unusedComponents/ListItemRoom';
 import DetailsRoom from './unusedComponents/DetailsRoom';
 
@@ -54,10 +53,13 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
-        <section className="hero is-medium is-primary">
+      <div className="container">
+        <section className="hero is-primary is-medium">
           <div className="hero-body">
-            <h1 className="animated pulse">Welcome to Roomee</h1>
+            <div className="container">
+              <h1 className="title">Welcome to Roomee</h1>
+              <h2 className="subtitle">Search for and post room rental listings</h2>
+            </div>
           </div>
         </section>
         <div>
@@ -65,12 +67,11 @@ class Home extends React.Component {
             <DetailsRoom listing={this.state.detRoom} closeDetailRoom={this.closeDetailRoom.bind(this)} />
           ) : null}
         </div>
-        <nav>
-          <div style={mostRate}> The most rate </div>
+        <div className="tile is-ancestor">
           {this.state.listRoom.map(room => (
             <ListItemRoom room={room} key={room.id} handleClickitem={this.handleClickitem.bind(this)} />
           ))}
-        </nav>
+        </div>
       </div>
     );
   }

@@ -1,34 +1,15 @@
-const express = require("express");
-const session = require("express-session");
-const bodyParser = require("body-parser");
-const passport = require("./auth");
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const passport = require('./auth');
 
-const {
-  db,
-  createListing,
-  findListingsByZip,
-  findListingsByID,
-  createUser,
-  validateLogin
-} = require("../database/databaseRoutes.js");
-const User = require("../database/models/User");
+const { createListing, findListingsByZip, findListingsByID } = require('../database/databaseRoutes.js');
 
-const { createSession } = require("./util.js");
-
-// const passportLocal = require('passport-local');
-// const exphbs = require('express-handlebars');
+const User = require('../database/models/User');
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-// const models = require("../database/models");
-// const authRoute = require('../database/passport_routes/auth.js')(app,passport);
-// const passportStrat = require('../database/passport/passport.js')(passport, models.user);
-
-// const models = require('../database/models');
-// const authRoute = require('../database/passport_routes/auth.js')(app,passport);
-// const passportStrat = require('../database/config/passport/passport.js')(passport, models.user);
-// app.set('view engine', 'jade');
 
 // initialize passport and the express sessions and passport sessions
 app.use(
@@ -38,7 +19,7 @@ app.use(
       .substring(2),
     // resave: false, //             resave - false means do not save back to the store unless there is a change
     // saveUninitialized: false, //  saveuninitialized false - don't create a session unless it is a logged in user
-    cookie: { expires: 24 * 60 * 60 * 1000 }
+    cookie: { expires: 24 * 60 * 60 * 1000 },
   })
 );
 
@@ -58,22 +39,12 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
-app.get("/", (req, res, next) => {
-  console.log(
-    `HOME SCREEN ========current user is >>${req.user}
-    << and this user authentication is >>${req.isAuthenticated()}<< ============`
-  );
-  // console.log("\x1b[33m%s\x1b[0m", `SESSION: ${JSON.stringify(req.session)}`);
-  // console.log("\x1b[33m%s\x1b[0m", `USER: ${JSON.stringify(req.user)}`);
-  next();
-});
-
-app.get("/searchListing", (req, res) => {
+app.get('/searchListing', (req, res) => {
   // console.log(`get to searchlisting ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`);
   // console.log(req.body)
-  let zip = req.param("zip");
+  let zip = req.param('zip');
   if (zip !== undefined) {
-    zip = zip.substr(0, 3) + "__";
+    zip = zip.substr(0, 3) + '__';
   }
   const queryStr = zip ? { where: { zipCode: { $like: zip } } } : {};
 
@@ -88,13 +59,7 @@ app.get("/searchListing", (req, res) => {
   // params => Key:zip, Value:70826
 });
 
-// ED: DISABLED: SESSION FOR SERVER TESTING
-// const isLoggedIn = (req, res, next) =>
-//   req.isAuthenticated() ? next() : res.sendStatus(401);
-// ED: add this middle ware to post route for /listing:
-// app.post('/listing', isLoggedIn, (req, res) => {
-
-app.post("/listing", async (req, res) => {
+app.post('/listing', async (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
   // console.log(req.body);
   req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
@@ -124,8 +89,8 @@ app.post("/listing", async (req, res) => {
   // }
 });
 
-app.get("/userListings", (req, res) => {
-  findListingsByID(req.param("userId"), (err, result) => {
+app.get('/userListings', (req, res) => {
+  findListingsByID(req.param('userId'), (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
@@ -136,11 +101,11 @@ app.get("/userListings", (req, res) => {
   // params => Key:userId, Value:1
 });
 
-app.get("/logout", (req, res) => {
+app.get('/logout', (req, res) => {
   req.logOut();
   req.session.destroy(() => {
-    res.clearCookie("connect.sid");
-    res.redirect("/");
+    res.clearCookie('connect.sid');
+    res.redirect('/');
   });
 });
 /**
@@ -151,30 +116,22 @@ app.get("/logout", (req, res) => {
  * 204 indicates username is not in use, but since no password was sent with the request, no creation will happen
  * 409 when the databse rejected an add user
  */
-app.post(
-  "/signup",
-  passport.authenticate("local-signup", { failureRedirect: "/signupView" }),
-  (req, res) => {
-    // After authentication, we can fetch the user model through req.
-    console.log("***SESSION****", req.user);
-    res.redirect("/");
-  }
-);
+app.post('/signup', passport.authenticate('local-signup', { failureRedirect: '/' }), (req, res) => {
+  // After authentication, we can fetch the user model through req.
+  console.log('***SESSION****', req.user);
+  res.redirect('/');
+});
 
-app.post(
-  "/login",
-  passport.authenticate("local-login", { failureRedirect: "/loginView" }),
-  (req, res) => {
-    // After authentication, we can fetch the user model through req.
-    console.log("***SESSION****", req.user);
-    res.redirect("/");
-  }
-);
+app.post('/login', passport.authenticate('local-login'), (req, res) => {
+  // After authentication, we can fetch the user model through req.
+  console.log('***SESSION****', req.user);
+  res.redirect('/');
+});
 
 /**
  * Get the login user object.
  */
-app.get("/loginUser", (req, res) => {
+app.get('/loginUser', (req, res) => {
   if (req.user) {
     res.status(200).send(req.user);
   } else {
