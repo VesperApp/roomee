@@ -20,7 +20,7 @@ export default class App extends React.Component {
       listings: [],
       roomees: [],
       currentHouseView: {},
-      justRegistered: false,
+      registered: false,
       isLogin: false,
     };
     this.onSubmitPost = this.onSubmitPost.bind(this);
@@ -36,40 +36,21 @@ export default class App extends React.Component {
     const userZipcode = await axios('https://ipapi.co/json');
     this.setState({ ziptest: userZipcode.zip });
     this.searchRoomsByZipCode(userZipcode.zip);
-
     // check login status
-    this.getLoginUser((err, user) => {
-      if (err) {
-        console.log('User not logged in');
-      } else {
-        this.setState({ isLogin: true });
-      }
-    });
+    this.getLoginUser();
   }
 
-  getLoginUser(callback) {
+  onSubmitPost(newListingData) {
+    console.log(newListingData);
+    // create new house listing in db
+    this.setState({ currentHouseView: newListingData });
+    // post request to server
     axios
-      .get('/loginUser')
-      .then(res => callback(null, res.data))
-      .catch(err => callback(err, null));
-  }
-
-  onInput(e) {
-    this.setState({ term: e.target.value });
-  }
-
-  onTitleClick(item) {
-    // populate houselistingview with data from searchresult view
-    this.setState({
-      currentHouseView: item,
-    });
-  }
-
-  onSignUp() {
-    // give user a human way to know they have registered
-    this.setState({
-      justRegistered: true,
-    });
+      .post('/listing', newListingData)
+      .then(() => {
+        // console.log(`-------> Folowing data returned from server POST -> ${res}`)
+      })
+      .catch(err => console.log(err));
   }
 
   onSearchRooms(event) {
@@ -84,17 +65,32 @@ export default class App extends React.Component {
     this.searchRoomeesByZipCode(term);
   }
 
-  onSubmitPost(newListingData) {
-    console.log(newListingData);
-    // create new house listing in db
-    this.setState({ currentHouseView: newListingData });
-    // post request to server
-    axios
-      .post('/listing', newListingData)
-      .then(() => {
-        // console.log(`-------> Folowing data returned from server POST -> ${res}`)
-      })
-      .catch(err => console.log(err));
+  onSignUp() {
+    // give user a human way to know they have registered
+    this.setState({
+      registered: true,
+    });
+  }
+
+  onTitleClick(item) {
+    // populate houselistingview with data from searchresult view
+    this.setState({
+      currentHouseView: item,
+    });
+  }
+
+  onInput(e) {
+    this.setState({ term: e.target.value });
+  }
+
+  async getLoginUser() {
+    try {
+      await axios.get('/loginUser');
+      this.setState({ isLogin: true });
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   searchRoomsByZipCode(zipCode) {
@@ -121,11 +117,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { isLogin, currentHouseView, justRegistered, term, listings, roomees } = this.state;
+    const { isLogin, currentHouseView, registered, term, listings, roomees } = this.state;
 
     return (
       <HashRouter>
-        <div>
+        <div className="container is-fluid">
           <h1 className="level-item title has-text-centered is-medium animated pulse">Roomee</h1>
           <nav className="level">
             <Link to="/" className="level-item">
@@ -182,12 +178,15 @@ export default class App extends React.Component {
                 />
               )}
             />
-            <Route path="/presentation" component={Presentation} />
-            <Route path="/createListing" render={() => <CreateListingView onSubmit={this.onSubmitPost} />} />
-            <Route path="/loginView" render={() => <LoginView registered={justRegistered} />} />
             <Route path="/signUpView" render={() => <SignUpView onSignUp={this.onSignUp} />} />
-            <Route path="/house" render={() => <HouseListingView currentHouseView={currentHouseView} />} />
+            <Route
+              path="/loginView"
+              render={() => <LoginView registered={registered} getLoginUser={this.getLoginUser.bind(this)} />}
+            />
             <Route path="/userProfileView" render={() => <UserProfileView onTitleClick={this.onTitleClick} />} />
+            <Route path="/createListing" render={() => <CreateListingView onSubmitPost={this.onSubmitPost} />} />
+            <Route path="/house" render={() => <HouseListingView currentHouseView={currentHouseView} />} />
+            <Route path="/presentation" component={Presentation} />
           </Switch>
           <Footer />
         </div>

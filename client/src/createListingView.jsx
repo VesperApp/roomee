@@ -93,7 +93,7 @@ class CreateListingView extends React.Component {
 
   render() {
     const { redirect, photos } = this.state;
-    const { onSubmit } = this.props;
+    const { onSubmitPost } = this.props;
 
     if (redirect) {
       return <Redirect to="/house" />;
@@ -183,7 +183,7 @@ class CreateListingView extends React.Component {
                   className="button is-primary"
                   type="submit"
                   onClick={() => {
-                    onSubmit(this.state);
+                    onSubmitPost(this.state);
                     this.setRedirect();
                   }}
                 >

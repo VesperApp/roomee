@@ -29,20 +29,21 @@ const rate = {
 };
 
 const ListItemRoom = ({ room, handleClickitem }) => (
-  <div className="container column is-fluid" style={contentStyle} onClick={() => handleClickitem(room)}>
-    <div className="images">
-      <img src={room.photos[0].url} />
-    </div>
-    <div className="title" style={title}>
-      {' '}
-      {room.title}{' '}
-    </div>
-    <span className="price" style={price}>
-      {' '}
-      ${room.price}{' '}
-    </span>
-    <span> per month </span> <br />
-    {/* <div style={rate}><StarRatingComponent name="rate2" editing={false} starCount={5} value={4.5} /> </div> */}
+  <div className="tile" style={contentStyle} onClick={() => handleClickitem(room)}>
+    <article className="tile is-child box">
+      <p className="subtitle">{room.title}</p>
+      <figure className="image is-4by3">
+        {room.photos[0].url ? <img src={room.photos[0].url} alt="room" /> : null}
+      </figure>
+
+      <p className="content">
+        {' '}
+        <span className="price" style={price}>
+          $
+        </span>
+        {room.price} per month
+      </p>
+    </article>
   </div>
 );
 

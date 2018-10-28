@@ -34,7 +34,7 @@ const HouseListingView = ({ currentHouseView }) => (
         <label className="label">Listing images</label>
 
         {currentHouseView.photos.map((photo, ind) => {
-          if (photo.url === null) {
+          if (!photo.url) {
             return 'No images posted!';
           }
 
@@ -43,14 +43,16 @@ const HouseListingView = ({ currentHouseView }) => (
           // objects, we need the string located at photo.url, otherwise we can use the string as
           // provided. a better solution would be for this page to receive consistent props
           let photoURL;
+          let arr;
+          let resizedPhotoUrl;
           if (photo.url) {
             photoURL = photo.url;
+            arr = photoURL.split('upload/');
+            // pictures are hosted on cloudinary and inserting these parameters in the url resizes the
+            // picures. Ideally the ratio of the images would be consistent for better layout but we //didn't get to that feature
+            const uploadWidth = 'upload/w_412,c_scale/';
+            resizedPhotoUrl = arr.join(uploadWidth);
           }
-          const arr = photoURL.split('upload/');
-          // pictures are hosted on cloudinary and inserting these parameters in the url resizes the
-          // picures. Ideally the ratio of the images would be consistent for better layout but we //didn't get to that feature
-          const uploadWidth = 'upload/w_412,c_scale/';
-          const resizedPhotoUrl = arr.join(uploadWidth);
           return (
             <div className="box" key={photoURL}>
               <img src={resizedPhotoUrl} alt="" />
