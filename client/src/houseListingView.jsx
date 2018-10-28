@@ -11,15 +11,13 @@ const HouseListingView = ({ currentHouseView }) => (
         <div>
           <label className="label">Address</label>
           <p className="content">
-            {currentHouseView.address + ' '}
-            {currentHouseView.city + ', '}
-            {currentHouseView.stateAbbr + ' '}
-            {currentHouseView.zipCode}
+            {`${currentHouseView.address} 
+            ${currentHouseView.city}, ${currentHouseView.stateAbbr} ${currentHouseView.zipCode}`}
           </p>
         </div>
         <div>
           <label className="label">Price</label>
-          <p className="content">{'$' + currentHouseView.price}</p>
+          <p className="content">{`$${currentHouseView.price}`}</p>
         </div>
         <div>
           <label className="label">Description</label>
