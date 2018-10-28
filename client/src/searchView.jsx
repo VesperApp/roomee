@@ -11,7 +11,7 @@ const SearchView = ({ term, listings, roomees, onInput, onSearchRooms, onSearchR
         type="text"
         value={term}
         onChange={onInput}
-        placeholder="Zip Code"
+        placeholder="Zipcode"
       />
       <button
         className="button is-small is-success"
@@ -19,8 +19,10 @@ const SearchView = ({ term, listings, roomees, onInput, onSearchRooms, onSearchR
         type="submit"
         onClick={onSearchRooms}
       >
-        Rooms
+        Search Rooms
       </button>
+
+      {/* 
       <button
         className="button is-small is-info"
         style={{ textAlign: 'center' }}
@@ -28,7 +30,7 @@ const SearchView = ({ term, listings, roomees, onInput, onSearchRooms, onSearchR
         onClick={onSearchRoomees}
       >
         Roomees
-      </button>
+      </button> */}
     </div>
     <div>
       {!listings.length && !roomees.length ? (

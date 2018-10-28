@@ -44,7 +44,7 @@ class CreateListingView extends React.Component {
       // Replace API key with your own Cloudinary key  ***********
       // images are hosted on Cloudinary, you can set up your own free account
       formData.append('api_key', API.cloudinaryKey);
-      formData.append('timestamp', (Date.now() / 1000) | 0);
+      formData.append('timestamp', Date.now() / 1000 || 0);
 
       // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own) ***********
       return axios
@@ -92,10 +92,13 @@ class CreateListingView extends React.Component {
   }
 
   render() {
-    const { redirect } = this.state;
+    const { redirect, photos } = this.state;
+    const { onSubmit } = this.props;
+
     if (redirect) {
       return <Redirect to="/house" />;
     }
+
     return (
       <section className="section">
         <div id="create-listing" className="columns">
@@ -163,14 +166,14 @@ class CreateListingView extends React.Component {
                 </Dropzone>
               </div>
               <aside>
-                <h2>{this.state.photos.length} File(s) Uploaded</h2>
+                <h2>{photos.length} File(s) Uploaded</h2>
                 <ul>
-                  {this.state.photos.map((f, i) => {
+                  {photos.map((f, i) => (
                     // this is very odd, the line above correctly displays the file name, but
-                    <li key={f}>File {i}</li>;
+                    <li key={f}>File {i}</li>
                     // the line above is not rendering ANYTHING
                     // the photos are being saved  however, so come back to this post-MVP
-                  })}
+                  ))}
                 </ul>
               </aside>
             </section>
@@ -180,7 +183,7 @@ class CreateListingView extends React.Component {
                   className="button is-primary"
                   type="submit"
                   onClick={() => {
-                    this.props.onSubmit(this.state);
+                    onSubmit(this.state);
                     this.setRedirect();
                   }}
                 >
