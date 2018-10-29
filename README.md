@@ -2,12 +2,6 @@
 
 > An app for posting or finding share houses and roommates in your area.
 
-## Team
-
-  - __Product Owner__: Anthony King
-  - __Scrum Master__: Andy Riesenbach
-  - __Development Team Members__: David Park, Ashleigh Kessel, Kalei Trujillo
-
 ## Table of Contents
 
 1. [Usage](#Usage)
