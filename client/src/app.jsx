@@ -16,7 +16,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      term: '',
+      zipcode: '',
       listings: [],
       roomees: [],
       currentHouseView: {},
@@ -25,7 +25,6 @@ export default class App extends React.Component {
     };
     this.onSubmitPost = this.onSubmitPost.bind(this);
     this.onSearchRooms = this.onSearchRooms.bind(this);
-    this.onSearchRoomees = this.onSearchRoomees.bind(this);
     this.searchRoomsByZipCode = this.searchRoomsByZipCode.bind(this);
     this.onSignUp = this.onSignUp.bind(this);
     this.onTitleClick = this.onTitleClick.bind(this);
@@ -33,11 +32,13 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    const userZipcode = await axios('https://ipapi.co/json');
-    this.setState({ ziptest: userZipcode.zip });
-    this.searchRoomsByZipCode(userZipcode.zip);
     // check login status
     this.getLoginUser();
+    // get user zip and search DB
+    const userZipcode = await axios.get('https://ipapi.co/json');
+    this.setState({ zipcode: userZipcode.data.postal });
+    await console.log('your zip: ', userZipcode.data.postal);
+    await this.searchRoomsByZipCode(userZipcode.data.postal);
   }
 
   onSubmitPost(newListingData) {
@@ -54,15 +55,9 @@ export default class App extends React.Component {
   }
 
   onSearchRooms(event) {
-    const { term } = this.state;
+    const { zipcode } = this.state;
     event.preventDefault();
-    this.searchRoomsByZipCode(term);
-  }
-
-  onSearchRoomees(event) {
-    const { term } = this.state;
-    event.preventDefault();
-    this.searchRoomeesByZipCode(term);
+    this.searchRoomsByZipCode(zipcode);
   }
 
   onSignUp() {
@@ -73,6 +68,7 @@ export default class App extends React.Component {
   }
 
   onTitleClick(item) {
+    console.log(item);
     // populate houselistingview with data from searchresult view
     this.setState({
       currentHouseView: item,
@@ -80,7 +76,7 @@ export default class App extends React.Component {
   }
 
   onInput(e) {
-    this.setState({ term: e.target.value });
+    this.setState({ zipcode: e.target.value });
   }
 
   async getLoginUser() {
@@ -93,19 +89,15 @@ export default class App extends React.Component {
     }
   }
 
-  searchRoomsByZipCode(zipCode) {
+  async searchRoomsByZipCode(zipCode) {
     // get request queries databse for all listings matching the user's ip address zipcode
-    axios
-      .get('/searchListing', { params: { zip: zipCode } })
-      .then(res => this.setState({ listings: res.data, roomees: [] }))
-      .catch(err => console.log(err));
-  }
-
-  searchRoomeesByZipCode(zipCode) {
-    axios
-      .get('/searchRoomees', { params: { zip: zipCode } })
-      .then(res => this.setState({ roomees: res.data, listings: [] }))
-      .catch(err => console.log(err));
+    try {
+      const results = await axios.get('/searchListing', { params: { zip: zipCode } });
+      await this.setState({ listings: results.data });
+      console.log(results);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   logout() {
@@ -117,7 +109,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { isLogin, currentHouseView, registered, term, listings, roomees } = this.state;
+    const { isLogin, currentHouseView, registered, zipcode, listings, roomees } = this.state;
 
     return (
       <HashRouter>
@@ -163,17 +155,16 @@ export default class App extends React.Component {
           </nav>
 
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" render={() => <Home onTitleClick={this.onTitleClick} />} />
             <Route
               path="/search"
               render={() => (
                 <SearchView
                   onInput={this.onInput}
-                  value={term}
+                  zipcode={zipcode}
                   listings={listings}
                   roomees={roomees}
                   onSearchRooms={this.onSearchRooms}
-                  onSearchRoomees={this.onSearchRoomees}
                   onTitleClick={this.onTitleClick}
                 />
               )}
