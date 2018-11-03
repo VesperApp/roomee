@@ -7,6 +7,8 @@ const { createListing, findListingsByZip, findListingsByID } = require('../datab
 
 const User = require('../database/models/User');
 
+const { checkLogin } = require('./util');
+
 const PORT = process.env.PORT || 4000;
 
 const app = express();
@@ -59,17 +61,19 @@ app.get('/searchListing', (req, res) => {
   // params => Key:zip, Value:70826
 });
 
-app.post('/listing', async (req, res) => {
+app.post('/listing', checkLogin, async (req, res) => {
   // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-  // console.log(req.body);
+
   req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
   req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
   try {
     const createdListing = await createListing(req.body);
+    console.log(createdListing);
     res.status(201).send(createdListing);
   } catch (err) {
     const log = err.name || err;
+    console.log(log);
     res.status(500).send(`Failed to create: ${log}`);
   }
   // POSTMAN TEST DATA
