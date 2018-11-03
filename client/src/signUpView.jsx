@@ -1,8 +1,15 @@
 import React from 'react';
+import Dropzone from 'react-dropzone';
 
 const SignUpView = ({ onSignUp }) => (
   <div className="columns section level is-half is-offset-one-quarter">
     <form className="column level-item is-narrow is-offset-5" id="signUp" name="signUp" method="post" action="/signUp">
+      <div className="field">
+        <label className="label">Profile Picture</label>
+        <Dropzone multiple accept="image/jpeg, image/png" maxSize={5242880}>
+          <p>Add your photo</p>
+        </Dropzone>
+      </div>
       <div className="field">
         <label className="label">Email</label>
         <div className="control has-icons-left">

@@ -1,7 +1,7 @@
-var cloudName = 'dsiiktj6s';
+var cloudName = 'db5rb32ne';
 
 export default {
-  cloudinaryPresetName: 'twoh81zw', //unsigned upload preset
-  cloudinaryKey: '',
+  cloudinaryPresetName: 'sdaclh3g', //unsigned upload preset
+  cloudinaryKey: '692822772329959',
   CloudinaryURL: `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
 };
