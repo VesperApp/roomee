@@ -5,3 +5,12 @@ exports.createSession = (req, res, username) => {
     res.redirect('/');
   });
 };
+
+exports.checkLogin = (req, res, next) => {
+  console.log('******** ', req.user);
+  if (!req.user) {
+    res.redirect('/');
+  } else {
+    next();
+  }
+};
