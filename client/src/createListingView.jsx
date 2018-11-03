@@ -1,8 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import API from '../api.config';
+import { photosOnDrop } from '../util';
 
 class CreateListingView extends React.Component {
   constructor(props) {
@@ -30,58 +29,10 @@ class CreateListingView extends React.Component {
     this.setState(change);
   }
 
-  // this function uploads all files dropped into the the DropZone to Cloudinary, more info here:
-  // https://tinyurl.com/y873sr55
   onDrop(files) {
-    // Push all the axios request promises into a single array
-    const uploaders = files.map(file => {
-      // Initial FormData
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('tags', `codeinfuse, medium, gist`);
-      // Replace the preset name with your own ***********
-      formData.append('upload_preset', API.cloudinaryPresetName);
-      // Replace API key with your own Cloudinary key  ***********
-      // images are hosted on Cloudinary, you can set up your own free account
-      formData.append('api_key', API.cloudinaryKey);
-      formData.append('timestamp', Date.now() / 1000 || 0);
-
-      // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own) ***********
-      return axios
-        .post(API.CloudinaryURL, formData, {
-          headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        })
-        .then(response => {
-          const data = response.data;
-          const fileURL = data.secure_url;
-          this.state.photos.push(fileURL);
-        });
-    });
-
-    // Once all the files are uploaded
-    axios.all(uploaders).then(() => {
-      // while we are only saving files photo urls to state and passing those to our database, a user
-      // could presently upload an unlimited amount of image files to our Cloudinary account
-      // const photos = this.state.photos.slice();
-      // this.setState({
-      //   photo1: photos[0],
-      //   photo2: photos[1],
-      //   photo3: photos[2],
-      //   photo4: photos[3],
-      //   photo5: photos[4]
-      // });
-
-      const temp = [];
-
-      this.state.photos.forEach(function(ele) {
-        temp.push({ url: ele });
-      });
-
-      this.setState({
-        photosData: temp,
-      });
-    });
+    photosOnDrop(files).then(photoUrls => this.setState({photos: photoUrls}));
   }
+
 
   setRedirect() {
     // invoked when the submit button is clicked to redirect user to /house endpoint which renders
@@ -160,7 +111,6 @@ class CreateListingView extends React.Component {
             </div>
             <section>
               <div className="dropzone">
-                {/* https://www.npmjs.com/package/react-dropzone */}
                 <Dropzone onDrop={this.onDrop} multiple accept="image/jpeg, image/png" maxSize={5242880}>
                   <p>Add unlimited images!</p>
                 </Dropzone>
