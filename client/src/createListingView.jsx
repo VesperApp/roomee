@@ -30,7 +30,11 @@ class CreateListingView extends React.Component {
   }
 
   onDrop(files) {
-    photosOnDrop(files).then(photoUrls => this.setState({photos: photoUrls}));
+    photosOnDrop(files).then(photoUrls =>  {
+      console.log('FILES ', photoUrls);
+      const photos = this.state.photos.concat(photoUrls);
+      this.setState({ photos });
+    });
   }
 
 
@@ -118,11 +122,10 @@ class CreateListingView extends React.Component {
               <aside>
                 <h2>{photos.length} File(s) Uploaded</h2>
                 <ul>
-                  {photos.map((f, i) => (
-                    // this is very odd, the line above correctly displays the file name, but
-                    <li key={f}>File {i}</li>
-                    // the line above is not rendering ANYTHING
-                    // the photos are being saved  however, so come back to this post-MVP
+                  {photos.map((file) => (
+                    <li>
+                      <img src={file} alt='lost the url'/>
+                    </li>
                   ))}
                 </ul>
               </aside>
