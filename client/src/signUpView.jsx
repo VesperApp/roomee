@@ -13,6 +13,7 @@ class SignUpView extends React.Component {
   }
 
   render() {
+    const { photo } = this.state;
     return (
       <div className='columns section level is-half is-offset-one-quarter'>
         <form
@@ -26,9 +27,9 @@ class SignUpView extends React.Component {
             <label className='label'>Profile Picture</label>
             <Dropzone onDrop={(files) => this.onDrop(files)} multiple accept="image/jpeg, image/png" maxSize={5242880} multiple accept='image/jpeg, image/png' maxSize={5242880}>
               <div style={{position:'absolute'}}>Add your photo</div>
-              <img src={this.state.photo} style={{height:'100%', width:'100%'}}/>
+              <img src={photo} style={{height:'100%', width:'100%'}}/>
             </Dropzone>
-
+            <input style={{display:'none'}} name='photo' value={photo}/>
           </div>
           <div className='field'>
             <label className='label'>Email</label>
@@ -86,10 +87,19 @@ class SignUpView extends React.Component {
               </span>
             </div>
           </div>
-          {
-            // if user clicks submit, redirects to login page
-            // however login is not allowed likely due to refresh problems
-          }
+          <div className='field'>
+            <label className='label'>Gender</label>
+            <div className='control'>
+              <label class="radio">
+                <input type="radio" name="gender" value={1} />
+                &nbsp;Male
+              </label>
+              <label class="radio">
+                <input type="radio" name="gender" value={0} />
+                &nbsp;Female
+              </label>
+            </div>
+          </div>
           <input
             onClick={this.props.onSignUp}
             className='button is-primary'
