@@ -22,6 +22,7 @@ const User = db.define('user', {
   zipCode: Sequelize.STRING,
   gender: Sequelize.BOOLEAN,
   age: Sequelize.INTEGER,
+  photo: Sequelize.STRING,
 });
 
 module.exports = User;

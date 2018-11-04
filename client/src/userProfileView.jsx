@@ -8,7 +8,7 @@ class UserProfileView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      picture: 'https://bulma.io/images/placeholders/128x128.png',
+      photo: '',
       username: '',
       gender: '',
       birthday: '',
@@ -57,7 +57,7 @@ class UserProfileView extends React.Component {
   }
 
   render() {
-    const { redirect, picture, username, gender, birthday, location, hometown } = this.state;
+    const { redirect, photo, username, gender, birthday, location, hometown } = this.state;
     if (redirect) {
       return <Redirect to="/house" />;
     }
@@ -70,7 +70,7 @@ class UserProfileView extends React.Component {
               <h4 className="subtitle">My Profile:</h4>
               <div className="field">
                 <figure className="image is-128x128">
-                  <img src={picture} />
+                  <img src={photo || 'https://bulma.io/images/placeholders/128x128.png'} />
                 </figure>
               </div>
               <div className="field">
@@ -80,7 +80,7 @@ class UserProfileView extends React.Component {
               </div>
               <div className="field">
                 <label className="label">Gender:</label>
-                <h5>{gender}</h5>
+                <h5>{gender ? 'Male' : 'Female'}</h5>
                 <div className="control" />
               </div>
               <div className="field ">
@@ -90,32 +90,6 @@ class UserProfileView extends React.Component {
                 <div className="control" />
               </div>
             </div>
-            {/* <div className="box">
-              <label className="label">Search Zipcode:</label>
-              <p className="help">Enter your desired search zipcode for Roomee(s) or shared room listings</p>
-
-              <div className="field column is-one-fifth">
-                <div className="control">
-                  <input className="input" id="zipCode" size="5" value={this.zipCode} onChange={this.onChange} />
-                  <p className="help">ZipCode</p>
-                </div>
-              </div>
-            </div> 
-
-            <div className="field">
-              <div className="control">
-                <button
-                  className="button is-primary"
-                  type="submit"
-                  onClick={() => {
-                    this.props.onSubmit(this.state);
-                    this.setRedirect();
-                  }}
-                >
-                  Save Changes
-                </button> 
-              </div>
-            </div> */}
           </div>
           <div className="column is-half">
             <div className="box">
