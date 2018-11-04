@@ -22,7 +22,7 @@ passport.use(
   new LocalStrategy(
     { passReqToCallback: true },
     async (req, username, password, done) => {
-      const { firstname, lastname, zipCode, gender, age, photo } = req.body;
+      const { firstname, lastname, zipCode, gender, age, photo, birthday } = req.body;
       const newUser = {
         username,
         password,
@@ -33,6 +33,7 @@ passport.use(
         gender,
         age,
         photo,
+        birthday
       };
       const createdUser = await createUser(newUser);
       if (createdUser) {

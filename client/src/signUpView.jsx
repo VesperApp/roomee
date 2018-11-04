@@ -12,8 +12,7 @@ class SignUpView extends React.Component {
   componentDidMount() {
     // initialize Bulma Calender, see: http://creativebulma.net//product/calendar/demo
     const options = {
-      displayMode: 'dialog',
-      dateFormat: 'YYYY-MM-DD', // sticks with the mySQL format
+      showHeader: false,
     }
     const calendars = bulmaCalendar.attach('[type="date"]', options);
     calendars.forEach(calendar => {

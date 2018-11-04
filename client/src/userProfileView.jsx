@@ -32,6 +32,7 @@ class UserProfileView extends React.Component {
         });
       }
     });
+    console.log(this.state.birthday instanceof Date);
   }
 
   onChange(event) {
