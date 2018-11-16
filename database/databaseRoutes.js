@@ -7,7 +7,7 @@ LISTING - create listing - need to include username
 ****************** ****************** */
 const createListing = async listing => {
   const existingUser = await User.findOne({
-    where: { id: listing.userId }
+    where: { id: listing.userId },
   });
   const listingInstance = await Listing.create(listing, { include: [Photo] });
   return existingUser.addListing(listingInstance);
@@ -62,7 +62,7 @@ const findListingsByID = async (id, callback) => {
   try {
     const listings = await Listing.findAll({
       where: { userId: id },
-      include: [{ model: Photo }, { model: User }]
+      include: [{ model: Photo }, { model: User }],
     });
     callback(null, listings);
   } catch (err) {
@@ -94,7 +94,7 @@ USER - create user
 ****************** ****************** */
 const createUser = async newUser => {
   const existingUser = await User.findAll({
-    where: { username: newUser.username }
+    where: { username: newUser.username },
   });
   if (!existingUser.length) {
     const salt = await bCrypt.genSalt(14);
@@ -141,5 +141,5 @@ module.exports = {
   findListingsByZip,
   findListingsByID,
   createUser,
-  validateLogin
+  validateLogin,
 };

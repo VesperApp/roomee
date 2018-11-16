@@ -62,10 +62,14 @@ app.get('/searchListing', (req, res) => {
 });
 
 app.post('/listing', checkLogin, async (req, res) => {
-  // console.log(`post to listing ========current user is >>${req.user}<< and this user authentication is >>${req.isAuthenticated()}<< ============`)
-
+  console.log(
+    `post to listing ========current user is >>${
+      req.user
+    }<< and this user authentication is >>${req.isAuthenticated()}<< ============`
+  );
+  console.log('ED HELLO**********:', req.body);
   req.body.userId = req.user === undefined ? req.body.userId : req.user.id;
-  req.body.photos = req.body.photosData;
+  // req.body.photos = req.body.photosData;
   req.body.price = req.body.price || null;
   try {
     const createdListing = await createListing(req.body);
