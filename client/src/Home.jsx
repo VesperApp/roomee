@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import ListItemRoom from './unusedComponents/ListItemRoom';
+import ListItemRoom from './ListItemRoom';
 import DetailsRoom from './unusedComponents/DetailsRoom';
 
 const mostRate = {

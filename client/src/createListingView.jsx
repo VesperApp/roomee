@@ -30,13 +30,13 @@ class CreateListingView extends React.Component {
   }
 
   onDrop(files) {
-    photosOnDrop(files).then(photoUrls =>  {
+    photosOnDrop(files).then(photoUrls => {
       console.log('FILES ', photoUrls);
-      const photos = this.state.photos.concat(photoUrls);
+      const photos = this.state.photos;
+      photos.push({ url: photoUrls[0] });
       this.setState({ photos });
     });
   }
-
 
   setRedirect() {
     // invoked when the submit button is clicked to redirect user to /house endpoint which renders
@@ -122,9 +122,9 @@ class CreateListingView extends React.Component {
               <aside>
                 <h2>{photos.length} File(s) Uploaded</h2>
                 <ul>
-                  {photos.map((file) => (
+                  {photos.map(file => (
                     <li>
-                      <img src={file} alt='lost the url'/>
+                      <img src={file.url} alt="lost the url" />
                     </li>
                   ))}
                 </ul>

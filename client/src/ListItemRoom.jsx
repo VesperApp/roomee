@@ -7,9 +7,7 @@ const ListItemRoom = ({ room, onTitleClick }) => (
       <p className="subtitle" onClick={() => onTitleClick(room)}>
         {room.title}
       </p>
-      <figure className="image is-4by3">
-        {room.photos[0].url ? <img src={room.photos[0].url} alt="room" /> : null}
-      </figure>
+      <figure className="image is-4by3">{room.photos[0] ? <img src={room.photos[0].url} alt="room" /> : null}</figure>
       <p className="content">
         ${room.price}
         /month
