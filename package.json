@@ -43,7 +43,7 @@
     "mocha": "^5.2.0",
     "moment": "^2.22.2",
     "mysql2": "^1.5.3",
-    "node": "^10.6.0",
+    "node": "^13.3.0",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
